@@ -1,0 +1,304 @@
+export interface Car {
+  id: string
+  slug: string
+  make: string
+  model: string
+  year: number
+  trim: string
+  price: number // ISK
+  priceUSD?: number
+  mileage: number // km
+  color: string
+  exteriorColor: string
+  interiorColor: string
+  drivetrain: string
+  engine: string
+  transmission: string
+  fuelType: string
+  bodyType: string
+  doors: number
+  seats: number
+  vin?: string
+  status: 'available' | 'sold' | 'in-transit'
+  featured: boolean
+  images: string[]
+  videoUrl?: string
+  description: string
+  features: string[]
+  createdAt: string
+}
+
+export const cars: Car[] = [
+  {
+    id: 'seq-001',
+    slug: '2023-toyota-sequoia-platinum-seq001',
+    make: 'Toyota',
+    model: 'Sequoia',
+    year: 2023,
+    trim: 'Platinum',
+    price: 14900000,
+    priceUSD: 68000,
+    mileage: 18500,
+    color: 'Hvítur',
+    exteriorColor: 'Wind Chill Pearl',
+    interiorColor: 'Black',
+    drivetrain: '4WD',
+    engine: '3.4L V6 Twin-Turbo Hybrid',
+    transmission: 'Sjálfskiptur',
+    fuelType: 'Hybrid',
+    bodyType: 'SUV',
+    doors: 4,
+    seats: 7,
+    vin: '5TDCY5A10PS000001',
+    status: 'available',
+    featured: true,
+    images: [
+      'https://images.unsplash.com/photo-1625231334401-6e39ef1cc68d?w=800&q=80',
+      'https://images.unsplash.com/photo-1619767886558-efdc259cde1a?w=800&q=80',
+    ],
+    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+    description: 'Glæsilegur Toyota Sequoia Platinum 2023 með hybrid vél og 4WD drifkerfi. Fullbúinn með öllum aukahlutum.',
+    features: ['Adaptive Cruise Control', 'Heated & Ventilated Seats', 'Panoramic Roof', 'JBL Premium Audio', '360° Camera', 'Wireless Charging'],
+    createdAt: '2024-03-15',
+  },
+  {
+    id: 'lx-002',
+    slug: '2022-lexus-lx600-premium-lx002',
+    make: 'Lexus',
+    model: 'LX 600',
+    year: 2022,
+    trim: 'Premium',
+    price: 17500000,
+    priceUSD: 82000,
+    mileage: 22000,
+    color: 'Svartur',
+    exteriorColor: 'Nori Green Pearl',
+    interiorColor: 'Palomino',
+    drivetrain: '4WD',
+    engine: '3.4L V6 Twin-Turbo',
+    transmission: 'Sjálfskiptur',
+    fuelType: 'Bensín',
+    bodyType: 'SUV',
+    doors: 4,
+    seats: 7,
+    status: 'available',
+    featured: true,
+    images: [
+      'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=800&q=80',
+      'https://images.unsplash.com/photo-1549317661-bd32c8ce0afe?w=800&q=80',
+    ],
+    description: 'Lexus LX 600 — fullkominn lúxus jeppi með kraftmikilli V6 twin-turbo vél. Ómissandi á íslenskum vegum.',
+    features: ['Mark Levinson Audio', 'Heated & Cooled Seats', 'Head-Up Display', 'Crawl Control', 'Multi-Terrain Select'],
+    createdAt: '2024-03-10',
+  },
+  {
+    id: 'tun-003',
+    slug: '2024-toyota-tundra-trd-pro-tun003',
+    make: 'Toyota',
+    model: 'Tundra',
+    year: 2024,
+    trim: 'TRD Pro',
+    price: 12800000,
+    priceUSD: 62000,
+    mileage: 5200,
+    color: 'Rauður',
+    exteriorColor: 'Solar Octane',
+    interiorColor: 'Black/Red',
+    drivetrain: '4WD',
+    engine: '3.4L V6 Twin-Turbo Hybrid',
+    transmission: 'Sjálfskiptur',
+    fuelType: 'Hybrid',
+    bodyType: 'Pallbíll',
+    doors: 4,
+    seats: 5,
+    status: 'available',
+    featured: true,
+    images: [
+      'https://images.unsplash.com/photo-1559416523-140ddc3d238c?w=800&q=80',
+      'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=800&q=80',
+    ],
+    description: 'Toyota Tundra TRD Pro 2024 — öflugasti pallbíll Toyota. Tilbúinn í allar aðstæður.',
+    features: ['FOX Shocks', 'TRD Pro Skid Plate', 'Panoramic Roof', 'Multi-Terrain Monitor', 'Wireless Charging'],
+    createdAt: '2024-03-20',
+  },
+  {
+    id: 'high-004',
+    slug: '2023-toyota-highlander-limited-high004',
+    make: 'Toyota',
+    model: 'Highlander',
+    year: 2023,
+    trim: 'Limited',
+    price: 9200000,
+    priceUSD: 45000,
+    mileage: 31000,
+    color: 'Grár',
+    exteriorColor: 'Cement',
+    interiorColor: 'Glazed Caramel',
+    drivetrain: 'AWD',
+    engine: '2.4L Turbo',
+    transmission: 'Sjálfskiptur',
+    fuelType: 'Bensín',
+    bodyType: 'SUV',
+    doors: 4,
+    seats: 7,
+    status: 'available',
+    featured: true,
+    images: [
+      'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=800&q=80',
+    ],
+    description: 'Toyota Highlander Limited — fjölskyldujeppinn sem hefur allt. Rúmgóður og öruggur.',
+    features: ['JBL Audio', '12.3" Touchscreen', 'Digital Rearview Mirror', 'Power Liftgate'],
+    createdAt: '2024-02-28',
+  },
+  {
+    id: 'rx-005',
+    slug: '2024-lexus-rx350h-luxury-rx005',
+    make: 'Lexus',
+    model: 'RX 350h',
+    year: 2024,
+    trim: 'Luxury',
+    price: 11500000,
+    priceUSD: 55000,
+    mileage: 8900,
+    color: 'Silfur',
+    exteriorColor: 'Sonic Chrome',
+    interiorColor: 'Palomino',
+    drivetrain: 'AWD',
+    engine: '2.5L Hybrid',
+    transmission: 'CVT',
+    fuelType: 'Hybrid',
+    bodyType: 'SUV',
+    doors: 4,
+    seats: 5,
+    status: 'in-transit',
+    featured: true,
+    images: [
+      'https://images.unsplash.com/photo-1619767886558-efdc259cde1a?w=800&q=80',
+    ],
+    description: 'Lexus RX 350h Luxury — sparneytinn lúxus hybrid jeppi. Á leiðinni til Íslands.',
+    features: ['14" Touchscreen', 'Mark Levinson Audio', 'Panoramic Roof', 'Digital Key'],
+    createdAt: '2024-03-18',
+  },
+  {
+    id: '4run-006',
+    slug: '2024-toyota-4runner-trailhunter-4run006',
+    make: 'Toyota',
+    model: '4Runner',
+    year: 2024,
+    trim: 'Trailhunter',
+    price: 10900000,
+    priceUSD: 52000,
+    mileage: 3100,
+    color: 'Grænn',
+    exteriorColor: 'Evergreen',
+    interiorColor: 'Black/Orange',
+    drivetrain: '4WD',
+    engine: '2.4L Turbo Hybrid',
+    transmission: 'Sjálfskiptur',
+    fuelType: 'Hybrid',
+    bodyType: 'SUV',
+    doors: 4,
+    seats: 5,
+    status: 'available',
+    featured: true,
+    images: [
+      'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=800&q=80',
+    ],
+    description: 'Nýji Toyota 4Runner Trailhunter — hannaður fyrir ævintýri. Tilbúinn fyrir íslensku hálendið.',
+    features: ['ARB Bumper', 'Old Man Emu Suspension', 'Locking Rear Diff', 'Multi-Terrain Monitor', 'Roof Rack'],
+    createdAt: '2024-03-22',
+  },
+]
+
+export const deliveredCars: Car[] = [
+  {
+    id: 'del-001',
+    slug: '2022-toyota-land-cruiser-300-del001',
+    make: 'Toyota',
+    model: 'Land Cruiser 300',
+    year: 2022,
+    trim: 'GR Sport',
+    price: 16500000,
+    mileage: 35000,
+    color: 'Hvítur',
+    exteriorColor: 'White Pearl',
+    interiorColor: 'Black',
+    drivetrain: '4WD',
+    engine: '3.3L V6 Diesel Twin-Turbo',
+    transmission: 'Sjálfskiptur',
+    fuelType: 'Dísel',
+    bodyType: 'SUV',
+    doors: 4,
+    seats: 7,
+    status: 'sold',
+    featured: false,
+    images: ['https://images.unsplash.com/photo-1625231334401-6e39ef1cc68d?w=800&q=80'],
+    description: 'Toyota Land Cruiser 300 GR Sport — afhent til ánægðs viðskiptavinar.',
+    features: ['E-KDSS', 'Multi-Terrain Select', 'Crawl Control'],
+    createdAt: '2024-01-15',
+  },
+  {
+    id: 'del-002',
+    slug: '2023-lexus-gx550-overtrail-del002',
+    make: 'Lexus',
+    model: 'GX 550',
+    year: 2023,
+    trim: 'Overtrail',
+    price: 15200000,
+    mileage: 12000,
+    color: 'Svartur',
+    exteriorColor: 'Black Onyx',
+    interiorColor: 'Rich Cream',
+    drivetrain: '4WD',
+    engine: '3.4L V6 Twin-Turbo',
+    transmission: 'Sjálfskiptur',
+    fuelType: 'Bensín',
+    bodyType: 'SUV',
+    doors: 4,
+    seats: 7,
+    status: 'sold',
+    featured: false,
+    images: ['https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=800&q=80'],
+    description: 'Lexus GX 550 Overtrail — lúxus offroad jeppi afhentur.',
+    features: ['Crawl Control', 'Stabilizer Disconnect', 'Overtrail Suspension'],
+    createdAt: '2024-02-10',
+  },
+  {
+    id: 'del-003',
+    slug: '2021-ford-f150-raptor-del003',
+    make: 'Ford',
+    model: 'F-150',
+    year: 2021,
+    trim: 'Raptor',
+    price: 13500000,
+    mileage: 45000,
+    color: 'Blár',
+    exteriorColor: 'Ford Performance Blue',
+    interiorColor: 'Black/Orange',
+    drivetrain: '4WD',
+    engine: '3.5L V6 EcoBoost',
+    transmission: 'Sjálfskiptur',
+    fuelType: 'Bensín',
+    bodyType: 'Pallbíll',
+    doors: 4,
+    seats: 5,
+    status: 'sold',
+    featured: false,
+    images: ['https://images.unsplash.com/photo-1559416523-140ddc3d238c?w=800&q=80'],
+    description: 'Ford F-150 Raptor — ameríski ofurjeppinn afhentur.',
+    features: ['FOX Live Valve Shocks', 'Terrain Management System', 'Ford Co-Pilot360'],
+    createdAt: '2023-12-20',
+  },
+]
+
+export function formatPrice(price: number): string {
+  return new Intl.NumberFormat('is-IS').format(price) + ' kr.'
+}
+
+export function formatMileage(km: number): string {
+  return new Intl.NumberFormat('is-IS').format(km) + ' km'
+}
+
+export function getCarTitle(car: Car): string {
+  return `${car.year} ${car.make} ${car.model} ${car.trim}`
+}
