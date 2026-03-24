@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 export default function HeroVideo() {
   return (
-    <section className="relative h-screen min-h-[600px] max-h-[900px] flex items-center justify-center overflow-hidden">
+    <section className="relative h-screen min-h-[600px] max-h-[900px] flex items-end justify-center overflow-hidden pb-32">
       {/* Video background */}
       <video
         autoPlay
