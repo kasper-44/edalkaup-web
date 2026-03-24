@@ -6,20 +6,19 @@ export default function HeroVideo() {
   return (
     <section className="relative h-screen min-h-[600px] max-h-[900px] flex items-center justify-center overflow-hidden">
       {/* Vimeo video background */}
-      <div className="absolute inset-0 w-full h-full overflow-hidden">
+      <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
         <iframe
-          src="https://player.vimeo.com/video/1176696481?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1&quality=1080p"
+          src="https://player.vimeo.com/video/1176696481?autoplay=1&loop=1&byline=0&title=0&muted=1&controls=0&dnt=1"
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[177.78vh] min-w-full min-h-full"
-          style={{ aspectRatio: '16/9' }}
-          frameBorder="0"
+          style={{ aspectRatio: '16/9', border: 'none' }}
           allow="autoplay; fullscreen"
           allowFullScreen
         />
       </div>
 
       {/* Gradient overlays */}
-      <div className="absolute inset-0 bg-gradient-to-b from-navy-900/70 via-navy-900/40 to-navy-900" />
-      <div className="absolute inset-0 bg-gradient-to-r from-navy-900/50 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-b from-navy-900/70 via-navy-900/40 to-navy-900 z-[1]" />
+      <div className="absolute inset-0 bg-gradient-to-r from-navy-900/50 to-transparent z-[1]" />
 
       {/* Content */}
       <div className="relative z-10 max-w-4xl mx-auto text-center px-4">
@@ -52,7 +51,7 @@ export default function HeroVideo() {
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce z-10">
         <svg className="w-6 h-6 text-white/50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
         </svg>
