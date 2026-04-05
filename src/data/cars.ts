@@ -217,7 +217,7 @@ export const cars: Car[] = [
     model: 'XC90',
     year: 2025,
     trim: 'T8 Recharge',
-    price: 0,
+    price: 14990000,
     mileage: 1000,
     color: 'Svartur',
     exteriorColor: 'Onyx Black',
