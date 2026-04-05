@@ -208,8 +208,6 @@ export const cars: Car[] = [
     features: ['ARB Bumper', 'Old Man Emu Suspension', 'Locking Rear Diff', 'Multi-Terrain Monitor', 'Roof Rack'],
     createdAt: '2024-03-22',
   },
-]
-
   {
     id: 'xc90-008',
     slug: '2025-volvo-xc90-t8-recharge-xc90008',
