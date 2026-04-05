@@ -212,13 +212,13 @@ export const cars: Car[] = [
 
   {
     id: 'xc90-008',
-    slug: '2024-volvo-xc90-t8-recharge-xc90008',
+    slug: '2025-volvo-xc90-t8-recharge-xc90008',
     make: 'Volvo',
     model: 'XC90',
-    year: 2024,
+    year: 2025,
     trim: 'T8 Recharge',
     price: 0,
-    mileage: 0,
+    mileage: 1000,
     color: 'Svartur',
     exteriorColor: 'Onyx Black',
     interiorColor: 'Charcoal',
