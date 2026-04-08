@@ -1,0 +1,86 @@
+{
+  "lastUpdated": "2026-04-08T20:30:00Z",
+  "missions": [
+    {
+      "id": "m1",
+      "name": "Silverado EV RST (Manheim)",
+      "status": "in-progress",
+      "notes": "6 photos cleaned, not on site yet. VIN: 1GC10WEL7SU409439",
+      "steps": [
+        { "label": "Source photos", "done": true },
+        { "label": "Clean photos", "done": true },
+        { "label": "Add to site", "done": false },
+        { "label": "Set price", "done": false }
+      ]
+    },
+    {
+      "id": "m2",
+      "name": "Volvo XC90 T8 Recharge",
+      "status": "live",
+      "notes": "On site at 14.990.000 kr. 28 photos, IC plates blacked.",
+      "steps": [
+        { "label": "Source photos", "done": true },
+        { "label": "Clean photos", "done": true },
+        { "label": "Black out plates", "done": true },
+        { "label": "Add to site", "done": true },
+        { "label": "Set price", "done": true }
+      ]
+    },
+    {
+      "id": "m3",
+      "name": "Domain: edalkaup.is → Vercel",
+      "status": "blocked",
+      "notes": "DNS still at Domeneshop. Need to point to Vercel while preserving MX records for email.",
+      "steps": [
+        { "label": "Vercel deployment", "done": true },
+        { "label": "DNS switch", "done": false },
+        { "label": "Verify email works", "done": false }
+      ]
+    }
+  ],
+  "tools": {
+    "photoroom": {
+      "name": "Photoroom",
+      "status": "active",
+      "credits": 955,
+      "limit": 1000,
+      "renews": "2026-04-30"
+    },
+    "autodev": {
+      "name": "auto.dev",
+      "status": "active",
+      "notes": "US car listings API"
+    },
+    "vercel": {
+      "name": "Vercel",
+      "status": "active",
+      "url": "edalkaup-web.vercel.app"
+    },
+    "github": {
+      "name": "GitHub",
+      "status": "active",
+      "repo": "kasper-44/edalkaup-web"
+    }
+  },
+  "inventory": {
+    "onSite": 8,
+    "delivered": 4,
+    "inProgress": 1
+  },
+  "agents": [
+    { "name": "Scout", "role": "Car finder", "status": "ready" },
+    { "name": "Cleaner", "role": "Photo processor", "status": "active" },
+    { "name": "Packer", "role": "PDF packets", "status": "ready" },
+    { "name": "Distributor", "role": "Dealer assignment", "status": "ready" },
+    { "name": "Designer", "role": "Creative", "status": "ready" },
+    { "name": "Marketing Manager", "role": "Strategy", "status": "ready" },
+    { "name": "Finance Manager", "role": "Costs/margins", "status": "ready" },
+    { "name": "Elliott", "role": "US trading & options", "status": "ready" }
+  ],
+  "recentActivity": [
+    { "time": "2026-04-08T20:15:00Z", "action": "Cleaned 6 Silverado EV RST auction photos" },
+    { "time": "2026-04-05T18:30:00Z", "action": "Added Volvo XC90 T8 to site — 14.990.000 kr" },
+    { "time": "2026-04-05T18:20:00Z", "action": "Blacked IC plates on 28 XC90 photos" },
+    { "time": "2026-04-05T18:00:00Z", "action": "Fixed build: moved XC90 inside cars array" }
+  ]
+}
