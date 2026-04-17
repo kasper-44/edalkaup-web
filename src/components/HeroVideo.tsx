@@ -17,8 +17,8 @@ export default function HeroVideo() {
       </video>
 
       {/* Gradient overlays */}
-      <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/40 to-white dark:from-navy-900/70 dark:via-navy-900/40 dark:to-navy-900" />
-      <div className="absolute inset-0 bg-gradient-to-r from-white/50 dark:from-navy-900/50 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-white/20 to-white dark:from-navy-900/70 dark:via-navy-900/40 dark:to-navy-900" />
+      <div className="absolute inset-0 bg-gradient-to-r from-white/30 dark:from-navy-900/50 to-transparent" />
 
       {/* Content */}
       <div className="relative z-10 max-w-4xl mx-auto text-center px-4">
