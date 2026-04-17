@@ -160,8 +160,8 @@ export default async function CarPage({ params }: PageProps) {
                 <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">{title}</h1>
                 <div className="mt-4 mb-6">
                   <p className="text-3xl font-bold text-accent">{formatPrice(car.price)}</p>
-                  {car.priceUSD && (
-                    <p className="text-sm text-gray-400 dark:text-slate-500 mt-1">${car.priceUSD.toLocaleString()} USD</p>
+                  {car.price > 0 && (
+                    <p className="text-sm text-gray-400 dark:text-slate-500 mt-1">m/VSK</p>
                   )}
                 </div>
 
