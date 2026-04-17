@@ -102,9 +102,9 @@ export default function UmOkkurPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="bg-gradient-to-r from-accent/10 to-accent/5 rounded-3xl border border-accent/20 p-10 sm:p-16">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Úranus ehf.</h2>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Eðalkaup</h2>
             <p className="text-gray-600 dark:text-slate-300 leading-relaxed mb-6">
-              Eðalkaup er hluti af Úranus ehf., sem hefur verið einn stærsti bílainnflytjandi Íslands í yfir 25 ár. Úranus flytur inn nýja og notaða bíla frá Evrópu og Ameríku og býður verð sem eru oftast ekki í boði annars staðar.
+              Eðalkaup hefur verið einn stærsti bílainnflytjandi Íslands í yfir 25 ár. Við flytjum inn nýja og notaða bíla frá Evrópu og Ameríku og bjóðum verð sem eru oftast ekki í boði annars staðar.
             </p>
           </div>
         </div>
