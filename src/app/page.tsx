@@ -57,7 +57,7 @@ export default function Home() {
             <div className="grid grid-cols-2 gap-4">
               {[
                 { number: '25+', label: 'Ára reynsla' },
-                { number: '500+', label: 'Bílar afhentir' },
+                { number: '5000+', label: 'Bílar afhentir' },
                 { number: '100%', label: 'Ánægja viðskiptavina' },
                 { number: '3-6', label: 'Vikur afgreiðslutími' },
               ].map((stat) => (
