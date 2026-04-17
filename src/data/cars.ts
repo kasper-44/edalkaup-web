@@ -281,7 +281,7 @@ export const cars: Car[] = [
     vin: '',
     status: 'available' as const,
     featured: false,
-    images: [],
+    images: ['/images/cars/wrangler-ha01/01.jpg', '/images/cars/wrangler-ha01/02.jpg', '/images/cars/wrangler-ha01/03.jpg', '/images/cars/wrangler-ha01/04.jpg', '/images/cars/wrangler-ha01/05.jpg'],
     description: '2021 Jeep Wrangler High Altitude 4XE — lúxus tengiltvinnbíll með leðri og öllum aukabúnaði. Aðeins 39.000 km ekið.',
     features: ['4xe Plug-in Hybrid', 'High Altitude útbúnaður', 'Leðursæti', '4WD', 'Sjálfskiptur'],
     createdAt: '2026-04-17',
