@@ -5,8 +5,8 @@ export default function NotFound() {
     <div className="pt-20 min-h-screen flex items-center justify-center">
       <div className="text-center px-4">
         <p className="text-8xl font-black text-accent/20 mb-4">404</p>
-        <h1 className="text-3xl font-bold text-white mb-4">Síða fannst ekki</h1>
-        <p className="text-slate-400 mb-8 max-w-md mx-auto">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Síða fannst ekki</h1>
+        <p className="text-gray-500 dark:text-slate-400 mb-8 max-w-md mx-auto">
           Þessi síða er ekki til eða hefur verið fjarlægð. Farðu á forsíðu til að skoða bílana okkar.
         </p>
         <Link

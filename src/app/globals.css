@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-navy-900: #0a0f1c;
   --color-navy-800: #111827;
@@ -8,9 +10,27 @@
   --color-accent: #c9a84c;
   --color-accent-light: #e0c36a;
   --color-accent-dark: #a88a30;
+
+  /* Semantic light-mode defaults */
+  --color-surface: #ffffff;
+  --color-surface-alt: #f8f9fb;
+  --color-surface-card: #ffffff;
+  --color-on-surface: #1a1a2e;
+  --color-on-surface-muted: #64748b;
+  --color-on-surface-faint: #94a3b8;
+  --color-border: rgba(0,0,0,0.08);
+  --color-border-hover: rgba(0,0,0,0.15);
 }
 
+/* ─── Light mode body ─── */
 body {
+  background-color: var(--color-surface);
+  color: var(--color-on-surface);
+  transition: background-color 0.2s, color 0.2s;
+}
+
+/* ─── Dark mode overrides via .dark on <html> ─── */
+.dark body {
   background-color: var(--color-navy-900);
   color: #f1f5f9;
 }
@@ -25,11 +45,17 @@ html {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
+  background: var(--color-surface);
+}
+.dark ::-webkit-scrollbar-track {
   background: var(--color-navy-900);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-navy-600);
+  background: #cbd5e1;
   border-radius: 4px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: var(--color-navy-600);
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-accent);

@@ -12,8 +12,8 @@ export default function HafaSambandPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="text-center mb-12">
           <p className="text-accent text-sm font-semibold uppercase tracking-[0.2em] mb-3">Samband</p>
-          <h1 className="text-3xl sm:text-4xl font-bold text-white">Hafa samband</h1>
-          <p className="text-slate-400 mt-3 max-w-xl mx-auto">
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">Hafa samband</h1>
+          <p className="text-gray-500 dark:text-slate-400 mt-3 max-w-xl mx-auto">
             Ertu með spurningu eða vilt fá tilboð í bíl? Ekki hika við að hafa samband.
           </p>
         </div>
@@ -44,18 +44,18 @@ export default function HafaSambandPage() {
                 subtitle: '551 0205 • johannes@uranus.is',
               },
             ].map((item) => (
-              <div key={item.title} className="bg-navy-800 rounded-2xl border border-white/5 p-6">
+              <div key={item.title} className="bg-white dark:bg-navy-800 rounded-2xl border border-black/5 dark:border-white/5 p-6">
                 <div className="text-2xl mb-3">{item.icon}</div>
-                <h3 className="font-semibold text-white">{item.title}</h3>
+                <h3 className="font-semibold text-gray-900 dark:text-white">{item.title}</h3>
                 <a href={item.href} className="text-accent hover:text-accent-light transition-colors font-medium">
                   {item.value}
                 </a>
-                <p className="text-sm text-slate-400 mt-1">{item.subtitle}</p>
+                <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">{item.subtitle}</p>
               </div>
             ))}
 
             {/* Map */}
-            <div className="bg-navy-800 rounded-2xl border border-white/5 overflow-hidden">
+            <div className="bg-white dark:bg-navy-800 rounded-2xl border border-black/5 dark:border-white/5 overflow-hidden">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1740.5!2d-21.9!3d64.14!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNjTCsDA4JzI0LjAiTiAyMcKwNTQnMDAuMCJX!5e0!3m2!1sis!2sis!4v1234567890"
                 width="100%"

@@ -16,16 +16,16 @@ interface FilterSidebarProps {
 
 export default function FilterSidebar({ filters, onFilterChange, makes, bodyTypes }: FilterSidebarProps) {
   return (
-    <aside className="bg-navy-800 rounded-2xl border border-white/5 p-6 space-y-6">
-      <h2 className="text-lg font-bold text-white">Sía niðurstöður</h2>
+    <aside className="bg-white dark:bg-navy-800 rounded-2xl border border-black/5 dark:border-white/5 p-6 space-y-6">
+      <h2 className="text-lg font-bold text-gray-900 dark:text-white">Sía niðurstöður</h2>
 
       {/* Make */}
       <div>
-        <label className="block text-sm font-medium text-slate-400 mb-2">Framleiðandi</label>
+        <label className="block text-sm font-medium text-gray-500 dark:text-slate-400 mb-2">Framleiðandi</label>
         <select
           value={filters.make}
           onChange={(e) => onFilterChange('make', e.target.value)}
-          className="w-full bg-navy-700 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:border-accent"
+          className="w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-3 py-2.5 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-accent"
         >
           <option value="">Allir</option>
           {makes.map((m) => (
@@ -36,11 +36,11 @@ export default function FilterSidebar({ filters, onFilterChange, makes, bodyType
 
       {/* Body Type */}
       <div>
-        <label className="block text-sm font-medium text-slate-400 mb-2">Tegund</label>
+        <label className="block text-sm font-medium text-gray-500 dark:text-slate-400 mb-2">Tegund</label>
         <select
           value={filters.bodyType}
           onChange={(e) => onFilterChange('bodyType', e.target.value)}
-          className="w-full bg-navy-700 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:border-accent"
+          className="w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-3 py-2.5 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-accent"
         >
           <option value="">Allar</option>
           {bodyTypes.map((b) => (
@@ -51,42 +51,42 @@ export default function FilterSidebar({ filters, onFilterChange, makes, bodyType
 
       {/* Year Range */}
       <div>
-        <label className="block text-sm font-medium text-slate-400 mb-2">Árgerð</label>
+        <label className="block text-sm font-medium text-gray-500 dark:text-slate-400 mb-2">Árgerð</label>
         <div className="grid grid-cols-2 gap-2">
           <input
             type="number"
             placeholder="Frá"
             value={filters.minYear}
             onChange={(e) => onFilterChange('minYear', e.target.value)}
-            className="bg-navy-700 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:border-accent"
+            className="bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-3 py-2.5 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-accent"
           />
           <input
             type="number"
             placeholder="Til"
             value={filters.maxYear}
             onChange={(e) => onFilterChange('maxYear', e.target.value)}
-            className="bg-navy-700 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:border-accent"
+            className="bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-3 py-2.5 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-accent"
           />
         </div>
       </div>
 
       {/* Price Range */}
       <div>
-        <label className="block text-sm font-medium text-slate-400 mb-2">Verð (kr.)</label>
+        <label className="block text-sm font-medium text-gray-500 dark:text-slate-400 mb-2">Verð (kr.)</label>
         <div className="grid grid-cols-2 gap-2">
           <input
             type="number"
             placeholder="Frá"
             value={filters.minPrice}
             onChange={(e) => onFilterChange('minPrice', e.target.value)}
-            className="bg-navy-700 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:border-accent"
+            className="bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-3 py-2.5 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-accent"
           />
           <input
             type="number"
             placeholder="Til"
             value={filters.maxPrice}
             onChange={(e) => onFilterChange('maxPrice', e.target.value)}
-            className="bg-navy-700 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:border-accent"
+            className="bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-3 py-2.5 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-accent"
           />
         </div>
       </div>
@@ -101,7 +101,7 @@ export default function FilterSidebar({ filters, onFilterChange, makes, bodyType
           onFilterChange('minYear', '')
           onFilterChange('maxYear', '')
         }}
-        className="w-full py-2.5 text-sm font-medium text-slate-400 hover:text-white border border-white/10 rounded-lg hover:border-white/20 transition-colors"
+        className="w-full py-2.5 text-sm font-medium text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white border border-black/10 dark:border-white/10 rounded-lg hover:border-black/20 dark:hover:border-white/20 transition-colors"
       >
         Hreinsa síu
       </button>

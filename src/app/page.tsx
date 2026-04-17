@@ -14,7 +14,7 @@ export default function Home() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center mb-12">
           <p className="text-accent text-sm font-semibold uppercase tracking-[0.2em] mb-3">Úrval okkar</p>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white">Bílar til sölu</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">Bílar til sölu</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {featuredCars.map((car, i) => (
@@ -33,18 +33,18 @@ export default function Home() {
       </section>
 
       {/* About Section */}
-      <section className="bg-navy-800/50 border-y border-white/5">
+      <section className="bg-gray-50 dark:bg-navy-800/50 border-y border-black/5 dark:border-white/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
               <p className="text-accent text-sm font-semibold uppercase tracking-[0.2em] mb-3">Um okkur</p>
-              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
+              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-6">
                 Yfir 25 ára reynsla af bílainnflutningi
               </h2>
-              <p className="text-slate-300 leading-relaxed mb-4">
+              <p className="text-gray-600 dark:text-slate-300 leading-relaxed mb-4">
                 Eðalkaup er hluti af Úranus ehf., einum stærsta bílainnflytjanda Íslands. Við sérhæfum okkur í innflutningi vandaðra bíla frá Bandaríkjunum og Kanada — ökutæki sem ekki eru fáanleg á íslenskum markaði.
               </p>
-              <p className="text-slate-300 leading-relaxed mb-8">
+              <p className="text-gray-600 dark:text-slate-300 leading-relaxed mb-8">
                 Við finnum bílinn sem þú leitar að, hvort sem það er Toyota, Lexus, Ford eða önnur amerísk merki. Traust, áreiðanleiki og fagmennska er grunnurinn að þjónustu okkar.
               </p>
               <Link
@@ -61,9 +61,9 @@ export default function Home() {
                 { number: '100%', label: 'Ánægja viðskiptavina' },
                 { number: '3-6', label: 'Vikur afgreiðslutími' },
               ].map((stat) => (
-                <div key={stat.label} className="bg-navy-800 rounded-2xl border border-white/5 p-6 text-center">
+                <div key={stat.label} className="bg-white dark:bg-navy-800 rounded-2xl border border-black/5 dark:border-white/5 p-6 text-center">
                   <p className="text-3xl font-bold text-accent mb-1">{stat.number}</p>
-                  <p className="text-sm text-slate-400">{stat.label}</p>
+                  <p className="text-sm text-gray-500 dark:text-slate-400">{stat.label}</p>
                 </div>
               ))}
             </div>
@@ -76,10 +76,10 @@ export default function Home() {
         <div className="relative bg-gradient-to-r from-accent/10 to-accent/5 rounded-3xl border border-accent/20 p-10 sm:p-16 text-center overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(201,168,76,0.1),transparent_70%)]" />
           <div className="relative">
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
               Finndu draumabílinn þinn
             </h2>
-            <p className="text-slate-300 max-w-xl mx-auto mb-8">
+            <p className="text-gray-600 dark:text-slate-300 max-w-xl mx-auto mb-8">
               Ertu að leita að ákveðinni bíltegund sem ekki er fáanleg á Íslandi? Við getum fundið hana fyrir þig.
             </p>
             <Link

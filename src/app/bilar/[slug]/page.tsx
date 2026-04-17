@@ -90,10 +90,10 @@ export default async function CarPage({ params }: PageProps) {
       <div className="pt-20 lg:pt-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
           {/* Breadcrumb */}
-          <nav className="text-sm text-slate-500 mb-6">
+          <nav className="text-sm text-gray-400 dark:text-slate-500 mb-6">
             <a href="/bilar" className="hover:text-accent transition-colors">Bílar</a>
             <span className="mx-2">/</span>
-            <span className="text-slate-300">{title}</span>
+            <span className="text-gray-600 dark:text-slate-300">{title}</span>
           </nav>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
@@ -114,13 +114,13 @@ export default async function CarPage({ params }: PageProps) {
               )}
 
               {/* Specs */}
-              <div className="bg-navy-800 rounded-2xl border border-white/5 p-6 sm:p-8">
-                <h2 className="text-xl font-bold text-white mb-6">Tæknilegar upplýsingar</h2>
+              <div className="bg-white dark:bg-navy-800 rounded-2xl border border-black/5 dark:border-white/5 p-6 sm:p-8">
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Tæknilegar upplýsingar</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {specs.map((spec) => (
-                    <div key={spec.label} className="flex justify-between py-3 border-b border-white/5">
-                      <span className="text-sm text-slate-400">{spec.label}</span>
-                      <span className="text-sm font-medium text-white">{spec.value}</span>
+                    <div key={spec.label} className="flex justify-between py-3 border-b border-black/5 dark:border-white/5">
+                      <span className="text-sm text-gray-500 dark:text-slate-400">{spec.label}</span>
+                      <span className="text-sm font-medium text-gray-900 dark:text-white">{spec.value}</span>
                     </div>
                   ))}
                 </div>
@@ -128,11 +128,11 @@ export default async function CarPage({ params }: PageProps) {
 
               {/* Features */}
               {car.features.length > 0 && (
-                <div className="bg-navy-800 rounded-2xl border border-white/5 p-6 sm:p-8">
-                  <h2 className="text-xl font-bold text-white mb-6">Aukahlutir og eiginleikar</h2>
+                <div className="bg-white dark:bg-navy-800 rounded-2xl border border-black/5 dark:border-white/5 p-6 sm:p-8">
+                  <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Aukahlutir og eiginleikar</h2>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {car.features.map((feature) => (
-                      <div key={feature} className="flex items-center gap-2 text-sm text-slate-300">
+                      <div key={feature} className="flex items-center gap-2 text-sm text-gray-600 dark:text-slate-300">
                         <svg className="w-4 h-4 text-accent flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
@@ -144,24 +144,24 @@ export default async function CarPage({ params }: PageProps) {
               )}
 
               {/* Description */}
-              <div className="bg-navy-800 rounded-2xl border border-white/5 p-6 sm:p-8">
-                <h2 className="text-xl font-bold text-white mb-4">Lýsing</h2>
-                <p className="text-slate-300 leading-relaxed">{car.description}</p>
+              <div className="bg-white dark:bg-navy-800 rounded-2xl border border-black/5 dark:border-white/5 p-6 sm:p-8">
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Lýsing</h2>
+                <p className="text-gray-600 dark:text-slate-300 leading-relaxed">{car.description}</p>
               </div>
             </div>
 
             {/* Right Sidebar */}
             <div className="space-y-6">
               {/* Price card */}
-              <div className="bg-navy-800 rounded-2xl border border-white/5 p-6 sticky top-24">
+              <div className="bg-white dark:bg-navy-800 rounded-2xl border border-black/5 dark:border-white/5 p-6 sticky top-24">
                 <div className={`inline-block px-3 py-1 text-xs font-semibold rounded-full border mb-4 ${statusColors[car.status]}`}>
                   {statusLabels[car.status]}
                 </div>
-                <h1 className="text-2xl font-bold text-white mb-1">{title}</h1>
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">{title}</h1>
                 <div className="mt-4 mb-6">
                   <p className="text-3xl font-bold text-accent">{formatPrice(car.price)}</p>
                   {car.priceUSD && (
-                    <p className="text-sm text-slate-500 mt-1">${car.priceUSD.toLocaleString()} USD</p>
+                    <p className="text-sm text-gray-400 dark:text-slate-500 mt-1">${car.priceUSD.toLocaleString()} USD</p>
                   )}
                 </div>
 
