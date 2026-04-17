@@ -56,14 +56,6 @@ export default function Footer() {
             <p className="text-sm text-gray-500 dark:text-slate-400 leading-relaxed">
               Móðurfélag Eðalkaups. Einn stærsti bílainnflytjandi Íslands síðustu 25 árin.
             </p>
-            <a
-              href="https://uranus.is"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block mt-3 text-sm text-accent hover:text-accent-light transition-colors"
-            >
-              uranus.is →
-            </a>
           </div>
         </div>
 
