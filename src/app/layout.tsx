@@ -10,17 +10,17 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   metadataBase: new URL('https://edalkaup.is'),
   title: {
-    default: 'Eðalkaup — Innflutningur á bílum frá Ameríku',
+    default: 'Eðalkaup — Innflutningur á bílum frá Ameríku og Evrópu',
     template: '%s | Eðalkaup',
   },
-  description: 'Eðalkaup flytur inn vandaða bíla frá Bandaríkjunum og Kanada til Íslands. Hluti af Úranus — einum stærsta bílainnflytjanda Íslands í yfir 25 ár.',
+  description: 'Eðalkaup flytur inn vandaða bíla frá Bandaríkjunum, Kanada og Evrópu til Íslands. Hluti af Úranus — einum stærsta bílainnflytjanda Íslands í yfir 25 ár.',
   openGraph: {
     type: 'website',
     locale: 'is_IS',
     url: 'https://edalkaup.is',
     siteName: 'Eðalkaup',
-    title: 'Eðalkaup — Innflutningur á bílum frá Ameríku',
-    description: 'Vandaðir bílar frá Bandaríkjunum og Kanada. Yfir 25 ára reynsla.',
+    title: 'Eðalkaup — Innflutningur á bílum frá Ameríku og Evrópu',
+    description: 'Vandaðir bílar frá Bandaríkjunum, Kanada og Evrópu. Yfir 25 ára reynsla.',
   },
   robots: { index: true, follow: true },
   icons: { icon: '/favicon.ico' },

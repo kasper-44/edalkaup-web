@@ -32,7 +32,7 @@ export default function HeroVideo() {
           </span>
         </h1>
         <p className="text-lg sm:text-xl text-gray-600 dark:text-slate-300 max-w-2xl mx-auto mb-10 leading-relaxed">
-          Eðalkaup flytur inn vandaða bíla frá Bandaríkjunum og Kanada. Hluti af Úranus — einum stærsta bílainnflytjanda Íslands.
+          Eðalkaup flytur inn vandaða bíla frá Bandaríkjunum, Kanada og Evrópu. Hluti af Úranus — einum stærsta bílainnflytjanda Íslands.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link

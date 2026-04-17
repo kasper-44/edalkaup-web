@@ -8,9 +8,9 @@ export const metadata: Metadata = {
 export default function UmOkkurPage() {
   const steps = [
     { num: '01', title: 'Veldu bíl', desc: 'Skoðaðu úrvalið okkar eða segðu okkur hvaða bíl þú leitar að. Við leitum að besta boðinu.' },
-    { num: '02', title: 'Við finnum hann', desc: 'Við notum tengslanet okkar í Bandaríkjunum og Kanada til að finna nákvæmlega rétta bílinn á rétta verðinu.' },
+    { num: '02', title: 'Við finnum hann', desc: 'Við notum tengslanet okkar í Bandaríkjunum, Kanada og Evrópu til að finna nákvæmlega rétta bílinn á rétta verðinu.' },
     { num: '03', title: 'Skoðun og kaup', desc: 'Bíllinn er skoðaður vandlega. Við sjáum um öll kaup, pappíra og skipulagningu á sendingu.' },
-    { num: '04', title: 'Sending til Íslands', desc: 'Bíllinn er sendur til Íslands. Venjulegur afgreiðslutími er 4-6 vikur frá Ameríku.' },
+    { num: '04', title: 'Sending til Íslands', desc: 'Bíllinn er sendur til Íslands. Venjulegur afgreiðslutími er 4-6 vikur frá Ameríku og 2-4 vikur frá Evrópu.' },
     { num: '05', title: 'Tollafgreiðsla og skráning', desc: 'Við sjáum um alla tollafgreiðslu og aðstoðum við skráningu bílsins á Íslandi.' },
     { num: '06', title: 'Afhending', desc: 'Bíllinn þinn er tilbúinn! Við afhendum hann tilbúinn til notkunar á Íslandi.' },
   ]
@@ -40,13 +40,13 @@ export default function UmOkkurPage() {
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Af hverju Eðalkaup?</h2>
             <div className="space-y-4 text-gray-600 dark:text-slate-300 leading-relaxed">
               <p>
-                Bandaríkin og Kanada bjóða upp á gríðarlegt úrval af bílum sem ekki eru fáanlegir á íslenskum markaði — allt frá öflugum Toyota Tundra og Sequoia jeppum til lúxus Lexus gerða.
+                Bandaríkin, Kanada og Evrópa bjóða upp á gríðarlegt úrval af bílum sem ekki eru fáanlegir á íslenskum markaði — allt frá öflugum Toyota Tundra og Sequoia jeppum til lúxus Lexus og evrópskra gerða.
               </p>
               <p>
-                Verðlag á notuðum bílum í Norður-Ameríku er mun hagstæðara en á Íslandi, jafnvel að teknu tilliti til sendingar og gjalda. Þetta þýðir að þú getur fengið meira fyrir peningana þína.
+                Verðlag á notuðum bílum erlendis er mun hagstæðara en á Íslandi, jafnvel að teknu tilliti til sendingar og gjalda. Þetta þýðir að þú getur fengið meira fyrir peningana þína.
               </p>
               <p>
-                Við vinnum með traustu tengslaneti söluaðila og uppboðshúsa víðs vegar um Bandaríkin og Kanada, og getum fundið nánast hvaða bíl sem er.
+                Við vinnum með traustu tengslaneti söluaðila og uppboðshúsa víðs vegar um Bandaríkin, Kanada og Evrópu, og getum fundið nánast hvaða bíl sem er.
               </p>
             </div>
           </div>
@@ -55,7 +55,7 @@ export default function UmOkkurPage() {
             <div className="space-y-4">
               {[
                 { title: 'Reynsla', desc: 'Yfir 25 ára reynsla af bílainnflutningi til Íslands' },
-                { title: 'Tengslanet', desc: 'Víðtækt tengslanet í Bandaríkjunum og Kanada' },
+                { title: 'Tengslanet', desc: 'Víðtækt tengslanet í Bandaríkjunum, Kanada og Evrópu' },
                 { title: 'Heildarþjónusta', desc: 'Frá leit að bíl til afhendingar — við sjáum um allt' },
                 { title: 'Hagstætt verð', desc: 'Verð sem oftast eru ekki í boði annars staðar á Íslandi' },
                 { title: 'Áreiðanleiki', desc: 'Allir bílar skoðaðir vandlega áður en þeir eru sendir' },
