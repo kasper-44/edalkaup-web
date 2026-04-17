@@ -106,14 +106,6 @@ export default function UmOkkurPage() {
             <p className="text-gray-600 dark:text-slate-300 leading-relaxed mb-6">
               Eðalkaup er hluti af Úranus ehf., sem hefur verið einn stærsti bílainnflytjandi Íslands í yfir 25 ár. Úranus flytur inn nýja og notaða bíla frá Evrópu og Ameríku og býður verð sem eru oftast ekki í boði annars staðar.
             </p>
-            <a
-              href="https://uranus.is"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block px-8 py-3.5 text-base font-semibold border border-accent/30 text-accent rounded-xl hover:bg-accent/10 transition-colors"
-            >
-              Skoða uranus.is →
-            </a>
           </div>
         </div>
       </section>
