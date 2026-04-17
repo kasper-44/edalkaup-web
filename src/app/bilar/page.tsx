@@ -29,7 +29,7 @@ export default function BilarPage() {
       if (filters.minYear && car.year < Number(filters.minYear)) return false
       if (filters.maxYear && car.year > Number(filters.maxYear)) return false
       return true
-    })
+    }).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
   }, [filters])
 
   const handleFilterChange = (key: string, value: string) => {

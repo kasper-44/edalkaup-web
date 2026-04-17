@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { cars } from '@/data/cars'
 
 export default function Home() {
-  const featuredCars = cars.filter((c) => c.featured).slice(0, 6)
+  const featuredCars = cars.filter((c) => c.featured).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, 6)
 
   return (
     <>
