@@ -24,7 +24,6 @@ export default function Footer() {
             <ul className="space-y-3">
               {[
                 { href: '/bilar', label: 'Bílar til sölu' },
-                { href: '/afhent', label: 'Afhentir bílar' },
                 { href: '/um-okkur', label: 'Um okkur' },
                 { href: '/hafa-samband', label: 'Hafa samband' },
               ].map((link) => (
