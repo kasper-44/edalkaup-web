@@ -59,8 +59,13 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-black/5 dark:border-white/5 text-center text-xs text-gray-400 dark:text-slate-500">
-          © {new Date().getFullYear()} Eðalkaup / Úranus ehf. Allur réttur áskilinn.
+        <div className="mt-12 pt-8 border-t border-black/5 dark:border-white/5 text-center space-y-2">
+          <p className="text-xs text-gray-400 dark:text-slate-500">
+            © {new Date().getFullYear()} Eðalkaup / Úranus ehf. Allur réttur áskilinn.
+          </p>
+          <p className="text-[11px] text-gray-400/70 dark:text-slate-600 max-w-2xl mx-auto leading-relaxed">
+            Engin ábyrgð er veitt gagnvart skaða sem hljótast kann af völdum skorts á upplýsingum eða rangra upplýsinga á vefnum. Með notkun á vefnum samþykkir notandi notkunarskilmála hans.
+          </p>
         </div>
       </div>
     </footer>
