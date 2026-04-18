@@ -8,10 +8,41 @@ interface ContactFormProps {
 
 export default function ContactForm({ carTitle }: ContactFormProps) {
   const [submitted, setSubmitted] = useState(false)
+  const [sending, setSending] = useState(false)
+  const [error, setError] = useState('')
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setSubmitted(true)
+    setSending(true)
+    setError('')
+
+    const form = e.currentTarget
+    const formData = new FormData(form)
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.get('name'),
+          email: formData.get('email'),
+          phone: formData.get('phone'),
+          message: formData.get('message'),
+          car: carTitle || '',
+        }),
+      })
+
+      if (!res.ok) {
+        const data = await res.json()
+        throw new Error(data.error || 'Villa við sendingu')
+      }
+
+      setSubmitted(true)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Villa við sendingu')
+    } finally {
+      setSending(false)
+    }
   }
 
   if (submitted) {
@@ -34,10 +65,17 @@ export default function ContactForm({ carTitle }: ContactFormProps) {
         {carTitle ? `Fyrirspurn um ${carTitle}` : 'Sendu okkur fyrirspurn'}
       </h3>
 
+      {error && (
+        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3 text-sm text-red-600 dark:text-red-400">
+          {error}
+        </div>
+      )}
+
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-500 dark:text-slate-400 mb-1.5">Nafn</label>
           <input
+            name="name"
             type="text"
             required
             className="w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors"
@@ -47,6 +85,7 @@ export default function ContactForm({ carTitle }: ContactFormProps) {
         <div>
           <label className="block text-sm font-medium text-gray-500 dark:text-slate-400 mb-1.5">Sími</label>
           <input
+            name="phone"
             type="tel"
             className="w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors"
             placeholder="000 0000"
@@ -57,6 +96,7 @@ export default function ContactForm({ carTitle }: ContactFormProps) {
       <div>
         <label className="block text-sm font-medium text-gray-500 dark:text-slate-400 mb-1.5">Netfang</label>
         <input
+          name="email"
           type="email"
           required
           className="w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors"
@@ -79,7 +119,9 @@ export default function ContactForm({ carTitle }: ContactFormProps) {
       <div>
         <label className="block text-sm font-medium text-gray-500 dark:text-slate-400 mb-1.5">Skilaboð</label>
         <textarea
+          name="message"
           rows={4}
+          required
           className="w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors resize-none"
           placeholder="Hvað getum við aðstoðað þig með?"
         />
@@ -87,9 +129,10 @@ export default function ContactForm({ carTitle }: ContactFormProps) {
 
       <button
         type="submit"
-        className="w-full py-3.5 text-base font-semibold bg-accent text-navy-900 rounded-xl hover:bg-accent-light transition-colors"
+        disabled={sending}
+        className="w-full py-3.5 text-base font-semibold bg-accent text-navy-900 rounded-xl hover:bg-accent-light transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        Senda fyrirspurn
+        {sending ? 'Sendi...' : 'Senda fyrirspurn'}
       </button>
     </form>
   )
