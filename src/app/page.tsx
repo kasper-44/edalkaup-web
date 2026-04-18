@@ -13,7 +13,7 @@ export default function Home() {
       {/* Featured Cars */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center mb-12">
-          <p className="text-accent text-sm font-semibold uppercase tracking-[0.2em] mb-3">Úrvalið okkar</p>
+          <p className="text-accent text-sm font-semibold uppercase tracking-[0.2em] mb-3">Nýjast á lager</p>
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">Bílar til sölu</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
