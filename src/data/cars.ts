@@ -309,7 +309,7 @@ export const cars: Car[] = [
     vin: '1C4RJXR66SW571934',
     status: 'available' as const,
     featured: true,
-    images: [],
+    images: ['/images/cars/wrangler-m01/01.jpg', '/images/cars/wrangler-m01/02.jpg', '/images/cars/wrangler-m01/03.jpg', '/images/cars/wrangler-m01/04.jpg', '/images/cars/wrangler-m01/05.jpg'],
     description: '2025 Jeep Wrangler Rubicon 4XE — nýjasta kynslóðin af Rubicon tengiltvinnbíl. Aðeins 16.000 km ekið. Dana® 44 ásar, Tru-Lok® rafrænar læsingar, Rock-Trac® 4WD kerfi, 3-jaðar harðtoppur, hituð sæti og stýrishringur, Uconnect® 12,3" snertiskjár og mikill öryggisbúnaður.',
     features: [
       '4xe Plug-in Hybrid',
