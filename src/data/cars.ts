@@ -619,7 +619,7 @@ export const deliveredCars: Car[] = [
     seats: 5,
     vin: '',
     status: 'available' as const,
-    featured: false,
+    featured: true,
     images: [
       '/images/cars/wrangler-s11/01.jpg',
       '/images/cars/wrangler-s11/02.jpg',
