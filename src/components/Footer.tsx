@@ -59,13 +59,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Parent company */}
-          <div>
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-4">Úranus ehf.</h3>
-            <p className="text-sm text-gray-500 dark:text-slate-400 leading-relaxed">
-              Móðurfélag Eðalkaups. Einn stærsti bílainnflytjandi Íslands síðustu 25 árin.
-            </p>
-          </div>
         </div>
 
         <div className="mt-12 pt-8 border-t border-black/5 dark:border-white/5 text-center space-y-2">
