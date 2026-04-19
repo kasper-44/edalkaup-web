@@ -36,13 +36,6 @@ export default function HafaSambandPage() {
                 href: 'mailto:sigurdur@edalkaup.is',
                 subtitle: 'Við svörum innan sólarhrings',
               },
-              {
-                icon: <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" /></svg>,
-                title: 'Móðurfélag',
-                value: 'Eðalkaup / Úranus ehf.',
-                href: 'mailto:johannes@uranus.is',
-                subtitle: '551 0205 • johannes@uranus.is',
-              },
             ].map((item) => (
               <div key={item.title} className="bg-white dark:bg-navy-800 rounded-2xl border border-black/5 dark:border-white/5 p-6">
                 <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center text-accent mb-3">{item.icon}</div>
