@@ -425,7 +425,7 @@ export const cars: Car[] = [
     vin: '5TFPC5DB3TX126850',
     status: 'available' as const,
     featured: true,
-    images: ['/images/cars/tundra-trd-pro-black/01.jpg', '/images/cars/tundra-trd-pro-black/02.jpg', '/images/cars/tundra-trd-pro-black/03.jpg', '/images/cars/tundra-trd-pro-black/04.jpg', '/images/cars/tundra-trd-pro-black/05.jpg', '/images/cars/tundra-trd-pro-black/06.jpg', '/images/cars/tundra-trd-pro-black/07.jpg', '/images/cars/tundra-trd-pro-black/08.jpg'],
+    images: ['/images/cars/tundra-trd-pro-black/01.jpg', '/images/cars/tundra-trd-pro-black/02.jpg', '/images/cars/tundra-trd-pro-black/03.jpg', '/images/cars/tundra-trd-pro-black/04.jpg', '/images/cars/tundra-trd-pro-black/05.jpg', '/images/cars/tundra-trd-pro-black/06.jpg', '/images/cars/tundra-trd-pro-black/07.jpg'],
     description: '2026 Toyota Tundra TRD Pro i-FORCE MAX — 437 hestafla tvinnbíll með Fox fjöðrun, TRD Pro sætum, JBL hljóðkerfi og panorama þaki. Aðeins 2.400 km ekið.',
     features: [
       'i-FORCE MAX Hybrid (437 HP)',
