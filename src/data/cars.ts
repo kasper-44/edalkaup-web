@@ -352,7 +352,7 @@ export const cars: Car[] = [
     vin: '',
     status: 'available' as const,
     featured: true,
-    images: [],
+    images: ['/images/cars/hummer-3x-01/01.jpg', '/images/cars/hummer-3x-01/02.jpg', '/images/cars/hummer-3x-01/03.jpg', '/images/cars/hummer-3x-01/04.jpg', '/images/cars/hummer-3x-01/05.jpg'],
     description: '2025 GMC Hummer EV Pickup 3X — 1000 hestafla rafmagns pallbíll með Illumination og Sport pakkanum. Aðeins 10.000 km ekið. CrabWalk, Extract Mode, og Super Cruise sjálfvirk akstursstjórnun.',
     features: [
       'Triple Motor (1000 HP)',
@@ -390,7 +390,7 @@ export const cars: Car[] = [
     vin: '',
     status: 'available' as const,
     featured: false,
-    images: [],
+    images: ['/images/cars/hummer-2x-01/01.jpg', '/images/cars/hummer-2x-01/02.jpg', '/images/cars/hummer-2x-01/03.jpg', '/images/cars/hummer-2x-01/04.jpg', '/images/cars/hummer-2x-01/05.jpg'],
     description: '2025 GMC Hummer EV Pickup 2X — 625 hestafla rafmagns pallbíll í Deep Aurora Metallic lit. Aðeins 9.200 km ekið. CrabWalk, e4WD og nútímalegur búnaður.',
     features: [
       'Dual Motor (625 HP)',
