@@ -546,7 +546,7 @@ export const cars: Car[] = [
       '/images/cars/wrangler-s12/05.jpg',
       '/images/cars/wrangler-s12/06.jpg',
       '/images/cars/wrangler-s12/07.jpg',
-      '/images/cars/wrangler-s12/08.jpg',
+      
     ],
     description: '2021 Jeep Wrangler Sahara 4XE í Sarge Green — Sky One-Touch rafknúður þakur, hitaður stýri og sæti, leiðsögn, blindsvæðisviðvörun, Alpine hljóðkerfi og fjarstyrt ræsing. Hrein aksturssaga og ábyrgð á rafhlöðu til 2031.',
     features: ['4xe Plug-in Hybrid', 'Sahara útbúnaður', 'Leðursæti', '4WD', 'Sjálfskiptur'],
