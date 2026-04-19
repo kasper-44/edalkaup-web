@@ -375,7 +375,7 @@ export const cars: Car[] = [
     model: 'Hummer EV Pickup',
     year: 2025,
     trim: '2X',
-    price: 15990000,
+    price: 13990000,
     mileage: 9200,
     color: 'Brúnn',
     exteriorColor: 'Deep Aurora Metallic',
