@@ -68,6 +68,9 @@ export default function Footer() {
           <p className="text-[11px] text-gray-400/70 dark:text-slate-600 max-w-2xl mx-auto leading-relaxed">
             Engin ábyrgð er veitt gagnvart skaða sem hljótast kann af völdum skorts á upplýsingum eða rangra upplýsinga á vefnum. Með notkun á vefnum samþykkir notandi notkunarskilmála hans.
           </p>
+          <p className="text-[11px] text-gray-400/70 dark:text-slate-600 max-w-2xl mx-auto leading-relaxed">
+            Öll viðskipti á edalkaup.is eru við Úranus ehf. kt. 5010963189.
+          </p>
         </div>
       </div>
     </footer>
