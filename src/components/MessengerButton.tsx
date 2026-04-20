@@ -6,7 +6,7 @@ export default function MessengerButton() {
   const [hovered, setHovered] = useState(false)
 
   // Replace with your Facebook Page username or ID
-  const messengerLink = 'https://m.me/edalkaup'
+  const messengerLink = 'https://m.me/Edalkaup'
 
   return (
     <a
