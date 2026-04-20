@@ -109,9 +109,15 @@ export default function UmOkkurPage() {
             <p className="text-gray-600 dark:text-slate-300 leading-relaxed mb-6">
               Öll viðskipti eru við Úranus ehf., kt. 5010963189.
             </p>
-            <p className="text-gray-600 dark:text-slate-300 leading-relaxed">
-              Framkvæmdastjóri Eðalkaupa er Sigurður Róbertsson.
-            </p>
+            <div className="flex flex-col items-center gap-4 mt-8">
+              <div className="w-28 h-28 rounded-full overflow-hidden border-2 border-accent/30">
+                <img src="/images/siggi.jpg" alt="Sigurður Róbertsson" className="w-full h-full object-cover" />
+              </div>
+              <div className="text-center">
+                <p className="font-semibold text-gray-900 dark:text-white">Sigurður Róbertsson</p>
+                <p className="text-sm text-accent">Framkvæmdastjóri Eðalkaupa</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
