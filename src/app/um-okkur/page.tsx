@@ -46,7 +46,7 @@ export default function UmOkkurPage() {
                 Verðlag á notuðum bílum erlendis er mun hagstæðara en á Íslandi, jafnvel að teknu tilliti til sendingar og gjalda. Þetta þýðir að þú getur fengið meira fyrir peningana þína.
               </p>
               <p>
-                Við vinnum með traustu tengslaneti söluaðila og uppboðshúsa víðs vegar um Bandaríkin, Kanada og Evrópu, og getum fundið nánast hvaða bíl sem er.
+                Við vinnum með traustu tengslaneti söluaðila víðs vegar um Bandaríkin, Kanada og Evrópu, og getum fundið nánast hvaða bíl sem er.
               </p>
             </div>
           </div>
