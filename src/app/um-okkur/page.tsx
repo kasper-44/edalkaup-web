@@ -106,6 +106,9 @@ export default function UmOkkurPage() {
             <p className="text-gray-600 dark:text-slate-300 leading-relaxed mb-6">
               Eðalkaup hefur verið einn stærsti bílainnflytjandi Íslands í yfir 25 ár. Við flytjum inn nýja og notaða bíla frá Evrópu og Ameríku og bjóðum verð sem eru oftast ekki í boði annars staðar.
             </p>
+            <p className="text-gray-600 dark:text-slate-300 leading-relaxed">
+              Framkvæmdastjóri Eðalkaupa er Sigurður Róbertsson.
+            </p>
           </div>
         </div>
       </section>
