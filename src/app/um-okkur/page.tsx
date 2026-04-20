@@ -110,7 +110,7 @@ export default function UmOkkurPage() {
               Öll viðskipti eru við Úranus ehf., kt. 5010963189.
             </p>
             <div className="flex flex-col items-center gap-4 mt-8">
-              <div className="w-28 h-28 rounded-full overflow-hidden border-2 border-accent/30">
+              <div className="w-40 h-40 rounded-full overflow-hidden border-2 border-accent/30">
                 <img src="/images/siggi.jpg" alt="Sigurður Róbertsson" className="w-full h-full object-cover" />
               </div>
               <div className="text-center">
