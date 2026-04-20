@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     default: 'Eðalkaup — Innflutningur á bílum frá Ameríku og Evrópu',
     template: '%s | Eðalkaup',
   },
-  description: 'Eðalkaup flytur inn vandaða bíla frá Bandaríkjunum, Kanada og Evrópu til Íslands. Hluti af Úranus — einum stærsta bílainnflytjanda Íslands í yfir 25 ár.',
+  description: 'Eðalkaup flytur inn vandaða bíla frá Bandaríkjunum, Kanada og Evrópu til Íslands. Einn stærsti bílainnflytjandi Íslands í yfir 25 ár.',
   openGraph: {
     type: 'website',
     locale: 'is_IS',

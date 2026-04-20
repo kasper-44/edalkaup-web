@@ -42,7 +42,7 @@ export default function Home() {
                 Yfir 25 ára reynsla af bílainnflutningi
               </h2>
               <p className="text-gray-600 dark:text-slate-300 leading-relaxed mb-4">
-                Eðalkaup er hluti af Úranus ehf., einum stærsta bílainnflytjanda Íslands. Við sérhæfum okkur í innflutningi vandaðra bíla frá Bandaríkjunum, Kanada og Evrópu — ökutæki sem ekki eru fáanleg á íslenskum markaði.
+                Eðalkaup er einn stærsti bílainnflytjandi Íslands í yfir 25 ár. Við sérhæfum okkur í innflutningi vandaðra bíla frá Bandaríkjunum, Kanada og Evrópu — ökutæki sem ekki eru fáanleg á íslenskum markaði.
               </p>
               <p className="text-gray-600 dark:text-slate-300 leading-relaxed mb-8">
                 Við finnum bílinn sem þú leitar að, hvort sem það er Toyota, Lexus, Ford, GMC, Chevrolet eða Jeep. Traust, áreiðanleiki og fagmennska er grunnurinn að þjónustu okkar.

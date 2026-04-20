@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Um okkur',
-  description: 'Eðalkaup er hluti af Úranus ehf. — einum stærsta bílainnflytjanda Íslands í yfir 25 ár. Kynntu þér sögu okkar og þjónustu.',
+  description: 'Eðalkaup — einn stærsti bílainnflytjandi Íslands í yfir 25 ár. Kynntu þér sögu okkar og þjónustu.',
 }
 
 export default function UmOkkurPage() {
@@ -24,10 +24,10 @@ export default function UmOkkurPage() {
           <div className="max-w-3xl">
             <p className="text-accent text-sm font-semibold uppercase tracking-[0.2em] mb-3">Um okkur</p>
             <h1 className="text-3xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-6">
-              Eðalkaup — hluti af Úranus, einum stærsta bílainnflytjanda Íslands
+              Eðalkaup — einn stærsti bílainnflytjandi Íslands
             </h1>
             <p className="text-lg text-gray-600 dark:text-slate-300 leading-relaxed">
-              Úranus er einn stærsti innflutningsaðili á bílum til Íslands síðustu 25 árin. Við flytjum inn allar gerðir bíla og annarra ökutækja — mótorhjól, sendibíla, húsbíla, vinnuvélar og vörubíla.
+              Eðalkaup hefur verið einn stærsti bílainnflytjandi Íslands í yfir 25 ár. Við sérhæfum okkur í innflutningi vandaðra bíla frá Bandaríkjunum, Kanada og Evrópu — ökutæki sem ekki eru fáanleg á íslenskum markaði.
             </p>
           </div>
         </div>

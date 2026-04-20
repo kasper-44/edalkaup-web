@@ -14,7 +14,7 @@ export default function Footer() {
               <span className="text-xl font-bold text-gray-900 dark:text-white">EÐALKAUP</span>
             </div>
             <p className="text-sm text-gray-500 dark:text-slate-400 leading-relaxed">
-              Hluti af Úranus — einum stærsta bílainnflytjanda Íslands í yfir 25 ár. Við finnum bílinn þinn.
+              Einn stærsti bílainnflytjandi Íslands í yfir 25 ár. Við finnum bílinn þinn.
             </p>
           </div>
 
@@ -63,7 +63,7 @@ export default function Footer() {
 
         <div className="mt-12 pt-8 border-t border-black/5 dark:border-white/5 text-center space-y-2">
           <p className="text-xs text-gray-400 dark:text-slate-500">
-            © {new Date().getFullYear()} Eðalkaup / Úranus ehf. Allur réttur áskilinn.
+            © {new Date().getFullYear()} Eðalkaup. Allur réttur áskilinn.
           </p>
           <p className="text-[11px] text-gray-400/70 dark:text-slate-600 max-w-2xl mx-auto leading-relaxed">
             Engin ábyrgð er veitt gagnvart skaða sem hljótast kann af völdum skorts á upplýsingum eða rangra upplýsinga á vefnum. Með notkun á vefnum samþykkir notandi notkunarskilmála hans.
