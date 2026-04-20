@@ -104,7 +104,10 @@ export default function UmOkkurPage() {
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Eðalkaup</h2>
             <p className="text-gray-600 dark:text-slate-300 leading-relaxed mb-6">
-              Eðalkaup hefur verið einn stærsti bílainnflytjandi Íslands í yfir 25 ár. Við flytjum inn nýja og notaða bíla frá Evrópu og Ameríku og bjóðum verð sem eru oftast ekki í boði annars staðar.
+              Úranus ehf. samstarfsaðili Eðalkaupa hefur verið einn stærsti bílainnflytjandi Íslands í yfir 25 ár. Við flytjum inn nýja og notaða bíla frá Evrópu og Ameríku og bjóðum verð sem eru oftast ekki í boði annars staðar.
+            </p>
+            <p className="text-gray-600 dark:text-slate-300 leading-relaxed mb-6">
+              Öll viðskipti eru við Úranus ehf., kt. 5010963189.
             </p>
             <p className="text-gray-600 dark:text-slate-300 leading-relaxed">
               Framkvæmdastjóri Eðalkaupa er Sigurður Róbertsson.
