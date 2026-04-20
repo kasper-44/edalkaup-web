@@ -49,6 +49,7 @@ export default function HafaSambandPage() {
 
             {/* Map */}
             <div className="bg-white dark:bg-navy-800 rounded-2xl border border-black/5 dark:border-white/5 overflow-hidden">
+              <p className="px-6 pt-5 pb-3 text-sm text-gray-600 dark:text-slate-300 font-medium">Við erum á Laugavegi 44, 101 Reykjavík.</p>
               <iframe
                 src="https://maps.google.com/maps?q=Laugavegur+44,+101+Reykjavík,+Iceland&t=&z=16&ie=UTF8&iwloc=&output=embed"
                 width="100%"
