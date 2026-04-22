@@ -24,7 +24,6 @@ export const colorHex: Record<string, string> = {
   'Mulberry Red': '#5e1a2a',
   'Bright Dusk': '#4a4e6a',
   'Vapour Grey': '#d4d2cc',
-  'Forest Green': '#2d4a3e',
 }
 
 export const xc90Cars: XC90Car[] = [
@@ -109,12 +108,12 @@ export const xc90Cars: XC90Car[] = [
     id: 'xc90-008',
     config: 'Ultra Dark Plug-In Hybrid',
     price: 14990000,
-    exteriorColor: 'Forest Green',
+    exteriorColor: 'Aurora Silver',
     interiorColor: 'Charcoal Nappa Leather',
     packages: ['Climate Pack', 'Lounge Pack', 'Park Assist Pack'],
     status: 'reserved',
     deliveryEstimate: 'Ágúst 2026',
-    image: '/images/xc90/forest-green.jpg',
+    image: '/images/xc90/aurora-silver.jpg',
   },
   {
     id: 'xc90-009',
@@ -175,12 +174,12 @@ export const xc90Cars: XC90Car[] = [
     id: 'xc90-014',
     config: 'Ultra Dark Plug-In Hybrid',
     price: 14990000,
-    exteriorColor: 'Forest Green',
+    exteriorColor: 'Mulberry Red',
     interiorColor: 'Blond Nappa Leather',
     packages: ['Lounge Pack', 'Park Assist Pack', 'Harman Kardon'],
     status: 'available',
     deliveryEstimate: 'Ágúst 2026',
-    image: '/images/xc90/forest-green.jpg',
+    image: '/images/xc90/mulberry-red.jpg',
   },
   {
     id: 'xc90-015',
