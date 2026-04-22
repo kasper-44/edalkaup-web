@@ -39,7 +39,7 @@ export const xc90Cars: XC90Car[] = [
     packages: ['Climate Pack', 'Park Assist Pack', 'Harman Kardon'],
     status: 'available',
     deliveryEstimate: 'Ágúst 2026',
-    image: '/images/xc90/crystal-white-1.jpg',
+    image: '/images/xc90/crystal-white.jpg',
   },
   {
     id: 'xc90-002',
@@ -50,7 +50,7 @@ export const xc90Cars: XC90Car[] = [
     packages: ['Climate Pack', 'Lounge Pack', '7 Seat Comfort'],
     status: 'available',
     deliveryEstimate: 'Ágúst 2026',
-    image: '/images/xc90/onyx-black-1.jpg',
+    image: '/images/xc90/onyx-black.jpg',
   },
   {
     id: 'xc90-003',
@@ -116,7 +116,7 @@ export const xc90Cars: XC90Car[] = [
     packages: ['Climate Pack', 'Lounge Pack', 'Park Assist Pack'],
     status: 'reserved',
     deliveryEstimate: 'Ágúst 2026',
-    image: '/images/xc90/bright-dusk.jpg',
+    image: '/images/xc90/forest-green.jpg',
   },
   {
     id: 'xc90-009',
@@ -127,7 +127,7 @@ export const xc90Cars: XC90Car[] = [
     packages: ['Climate Pack', '7 Seat Comfort'],
     status: 'available',
     deliveryEstimate: 'Ágúst 2026',
-    image: '/images/xc90/crystal-white-2.jpg',
+    image: '/images/xc90/crystal-white.jpg',
   },
   {
     id: 'xc90-010',
@@ -149,7 +149,7 @@ export const xc90Cars: XC90Car[] = [
     packages: ['Climate Pack', 'Harman Kardon', '7 Seat Comfort'],
     status: 'available',
     deliveryEstimate: 'Ágúst 2026',
-    image: '/images/xc90/onyx-black-2.jpg',
+    image: '/images/xc90/mulberry-red.jpg',
   },
   {
     id: 'xc90-012',
@@ -160,7 +160,7 @@ export const xc90Cars: XC90Car[] = [
     packages: ['Park Assist Pack', 'Lounge Pack'],
     status: 'available',
     deliveryEstimate: 'Ágúst 2026',
-    image: '/images/xc90/onyx-black-2.jpg',
+    image: '/images/xc90/onyx-black.jpg',
   },
   {
     id: 'xc90-013',
@@ -182,7 +182,7 @@ export const xc90Cars: XC90Car[] = [
     packages: ['Lounge Pack', 'Park Assist Pack', 'Harman Kardon'],
     status: 'available',
     deliveryEstimate: 'Ágúst 2026',
-    image: '/images/xc90/bright-dusk.jpg',
+    image: '/images/xc90/forest-green.jpg',
   },
   {
     id: 'xc90-015',
@@ -237,7 +237,7 @@ export const xc90Cars: XC90Car[] = [
     packages: ['Climate Pack', 'Park Assist Pack', 'Bowers & Wilkins', '7 Seat Comfort'],
     status: 'available',
     deliveryEstimate: 'Ágúst 2026',
-    image: '/images/xc90/crystal-white-1.jpg',
+    image: '/images/xc90/crystal-white.jpg',
   },
   {
     id: 'xc90-020',
@@ -248,6 +248,6 @@ export const xc90Cars: XC90Car[] = [
     packages: ['Lounge Pack', 'Climate Pack', 'Park Assist Pack', 'Harman Kardon'],
     status: 'available',
     deliveryEstimate: 'Ágúst 2026',
-    image: '/images/xc90/onyx-black-1.jpg',
+    image: '/images/xc90/onyx-black.jpg',
   },
 ]
