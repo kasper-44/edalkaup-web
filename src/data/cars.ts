@@ -98,6 +98,9 @@ export const cars: Car[] = [
       '/images/cars/sierra-ev-002/05.jpg',
       '/images/cars/sierra-ev-002/06.jpg',
       '/images/cars/sierra-ev-002/07.jpg',
+      '/images/cars/sierra-ev-002/08.jpg',
+      '/images/cars/sierra-ev-002/09.jpg',
+      '/images/cars/sierra-ev-002/10.jpg',
     ],
     description: '2026 GMC Sierra EV AT4 í Coastal Dune lit — 754 hestafla rafmagns pallbíll. Super Cruise, CrabWalk, MultiPro Midgate, 350kW hröðhleðsla, panorama glerþak, Bose hljóðkerfi, 16.8\" snertiskjár og 14\" Head-Up Display.',
     features: [
