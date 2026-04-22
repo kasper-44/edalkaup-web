@@ -69,8 +69,8 @@ export default function VolvoEX40Page() {
             </div>
             <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl shadow-black/10 dark:shadow-black/40">
               <Image
-                src="/images/ex40/crystal-white-1.jpg"
-                alt="Volvo EX40 — Crystal White"
+                src="/images/ex40/hero.jpg"
+                alt="Volvo EX40"
                 fill
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 50vw"
