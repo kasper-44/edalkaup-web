@@ -71,7 +71,7 @@ export default function VolvoEX60Page() {
             </div>
             <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl shadow-black/10 dark:shadow-black/40">
               <Image
-                src="/images/ex60/crystal-white-1.jpg"
+                src="/images/ex60/crystal-white.jpg"
                 alt="Volvo EX60 P12 Long Range — Crystal White"
                 fill
                 className="object-cover"
