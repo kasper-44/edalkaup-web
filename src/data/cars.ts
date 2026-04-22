@@ -70,10 +70,10 @@ export const cars: Car[] = [
   // ── 2025 GMC Sierra EV Denali — Coastal Dune (Manheim) ──
   {
     id: 'sierra-ev-002',
-    slug: '2025-gmc-sierra-ev-denali-coastal-dune',
+    slug: '2026-gmc-sierra-ev-denali-coastal-dune',
     make: 'GMC',
     model: 'Sierra EV',
-    year: 2025,
+    year: 2026,
     trim: 'Denali',
     price: 17290000,
     mileage: 5000,
