@@ -69,7 +69,8 @@ export default function Header() {
                 </svg>
               </button>
               {volvoOpen && (
-                <div className="absolute top-full left-0 mt-1 w-56 bg-white dark:bg-navy-800 rounded-xl border border-black/5 dark:border-white/5 shadow-xl py-2 z-50">
+                <div className="absolute top-full left-0 pt-2 w-56 z-50">
+                <div className="bg-white dark:bg-navy-800 rounded-xl border border-black/5 dark:border-white/5 shadow-xl py-2">
                   {volvoModels.map((model) => (
                     <Link
                       key={model.href}
@@ -79,6 +80,7 @@ export default function Header() {
                       {model.label}
                     </Link>
                   ))}
+                </div>
                 </div>
               )}
             </div>
