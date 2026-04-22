@@ -20,12 +20,10 @@ export const colorHex: Record<string, string> = {
   'Denim Blue': '#2b3a5c',
   'Onyx Black': '#1a1a1a',
   'Crystal White': '#f0eff0',
-  'Bright Dusk': '#8e8e8e',
   'Aurora Silver': '#c0c0c8',
   'Mulberry Red': '#5e1a2a',
   'Bright Dusk': '#4a4e6a',
   'Vapour Grey': '#d4d2cc',
-  'Denim Blue': '#4a4a4a',
   'Forest Green': '#2d4a3e',
 }
 
