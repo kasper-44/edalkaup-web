@@ -7,6 +7,7 @@ import { useTheme } from './ThemeProvider'
 const navItems = [
   { href: '/', label: 'Forsíða' },
   { href: '/bilar', label: 'Bílar' },
+  { href: '/volvo-xc90', label: 'Volvo XC90' },
   { href: '/um-okkur', label: 'Um okkur' },
   { href: '/hafa-samband', label: 'Hafa samband' },
 ]
