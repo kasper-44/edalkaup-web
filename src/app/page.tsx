@@ -10,32 +10,37 @@ export default function Home() {
     <>
       <HeroVideo />
 
-      {/* XC90 Banner */}
+      {/* Volvo Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-4">
-        <Link
-          href="/volvo-xc90"
-          className="group block relative bg-gradient-to-r from-gray-50 to-white dark:from-navy-800 dark:to-navy-800/60 rounded-2xl border border-accent/20 hover:border-accent/40 overflow-hidden transition-all hover:shadow-xl hover:shadow-accent/5"
-        >
-          <div className="flex flex-col sm:flex-row items-center gap-6 p-6 sm:p-8">
-            <div className="flex-1">
-              <p className="text-accent text-xs font-semibold uppercase tracking-[0.2em] mb-2">Nýtt</p>
-              <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                Volvo XC90 T8 Recharge
-              </h3>
-              <p className="text-gray-600 dark:text-slate-300 mb-3">
-                Splitter nýir tengiltvinnbílar — pantaðir frá Evrópu
-              </p>
-              <p className="text-xl font-bold text-accent">
-                Frá 14.990.000 kr.
-              </p>
-            </div>
-            <div className="shrink-0 text-accent group-hover:translate-x-2 transition-transform">
-              <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </div>
-          </div>
-        </Link>
+        <div className="text-center mb-8">
+          <p className="text-accent text-sm font-semibold uppercase tracking-[0.2em] mb-3">Volvo</p>
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">Pantaðu nýjan Volvo í gegnum okkur</h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {[
+            { href: '/volvo-xc90', name: 'XC90 T8 Recharge', desc: 'Tengiltvinnbíll', price: 'Frá 14.990.000 kr.', delivery: 'Ágúst 2026', image: '/images/xc90/crystal-white.jpg' },
+            { href: '/volvo-ex40', name: 'EX40', desc: 'Rafmagnsbíll', price: 'Frá 7.690.000 kr.', delivery: 'Ágúst 2026', image: '/images/ex40/crystal-white.jpg' },
+            { href: '/volvo-ex60', name: 'EX60 P12 Long Range', desc: 'Rafmagnsbíll · 800+ km', price: 'Frá 12.390.000 kr.', delivery: 'Apríl 2027', image: '/images/ex60/crystal-white.jpg' },
+          ].map((model) => (
+            <Link
+              key={model.href}
+              href={model.href}
+              className="group block relative bg-gradient-to-b from-gray-50 to-white dark:from-navy-800 dark:to-navy-800/60 rounded-2xl border border-accent/20 hover:border-accent/40 overflow-hidden transition-all hover:shadow-xl hover:shadow-accent/5"
+            >
+              <div className="relative aspect-[16/10] overflow-hidden">
+                <img src={model.image} alt={model.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+              </div>
+              <div className="p-5">
+                <p className="text-accent text-xs font-semibold uppercase tracking-[0.2em] mb-1">Volvo</p>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">{model.name}</h3>
+                <p className="text-sm text-gray-500 dark:text-slate-400 mb-2">{model.desc}</p>
+                <p className="text-lg font-bold text-accent mb-1">{model.price}</p>
+                <p className="text-xs text-gray-400 dark:text-slate-500">Áætluð afhending: {model.delivery}</p>
+              </div>
+            </Link>
+          ))}
+        </div>
       </section>
 
       {/* Featured Cars */}

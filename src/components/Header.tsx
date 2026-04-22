@@ -7,13 +7,19 @@ import { useTheme } from './ThemeProvider'
 const navItems = [
   { href: '/', label: 'Forsíða' },
   { href: '/bilar', label: 'Bílar' },
-  { href: '/volvo-xc90', label: 'Volvo XC90' },
   { href: '/um-okkur', label: 'Um okkur' },
   { href: '/hafa-samband', label: 'Hafa samband' },
 ]
 
+const volvoModels = [
+  { href: '/volvo-xc90', label: 'XC90 T8 Recharge' },
+  { href: '/volvo-ex40', label: 'EX40' },
+  { href: '/volvo-ex60', label: 'EX60' },
+]
+
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
+  const [volvoOpen, setVolvoOpen] = useState(false)
   const { theme, toggle } = useTheme()
 
   return (
@@ -37,7 +43,47 @@ export default function Header() {
 
           {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center gap-1">
-            {navItems.map((item) => (
+            {navItems.slice(0, 2).map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="px-4 py-2 text-sm font-medium text-gray-600 dark:text-slate-300 hover:text-accent transition-colors rounded-lg hover:bg-black/5 dark:hover:bg-white/5"
+              >
+                {item.label}
+              </Link>
+            ))}
+
+            {/* Volvo Dropdown */}
+            <div
+              className="relative"
+              onMouseEnter={() => setVolvoOpen(true)}
+              onMouseLeave={() => setVolvoOpen(false)}
+            >
+              <button
+                className="px-4 py-2 text-sm font-medium text-gray-600 dark:text-slate-300 hover:text-accent transition-colors rounded-lg hover:bg-black/5 dark:hover:bg-white/5 flex items-center gap-1"
+                onClick={() => setVolvoOpen(!volvoOpen)}
+              >
+                Volvo
+                <svg className={`w-4 h-4 transition-transform ${volvoOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {volvoOpen && (
+                <div className="absolute top-full left-0 mt-1 w-56 bg-white dark:bg-navy-800 rounded-xl border border-black/5 dark:border-white/5 shadow-xl py-2 z-50">
+                  {volvoModels.map((model) => (
+                    <Link
+                      key={model.href}
+                      href={model.href}
+                      className="block px-4 py-2.5 text-sm font-medium text-gray-600 dark:text-slate-300 hover:text-accent hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+                    >
+                      {model.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {navItems.slice(2).map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
@@ -108,7 +154,42 @@ export default function Header() {
         {/* Mobile Nav */}
         {isOpen && (
           <nav className="lg:hidden pb-4 border-t border-black/5 dark:border-white/5 pt-4 space-y-1">
-            {navItems.map((item) => (
+            {navItems.slice(0, 2).map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setIsOpen(false)}
+                className="block px-4 py-3 text-base font-medium text-gray-600 dark:text-slate-300 hover:text-accent hover:bg-black/5 dark:hover:bg-white/5 rounded-lg transition-colors"
+              >
+                {item.label}
+              </Link>
+            ))}
+            <div>
+              <button
+                onClick={() => setVolvoOpen(!volvoOpen)}
+                className="w-full text-left px-4 py-3 text-base font-medium text-gray-600 dark:text-slate-300 hover:text-accent hover:bg-black/5 dark:hover:bg-white/5 rounded-lg transition-colors flex items-center justify-between"
+              >
+                Volvo
+                <svg className={`w-4 h-4 transition-transform ${volvoOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {volvoOpen && (
+                <div className="pl-6 space-y-1">
+                  {volvoModels.map((model) => (
+                    <Link
+                      key={model.href}
+                      href={model.href}
+                      onClick={() => { setIsOpen(false); setVolvoOpen(false) }}
+                      className="block px-4 py-2 text-sm font-medium text-gray-500 dark:text-slate-400 hover:text-accent hover:bg-black/5 dark:hover:bg-white/5 rounded-lg transition-colors"
+                    >
+                      {model.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+            {navItems.slice(2).map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
