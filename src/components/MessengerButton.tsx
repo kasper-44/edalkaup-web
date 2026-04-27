@@ -2,11 +2,20 @@
 
 import { useState } from 'react'
 
-export default function MessengerButton() {
+interface MessengerButtonProps {
+  carName?: string // e.g. "2025 Jeep Wrangler Rubicon 4XE"
+}
+
+export default function MessengerButton({ carName }: MessengerButtonProps) {
   const [hovered, setHovered] = useState(false)
 
-  // Replace with your Facebook Page username or ID
-  const messengerLink = 'https://m.me/Edalkaup'
+  // Build Messenger link with optional pre-filled message about the car
+  const baseUrl = 'https://m.me/Edalkaup'
+  const messengerLink = carName
+    ? `${baseUrl}?ref=car_inquiry&text=${encodeURIComponent(`Hæ! Ég hef áhuga á: ${carName}`)}`
+    : baseUrl
+
+  const buttonText = carName ? 'Spyrja um þennan bíl' : 'Sendu okkur skilaboð'
 
   return (
     <a
@@ -26,10 +35,10 @@ export default function MessengerButton() {
       {/* Expandable text */}
       <span
         className={`whitespace-nowrap font-semibold text-sm overflow-hidden transition-all duration-300 ${
-          hovered ? 'max-w-[200px] opacity-100' : 'max-w-0 opacity-0'
+          hovered ? 'max-w-[300px] opacity-100' : 'max-w-0 opacity-0'
         }`}
       >
-        Sendu okkur skilaboð
+        {buttonText}
       </span>
 
       {/* Pulse ring animation */}

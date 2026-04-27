@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { cars, getCarTitle, formatPrice, formatMileage } from '@/data/cars'
+import MessengerButton from '@/components/MessengerButton'
 import { generateCarJsonLd } from '@/lib/utils'
 import CarGallery from '@/components/CarGallery'
 import ShareButtons from '@/components/ShareButtons'
@@ -166,6 +167,19 @@ export default async function CarPage({ params }: PageProps) {
                 </div>
 
                 <ShareButtons url={url} title={title} />
+
+                {/* Messenger CTA for this car */}
+                <a
+                  href={`https://m.me/Edalkaup?ref=car_inquiry&text=${encodeURIComponent(`Hæ! Ég hef áhuga á: ${title}`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 w-full flex items-center justify-center gap-2 py-3 px-4 bg-[#0084FF] hover:bg-[#0073E6] text-white font-semibold rounded-xl transition-colors"
+                >
+                  <svg className="w-5 h-5" viewBox="0 0 36 36" fill="currentColor">
+                    <path d="M18 2.1C9.2 2.1 2.1 8.6 2.1 16.8c0 4.6 2.2 8.7 5.8 11.4v5.6l5.3-2.9c1.4.4 2.9.6 4.5.6 8.8 0 15.9-6.5 15.9-14.7S26.8 2.1 18 2.1zm1.7 19.8l-4.1-4.3-7.9 4.3 8.7-9.2 4.2 4.3 7.8-4.3-8.7 9.2z"/>
+                  </svg>
+                  Spyrja um þennan bíl
+                </a>
 
                 <div className="mt-6">
                   <ContactForm carTitle={title} />
