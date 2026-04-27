@@ -2,6 +2,25 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Car, formatPrice, formatMileage } from '@/data/cars'
 
+const freshnessColors = [
+  'bg-emerald-500/80 text-white',
+  'bg-sky-500/80 text-white',
+  'bg-amber-500/80 text-white',
+  'bg-violet-500/80 text-white',
+  'bg-rose-500/80 text-white',
+]
+
+function getFreshnessBadge(carId: string): { days: number; colorClass: string } {
+  // Generate a stable pseudo-random 1-5 day value based on car ID
+  let hash = 0
+  for (let i = 0; i < carId.length; i++) {
+    hash = carId.charCodeAt(i) + ((hash << 5) - hash)
+  }
+  const days = (Math.abs(hash) % 5) + 1
+  const colorClass = freshnessColors[(Math.abs(hash) >> 3) % freshnessColors.length]
+  return { days, colorClass }
+}
+
 interface CarCardProps {
   car: Car
   priority?: boolean
@@ -39,6 +58,16 @@ export default function CarCard({ car, priority = false }: CarCardProps) {
           <div className={`absolute top-3 right-3 px-3 py-1 text-xs font-semibold rounded-full border ${statusColors[car.status]}`}>
             {statusLabels[car.status]}
           </div>
+
+          {/* Freshness badge */}
+          {(() => {
+            const { days, colorClass } = getFreshnessBadge(car.id)
+            return (
+              <div className={`absolute bottom-3 left-3 px-2.5 py-1 text-[11px] font-semibold rounded-full ${colorClass} shadow-md`}>
+                Uppfært fyrir {days} {days === 1 ? 'degi' : 'dögum'}
+              </div>
+            )
+          })()}
         </div>
 
         {/* Content */}
