@@ -81,7 +81,7 @@ export default function VolvoXC90Page() {
                 </div>
               </div>
               <p className="text-3xl font-bold text-gray-900 dark:text-white">
-                Frá {formatXC90Price(14990000)}
+                Verð: {formatXC90Price(15990000)}
               </p>
             </div>
 

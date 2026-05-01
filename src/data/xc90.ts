@@ -30,7 +30,7 @@ export const xc90Cars: XC90Car[] = [
   {
     id: 'xc90-001',
     config: 'Ultra Bright Plug-In Hybrid',
-    price: 14990000,
+    price: 15990000,
     exteriorColor: 'Crystal White',
     interiorColor: 'Charcoal / Blond Wool Blend',
     packages: ['Climate Pack', 'Park Assist Pack', 'Harman Kardon'],
@@ -41,7 +41,7 @@ export const xc90Cars: XC90Car[] = [
   {
     id: 'xc90-002',
     config: 'Ultra Dark Plug-In Hybrid',
-    price: 14990000,
+    price: 15990000,
     exteriorColor: 'Onyx Black',
     interiorColor: 'Charcoal Nappa Leather',
     packages: ['Climate Pack', 'Lounge Pack', '7 Seat Comfort'],
@@ -52,7 +52,7 @@ export const xc90Cars: XC90Car[] = [
   {
     id: 'xc90-003',
     config: 'Ultra Bright Plug-In Hybrid',
-    price: 14990000,
+    price: 15990000,
     exteriorColor: 'Denim Blue',
     interiorColor: 'Blond Nappa Leather',
     packages: ['Climate Pack', 'Park Assist Pack', 'Bowers & Wilkins'],
@@ -63,7 +63,7 @@ export const xc90Cars: XC90Car[] = [
   {
     id: 'xc90-004',
     config: 'Ultra Dark Plug-In Hybrid',
-    price: 14990000,
+    price: 15990000,
     exteriorColor: 'Denim Blue',
     interiorColor: 'Charcoal Wool Blend',
     packages: ['Lounge Pack', 'Park Assist Pack'],
@@ -74,7 +74,7 @@ export const xc90Cars: XC90Car[] = [
   {
     id: 'xc90-005',
     config: 'Ultra Bright Plug-In Hybrid',
-    price: 14990000,
+    price: 15990000,
     exteriorColor: 'Vapour Grey',
     interiorColor: 'Blond Wool Blend',
     packages: ['Climate Pack', 'Bowers & Wilkins', '7 Seat Comfort'],
@@ -85,7 +85,7 @@ export const xc90Cars: XC90Car[] = [
   {
     id: 'xc90-006',
     config: 'Ultra Dark Plug-In Hybrid',
-    price: 14990000,
+    price: 15990000,
     exteriorColor: 'Bright Dusk',
     interiorColor: 'Charcoal Nappa Leather',
     packages: ['Climate Pack', 'Lounge Pack', 'Harman Kardon'],
@@ -96,7 +96,7 @@ export const xc90Cars: XC90Car[] = [
   {
     id: 'xc90-007',
     config: 'Ultra Bright Plug-In Hybrid',
-    price: 14990000,
+    price: 15990000,
     exteriorColor: 'Aurora Silver',
     interiorColor: 'Blond Nappa Leather',
     packages: ['Park Assist Pack', 'Bowers & Wilkins'],
@@ -107,7 +107,7 @@ export const xc90Cars: XC90Car[] = [
   {
     id: 'xc90-008',
     config: 'Ultra Dark Plug-In Hybrid',
-    price: 14990000,
+    price: 15990000,
     exteriorColor: 'Aurora Silver',
     interiorColor: 'Charcoal Nappa Leather',
     packages: ['Climate Pack', 'Lounge Pack', 'Park Assist Pack'],
@@ -118,7 +118,7 @@ export const xc90Cars: XC90Car[] = [
   {
     id: 'xc90-009',
     config: 'Ultra Bright Plug-In Hybrid',
-    price: 14990000,
+    price: 15990000,
     exteriorColor: 'Crystal White',
     interiorColor: 'Charcoal Wool Blend',
     packages: ['Climate Pack', '7 Seat Comfort'],
@@ -129,7 +129,7 @@ export const xc90Cars: XC90Car[] = [
   {
     id: 'xc90-010',
     config: 'Ultra Dark Plug-In Hybrid',
-    price: 14990000,
+    price: 15990000,
     exteriorColor: 'Bright Dusk',
     interiorColor: 'Charcoal Nappa Leather',
     packages: ['Lounge Pack', 'Bowers & Wilkins', 'Park Assist Pack'],
@@ -140,7 +140,7 @@ export const xc90Cars: XC90Car[] = [
   {
     id: 'xc90-011',
     config: 'Ultra Bright Plug-In Hybrid',
-    price: 14990000,
+    price: 15990000,
     exteriorColor: 'Mulberry Red',
     interiorColor: 'Blond Nappa Leather',
     packages: ['Climate Pack', 'Harman Kardon', '7 Seat Comfort'],
@@ -151,7 +151,7 @@ export const xc90Cars: XC90Car[] = [
   {
     id: 'xc90-012',
     config: 'Ultra Dark Plug-In Hybrid',
-    price: 14990000,
+    price: 15990000,
     exteriorColor: 'Onyx Black',
     interiorColor: 'Charcoal Wool Blend',
     packages: ['Park Assist Pack', 'Lounge Pack'],
@@ -162,7 +162,7 @@ export const xc90Cars: XC90Car[] = [
   {
     id: 'xc90-013',
     config: 'Ultra Bright Plug-In Hybrid',
-    price: 14990000,
+    price: 15990000,
     exteriorColor: 'Denim Blue',
     interiorColor: 'Blond Wool Blend',
     packages: ['Climate Pack', 'Bowers & Wilkins'],
@@ -173,7 +173,7 @@ export const xc90Cars: XC90Car[] = [
   {
     id: 'xc90-014',
     config: 'Ultra Dark Plug-In Hybrid',
-    price: 14990000,
+    price: 15990000,
     exteriorColor: 'Mulberry Red',
     interiorColor: 'Blond Nappa Leather',
     packages: ['Lounge Pack', 'Park Assist Pack', 'Harman Kardon'],
@@ -184,7 +184,7 @@ export const xc90Cars: XC90Car[] = [
   {
     id: 'xc90-015',
     config: 'Ultra Bright Plug-In Hybrid',
-    price: 14990000,
+    price: 15990000,
     exteriorColor: 'Vapour Grey',
     interiorColor: 'Charcoal Nappa Leather',
     packages: ['Climate Pack', '7 Seat Comfort', 'Bowers & Wilkins'],
@@ -195,7 +195,7 @@ export const xc90Cars: XC90Car[] = [
   {
     id: 'xc90-016',
     config: 'Ultra Dark Plug-In Hybrid',
-    price: 14990000,
+    price: 15990000,
     exteriorColor: 'Denim Blue',
     interiorColor: 'Charcoal Wool Blend',
     packages: ['Lounge Pack', 'Park Assist Pack'],
@@ -206,7 +206,7 @@ export const xc90Cars: XC90Car[] = [
   {
     id: 'xc90-017',
     config: 'Ultra Bright Plug-In Hybrid',
-    price: 14990000,
+    price: 15990000,
     exteriorColor: 'Aurora Silver',
     interiorColor: 'Blond Wool Blend',
     packages: ['Climate Pack', 'Harman Kardon', '7 Seat Comfort'],
@@ -217,7 +217,7 @@ export const xc90Cars: XC90Car[] = [
   {
     id: 'xc90-018',
     config: 'Ultra Dark Plug-In Hybrid',
-    price: 14990000,
+    price: 15990000,
     exteriorColor: 'Bright Dusk',
     interiorColor: 'Charcoal Nappa Leather',
     packages: ['Lounge Pack', 'Bowers & Wilkins'],
@@ -228,7 +228,7 @@ export const xc90Cars: XC90Car[] = [
   {
     id: 'xc90-019',
     config: 'Ultra Bright Plug-In Hybrid',
-    price: 14990000,
+    price: 15990000,
     exteriorColor: 'Crystal White',
     interiorColor: 'Blond Nappa Leather',
     packages: ['Climate Pack', 'Park Assist Pack', 'Bowers & Wilkins', '7 Seat Comfort'],
@@ -239,7 +239,7 @@ export const xc90Cars: XC90Car[] = [
   {
     id: 'xc90-020',
     config: 'Ultra Dark Plug-In Hybrid',
-    price: 14990000,
+    price: 15990000,
     exteriorColor: 'Onyx Black',
     interiorColor: 'Charcoal Nappa Leather',
     packages: ['Lounge Pack', 'Climate Pack', 'Park Assist Pack', 'Harman Kardon'],
