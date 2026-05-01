@@ -6,7 +6,7 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'Volvo EX60 P12 Long Range | Eðalkaup',
   description:
-    'Splitter nýir Volvo EX60 P12 Long Range rafmagnsbílar — pantaðir frá Evrópu. Yfir 800 km drægni.',
+    'Volvo EX60 P12 Long Range rafmagnsbílar — pantaðir frá Evrópu. Yfir 800 km drægni.',
 }
 
 function StatusBadge({ status }: { status: 'available' | 'reserved' | 'sold' }) {

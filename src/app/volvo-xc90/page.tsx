@@ -6,7 +6,7 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'Volvo XC90 T8 Recharge | Eðalkaup',
   description:
-    'Splitter nýir Volvo XC90 T8 Recharge tengiltvinnbílar — pantaðir frá Evrópu. Skoðaðu úrvalið og pantaðu þinn.',
+    'Volvo XC90 T8 Recharge tengiltvinnbílar — pantaðir frá Evrópu. Skoðaðu úrvalið og pantaðu þinn.',
 }
 
 function StatusBadge({ status }: { status: 'available' | 'reserved' | 'sold' }) {
@@ -64,7 +64,7 @@ export default function VolvoXC90Page() {
                 <span className="text-accent">T8 Recharge</span>
               </h1>
               <p className="text-lg text-gray-600 dark:text-slate-300 leading-relaxed mb-6 max-w-lg">
-                Splitter nýir tengiltvinnbílar — pantaðir frá Evrópu. Sjálfskipting,
+                Pantaðir frá Evrópu. Sjálfskipting,
                 fjórhjóladrif og 7&nbsp;sæti að staðaldri.
               </p>
               <div className="flex flex-wrap gap-4 mb-8">

@@ -6,7 +6,7 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'Volvo EX40 | Eðalkaup',
   description:
-    'Splitter nýir Volvo EX40 rafmagnsbílar — pantaðir frá Evrópu. Skoðaðu úrvalið og pantaðu þinn.',
+    'Volvo EX40 rafmagnsbílar — pantaðir frá Evrópu. Skoðaðu úrvalið og pantaðu þinn.',
 }
 
 function StatusBadge({ status }: { status: 'available' | 'reserved' | 'sold' }) {
