@@ -89,8 +89,8 @@ export default function VolvoXC90Page() {
             {/* Hero image */}
             <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl shadow-black/10 dark:shadow-black/40">
               <Image
-                src="/images/xc90/crystal-white-1.jpg"
-                alt="Volvo XC90 T8 Recharge — Crystal White"
+                src="/images/xc90/hero.jpg"
+                alt="Volvo XC90 T8 Recharge"
                 fill
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 50vw"
