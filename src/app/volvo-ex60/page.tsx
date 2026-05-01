@@ -51,7 +51,7 @@ export default function VolvoEX60Page() {
                 <span className="text-accent">P12 Long Range</span>
               </h1>
               <p className="text-lg text-gray-600 dark:text-slate-300 leading-relaxed mb-6 max-w-lg">
-                Yfir 800 km drægni — frá 12.390.000 kr. Nýjasti rafmagnsbíll Volvo með 7 sæti og fjórhjóladrif.
+                Yfir 800 km drægni — frá 12.390.000 kr. Nýjasti rafmagnsbíll Volvo með 5 sæti og fjórhjóladrif.
               </p>
               <div className="flex flex-wrap gap-4 mb-8">
                 <div className="bg-white dark:bg-navy-700/60 rounded-xl border border-black/5 dark:border-white/5 px-5 py-3 text-center">
@@ -63,7 +63,7 @@ export default function VolvoEX60Page() {
                   <p className="text-xs text-gray-500 dark:text-slate-400">Drægni</p>
                 </div>
                 <div className="bg-white dark:bg-navy-700/60 rounded-xl border border-black/5 dark:border-white/5 px-5 py-3 text-center">
-                  <p className="text-2xl font-bold text-accent">7 sæti</p>
+                  <p className="text-2xl font-bold text-accent">5 sæti</p>
                   <p className="text-xs text-gray-500 dark:text-slate-400">Fjórhjóladrif</p>
                 </div>
               </div>
@@ -108,7 +108,7 @@ export default function VolvoEX60Page() {
                   <ColorDot color={car.exteriorColor} />
                   <span className="text-sm text-gray-600 dark:text-slate-300">{car.exteriorColor}</span>
                 </div>
-                <p className="text-xs text-gray-400 dark:text-slate-500 mb-4">Sjálfskiptur · Rafmagn · Fjórhjóladrif · 7 sæti</p>
+                <p className="text-xs text-gray-400 dark:text-slate-500 mb-4">Sjálfskiptur · Rafmagn · Fjórhjóladrif · 5 sæti</p>
                 {car.packages.length > 0 && (
                   <div className="flex flex-wrap gap-1.5 mb-4">
                     {car.packages.map((pkg) => (
