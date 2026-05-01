@@ -64,8 +64,7 @@ export default function VolvoXC90Page() {
                 <span className="text-accent">T8 Recharge</span>
               </h1>
               <p className="text-lg text-gray-600 dark:text-slate-300 leading-relaxed mb-6 max-w-lg">
-                Pantaðir frá Evrópu. Sjálfskipting,
-                fjórhjóladrif og 7&nbsp;sæti að staðaldri.
+                Bílar með öllum búnaði eins og: Loftpúðafjöðrun, Bowers &amp; Wilkins hljóðkerfi, krók, Nappa leðri.
               </p>
               <div className="flex flex-wrap gap-4 mb-8">
                 <div className="bg-white dark:bg-navy-700/60 rounded-xl border border-black/5 dark:border-white/5 px-5 py-3 text-center">
