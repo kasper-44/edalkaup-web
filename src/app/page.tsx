@@ -18,7 +18,7 @@ export default function Home() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
-            { href: '/volvo-xc90', name: 'XC90 T8 Recharge', desc: 'Tengiltvinnbíll', price: 'Frá 14.990.000 kr.', delivery: 'Ágúst 2026', image: '/images/xc90/crystal-white.jpg' },
+            { href: '/volvo-xc90', name: 'XC90 T8 Ultra', desc: 'Tengiltvinnbíll', price: 'Verð: 15.990.000 kr.', delivery: 'Ágúst 2026', image: '/images/xc90/crystal-white.jpg' },
             { href: '/volvo-ex40', name: 'EX40', desc: 'Rafmagnsbíll', price: 'Frá 7.690.000 kr.', delivery: 'Ágúst 2026', image: '/images/ex40/crystal-white.jpg' },
             { href: '/volvo-ex60', name: 'EX60 P12 Long Range', desc: 'Rafmagnsbíll · 800+ km', price: 'Frá 12.390.000 kr.', delivery: 'Apríl 2027', image: '/images/ex60/crystal-white.jpg' },
           ].map((model) => (

@@ -12,7 +12,7 @@ const navItems = [
 ]
 
 const volvoModels = [
-  { href: '/volvo-xc90', label: 'XC90 T8 Recharge' },
+  { href: '/volvo-xc90', label: 'XC90 T8 Ultra' },
   { href: '/volvo-ex40', label: 'EX40' },
   { href: '/volvo-ex60', label: 'EX60' },
 ]

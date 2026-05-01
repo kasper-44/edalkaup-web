@@ -4,9 +4,9 @@ import { xc90Cars, formatXC90Price, colorHex } from '@/data/xc90'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Volvo XC90 T8 Recharge | Eðalkaup',
+  title: 'Volvo XC90 T8 Ultra | Eðalkaup',
   description:
-    'Volvo XC90 T8 Recharge tengiltvinnbílar — pantaðir frá Evrópu. Skoðaðu úrvalið og pantaðu þinn.',
+    'Volvo XC90 T8 Ultra tengiltvinnbílar — pantaðir frá Evrópu. Skoðaðu úrvalið og pantaðu þinn.',
 }
 
 function StatusBadge({ status }: { status: 'available' | 'reserved' | 'sold' }) {
@@ -61,7 +61,7 @@ export default function VolvoXC90Page() {
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight mb-4">
                 Volvo XC90
                 <br />
-                <span className="text-accent">T8 Recharge</span>
+                <span className="text-accent">T8 Ultra</span>
               </h1>
               <p className="text-lg text-gray-600 dark:text-slate-300 leading-relaxed mb-6 max-w-lg">
                 Bílar með öllum búnaði eins og: Loftpúðafjöðrun, Bowers &amp; Wilkins hljóðkerfi, krók, Nappa leðri.
@@ -89,7 +89,7 @@ export default function VolvoXC90Page() {
             <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl shadow-black/10 dark:shadow-black/40">
               <Image
                 src="/images/xc90/hero.jpg"
-                alt="Volvo XC90 T8 Recharge"
+                alt="Volvo XC90 T8 Ultra"
                 fill
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 50vw"
@@ -123,7 +123,7 @@ export default function VolvoXC90Page() {
               <div className="relative aspect-[16/10] overflow-hidden">
                 <Image
                   src={car.image}
-                  alt={`Volvo XC90 T8 Recharge — ${car.exteriorColor}`}
+                  alt={`Volvo XC90 T8 Ultra — ${car.exteriorColor}`}
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
@@ -140,7 +140,7 @@ export default function VolvoXC90Page() {
                   Volvo
                 </p>
                 <h3 className="text-base font-bold text-gray-900 dark:text-white mt-0.5 mb-1">
-                  XC90 T8 Recharge
+                  XC90 T8 Ultra
                 </h3>
                 <p className="text-sm text-gray-500 dark:text-slate-400 mb-3">
                   {car.config}
@@ -213,7 +213,7 @@ export default function VolvoXC90Page() {
               Hefur þú áhuga?
             </h2>
             <p className="text-gray-600 dark:text-slate-300 max-w-xl mx-auto mb-8">
-              Hafðu samband og við aðstoðum þig við að velja réttan XC90 T8 Recharge.
+              Hafðu samband og við aðstoðum þig við að velja réttan XC90 T8 Ultra.
               Einnig hægt að panta sérsniðna útgáfu.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
