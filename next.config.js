@@ -8,11 +8,12 @@ const nextConfig = {
       { protocol: 'https', hostname: '**.auto.dev' },
       { protocol: 'https', hostname: 'images.unsplash.com' },
       { protocol: 'https', hostname: '**.cdnimg.com' },
+      { protocol: 'https', hostname: 'upload.wikimedia.org' },
+      { protocol: 'https', hostname: 'delivery.tcom.assetscs.toyota.com' },
     ],
   },
   async redirects() {
     return [
-      // Preserve SEO from old WordPress site
       { source: '/okutaeki-um/', destination: '/um-okkur', permanent: true },
       { source: '/bilaleit/', destination: '/bilar', permanent: true },
       { source: '/soluskra/', destination: '/bilar', permanent: true },
@@ -30,9 +31,7 @@ const nextConfig = {
       { source: '/home-page-two/', destination: '/', permanent: true },
       { source: '/home-page-three/', destination: '/', permanent: true },
       { source: '/home-2/', destination: '/', permanent: true },
-      // Catch-all for old listing pages
       { source: '/listing/:slug*', destination: '/afhent', permanent: true },
-      // WordPress junk
       { source: '/blog-3/', destination: '/', permanent: true },
       { source: '/faq/', destination: '/', permanent: true },
       { source: '/compare/', destination: '/', permanent: true },
