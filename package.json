@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint"
   },
-  "dependencies": {
+    "dependencies": {
+    "@supabase/supabase-js": "^2.49.0",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",
