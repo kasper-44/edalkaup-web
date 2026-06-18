@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useMemo, useEffect } from 'react'
-import { supabase, type SupabaseCar } from '@/lib/supabase'
+import { supabase } from '@/lib/supabase'
+import type { SupabaseCar } from '@/lib/supabase'
 import CarCard from '@/components/CarCard'
 import FilterSidebar from '@/components/FilterSidebar'
 
@@ -24,7 +25,7 @@ function adaptCar(row: SupabaseCar) {
     drivetrain: row.drivetrain || '4WD',
     engine: row.engine || '',
     transmission: row.transmission || 'Sjálfskiptur',
-        fuelType: row.fuel_type || '',
+    fuelType: row.fuel_type || '',
     bodyType: row.body_type || 'SUV',
     doors: row.doors || 4,
     seats: row.seats || 5,
@@ -38,6 +39,7 @@ function adaptCar(row: SupabaseCar) {
     availability: row.location_country === 'US' ? 'Í boði frá Bandaríkjunum' : '',
   }
 }
+
 export default function BilarPage() {
   const [cars, setCars] = useState<ReturnType<typeof adaptCar>[]>([])
   const [loading, setLoading] = useState(true)
@@ -53,7 +55,7 @@ export default function BilarPage() {
 
   useEffect(() => {
     async function fetchCars() {
-            const { data, error } = await supabase
+      const { data, error } = await supabase
         .from('cars')
         .select('*')
         .eq('status', 'live')
@@ -68,7 +70,8 @@ export default function BilarPage() {
 
   const makes = useMemo(() => [...new Set(cars.map((c) => c.make))].sort(), [cars])
   const bodyTypes = useMemo(() => [...new Set(cars.map((c) => c.bodyType))].sort(), [cars])
-    const filteredCars = useMemo(() => {
+
+  const filteredCars = useMemo(() => {
     return cars.filter((car) => {
       if (filters.make && car.make !== filters.make) return false
       if (filters.bodyType && car.bodyType !== filters.bodyType) return false
@@ -82,7 +85,7 @@ export default function BilarPage() {
 
   const handleFilterChange = (key: string, value: string) => {
     setFilters((prev) => ({ ...prev, [key]: value }))
-      }
+  }
 
   return (
     <div className="pt-20 lg:pt-24">
@@ -97,7 +100,7 @@ export default function BilarPage() {
         <button
           onClick={() => setShowFilters(!showFilters)}
           className="lg:hidden mb-6 flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-navy-800 border border-black/10 dark:border-white/10 rounded-lg text-sm text-gray-900 dark:text-white"
-                  >
+        >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" /></svg>
           {showFilters ? 'Fela síu' : 'Sýna síu'}
         </button>
@@ -112,7 +115,7 @@ export default function BilarPage() {
                 <p className="text-gray-500 dark:text-slate-400 mt-4">Hleð bílum...</p>
               </div>
             ) : filteredCars.length === 0 ? (
-                    <div className="text-center py-20">
+              <div className="text-center py-20">
                 <p className="text-xl text-gray-500 dark:text-slate-400">Engir bílar fundust með þessari síu.</p>
               </div>
             ) : (
@@ -127,4 +130,4 @@ export default function BilarPage() {
       </div>
     </div>
   )
-  }
+}
