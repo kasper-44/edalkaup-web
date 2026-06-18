@@ -5,7 +5,7 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
-export interface SupabaseCar {
+export type SupabaseCar = {
   id: string
   title: string
   make: string
@@ -24,3 +24,10 @@ export interface SupabaseCar {
   engine: string | null
   doors: number | null
   seats: number | null
+  description_is: string | null
+  images: string[]
+  status: string
+  location_country: string | null
+  source_site: string | null
+  source_url: string | null
+}
