@@ -2,11 +2,10 @@
 
 import { useState, useMemo, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
-import type { SupabaseCar } from '@/lib/supabase'
 import CarCard from '@/components/CarCard'
 import FilterSidebar from '@/components/FilterSidebar'
 
-function adaptCar(row: SupabaseCar) {
+function adaptCar(row: any) {
   const priceMatch = row.description_is?.match(/Original price: (.+)/)?.[1] || ''
   const vinMatch = row.description_is?.match(/VIN: (.+)/)?.[1]?.split('\n')[0] || ''
   return {
