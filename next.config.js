@@ -11,6 +11,7 @@ const nextConfig = {
       { protocol: 'https', hostname: '**.cdnimg.com' },
       { protocol: 'https', hostname: 'upload.wikimedia.org' },
       { protocol: 'https', hostname: 'delivery.tcom.assetscs.toyota.com' },
+      { protocol: 'https', hostname: 'fakjyfokweehxsonfbez.supabase.co' },
     ],
   },
   async redirects() {
