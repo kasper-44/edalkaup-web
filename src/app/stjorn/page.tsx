@@ -19,6 +19,7 @@ interface Car {
   fuel_type: string | null
   body_type: string | null
   images: string[] | null
+  images_original: string[] | null
   description_is: string | null
   source_url: string | null
   status: string
@@ -203,6 +204,11 @@ export default function AdminPage() {
                           {car.colour} · {car.mileage_km ? fmt(car.mileage_km) + ' km' : 'Nýr'} ·{' '}
                           {car.location_country}
                         </p>
+                        {!car.images_original && (
+                          <span className="inline-block mt-1 px-2 py-0.5 text-[11px] rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30">
+                            ⚠ Myndir ósíaðar — ekki hægt að birta enn
+                          </span>
+                        )}
                       </div>
                       {car.source_url && (
                         <a
@@ -244,8 +250,9 @@ export default function AdminPage() {
                       {car.status !== 'live' && (
                         <button
                           onClick={() => patch(car.id, { status: 'live' })}
-                          disabled={saving === car.id}
-                          className="px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 text-sm font-semibold hover:bg-emerald-400 disabled:opacity-50"
+                          disabled={saving === car.id || !car.images_original}
+                          title={!car.images_original ? 'Myndir hafa ekki verið síaðar enn' : ''}
+                          className="px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 text-sm font-semibold hover:bg-emerald-400 disabled:opacity-40 disabled:cursor-not-allowed"
                         >
                           Birta (í sölu)
                         </button>

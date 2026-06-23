@@ -49,6 +49,32 @@ export async function PATCH(req: Request) {
     return NextResponse.json({ error: 'Ekkert til að uppfæra' }, { status: 400 })
   }
 
+  // Safeguard: do not allow publishing (status=live) a car whose photos have
+  // not yet been privacy-filtered. The filter sets `images_original` once it
+  // has processed a car; if it's null, branded/dealer photos may still be in
+  // `images` and must not go public.
+  if (update.status === 'live') {
+    const { data: existing, error: checkErr } = await supabaseAdmin
+      .from('cars')
+      .select('images_original')
+      .eq('id', id)
+      .single()
+    if (checkErr) {
+      return NextResponse.json({ error: checkErr.message }, { status: 500 })
+    }
+    if (!existing?.images_original) {
+      return NextResponse.json(
+        {
+          error:
+            'Ekki hægt að birta: myndir hafa ekki verið síaðar enn (bíð eftir myndasíun). ' +
+            'Reyndu aftur þegar myndasíunin hefur keyrt.',
+          code: 'photos_unfiltered',
+        },
+        { status: 409 },
+      )
+    }
+  }
+
   const { data, error } = await supabaseAdmin
     .from('cars')
     .update(update)
