@@ -1,0 +1,255 @@
+'use client'
+
+import { useState, useEffect, useCallback } from 'react'
+
+interface Car {
+  id: string
+  title: string
+  make: string
+  model: string
+  year: number
+  trim: string
+  price_isk: number
+  price_original: number | null
+  price_currency: string | null
+  mileage_km: number | null
+  colour: string | null
+  exterior_colour: string | null
+  engine: string | null
+  fuel_type: string | null
+  body_type: string | null
+  images: string[] | null
+  description_is: string | null
+  source_url: string | null
+  status: string
+  location_country: string | null
+}
+
+const fmt = (n: number) => new Intl.NumberFormat('is-IS').format(n)
+
+export default function AdminPage() {
+  const [password, setPassword] = useState('')
+  const [authed, setAuthed] = useState(false)
+  const [tab, setTab] = useState<'draft' | 'live' | 'sold'>('draft')
+  const [cars, setCars] = useState<Car[]>([])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [edits, setEdits] = useState<Record<string, string>>({})
+  const [saving, setSaving] = useState<string | null>(null)
+
+  const load = useCallback(async (status: string, pw: string) => {
+    setLoading(true)
+    setError('')
+    try {
+      const res = await fetch(`/api/admin/cars?status=${status}`, {
+        headers: { 'x-admin-password': pw },
+      })
+      if (res.status === 401) {
+        setError('Rangt lykilorð')
+        setAuthed(false)
+        return
+      }
+      const json = await res.json()
+      setCars(json.cars || [])
+      setAuthed(true)
+    } catch {
+      setError('Villa við að sækja bíla')
+    } finally {
+      setLoading(false)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (authed) load(tab, password)
+  }, [tab, authed, load, password])
+
+  const patch = async (id: string, payload: Record<string, unknown>) => {
+    setSaving(id)
+    try {
+      const res = await fetch('/api/admin/cars', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
+        body: JSON.stringify({ id, ...payload }),
+      })
+      if (!res.ok) {
+        const j = await res.json()
+        alert('Villa: ' + (j.error || res.status))
+        return
+      }
+      // Remove from current list if status changed away from current tab
+      if (payload.status && payload.status !== tab) {
+        setCars((prev) => prev.filter((c) => c.id !== id))
+      } else {
+        const j = await res.json()
+        setCars((prev) => prev.map((c) => (c.id === id ? { ...c, ...j.car } : c)))
+      }
+    } finally {
+      setSaving(null)
+    }
+  }
+
+  const savePrice = (id: string) => {
+    const val = edits[id]
+    if (val === undefined) return
+    patch(id, { price_isk: Number(val) || 0 })
+  }
+
+  // --- Login screen ---
+  if (!authed) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-950 px-4">
+        <div className="w-full max-w-sm bg-slate-900 border border-white/10 rounded-2xl p-8">
+          <h1 className="text-2xl font-bold text-white mb-1">Eðalkaup — Stjórn</h1>
+          <p className="text-slate-400 text-sm mb-6">Sláðu inn lykilorð til að halda áfram.</p>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && load(tab, password)}
+            placeholder="Lykilorð"
+            className="w-full px-4 py-3 rounded-lg bg-slate-800 text-white border border-white/10 focus:border-amber-400 outline-none mb-3"
+          />
+          {error && <p className="text-red-400 text-sm mb-3">{error}</p>}
+          <button
+            onClick={() => load(tab, password)}
+            className="w-full py-3 rounded-lg bg-amber-400 text-slate-950 font-semibold hover:bg-amber-300"
+          >
+            Innskrá
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  // --- Admin dashboard ---
+  return (
+    <div className="min-h-screen bg-slate-950 text-white">
+      <div className="max-w-6xl mx-auto px-4 py-8">
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-2xl font-bold">Eðalkaup — Bílastjórn</h1>
+          <span className="text-slate-400 text-sm">{cars.length} bílar</span>
+        </div>
+
+        <div className="flex gap-2 mb-6">
+          {(['draft', 'live', 'sold'] as const).map((t) => (
+            <button
+              key={t}
+              onClick={() => setTab(t)}
+              className={`px-4 py-2 rounded-lg text-sm font-medium ${
+                tab === t ? 'bg-amber-400 text-slate-950' : 'bg-slate-800 text-slate-300'
+              }`}
+            >
+              {t === 'draft' ? 'Drög' : t === 'live' ? 'Í sölu' : 'Seldir'}
+            </button>
+          ))}
+        </div>
+
+        {loading ? (
+          <p className="text-slate-400">Hleð...</p>
+        ) : cars.length === 0 ? (
+          <p className="text-slate-400">Engir bílar í þessum flokki.</p>
+        ) : (
+          <div className="space-y-3">
+            {cars.map((car) => {
+              const orig = car.price_original
+                ? `${car.price_currency === 'CAD' ? 'CAD $' : '$'}${fmt(car.price_original)}`
+                : '—'
+              return (
+                <div
+                  key={car.id}
+                  className="flex flex-col sm:flex-row gap-4 bg-slate-900 border border-white/10 rounded-xl p-4"
+                >
+                  {car.images?.[0] && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={car.images[0]}
+                      alt={car.title}
+                      className="w-full sm:w-40 h-28 object-cover rounded-lg flex-shrink-0"
+                    />
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <h3 className="font-semibold">
+                          {car.year} {car.make} {car.model} {car.trim}
+                        </h3>
+                        <p className="text-slate-400 text-sm">
+                          {car.colour} · {car.mileage_km ? fmt(car.mileage_km) + ' km' : 'Nýr'} ·{' '}
+                          {car.location_country}
+                        </p>
+                      </div>
+                      {car.source_url && (
+                        <a
+                          href={car.source_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-amber-400 text-xs hover:underline whitespace-nowrap"
+                        >
+                          Skoða heimild ↗
+                        </a>
+                      )}
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-3 mt-3">
+                      <span className="text-sm text-slate-400">
+                        Upphaflegt verð: <span className="text-white font-medium">{orig}</span>
+                      </span>
+
+                      <div className="flex items-center gap-2 ml-auto">
+                        <label className="text-sm text-slate-400">Verð (ISK):</label>
+                        <input
+                          type="number"
+                          defaultValue={car.price_isk || ''}
+                          onChange={(e) => setEdits((p) => ({ ...p, [car.id]: e.target.value }))}
+                          placeholder="0"
+                          className="w-32 px-3 py-1.5 rounded-lg bg-slate-800 border border-white/10 text-white text-sm outline-none focus:border-amber-400"
+                        />
+                        <button
+                          onClick={() => savePrice(car.id)}
+                          disabled={saving === car.id}
+                          className="px-3 py-1.5 rounded-lg bg-slate-700 text-sm hover:bg-slate-600 disabled:opacity-50"
+                        >
+                          Vista verð
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-2 mt-3">
+                      {car.status !== 'live' && (
+                        <button
+                          onClick={() => patch(car.id, { status: 'live' })}
+                          disabled={saving === car.id}
+                          className="px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 text-sm font-semibold hover:bg-emerald-400 disabled:opacity-50"
+                        >
+                          Birta (í sölu)
+                        </button>
+                      )}
+                      {car.status !== 'draft' && (
+                        <button
+                          onClick={() => patch(car.id, { status: 'draft' })}
+                          disabled={saving === car.id}
+                          className="px-3 py-1.5 rounded-lg bg-slate-700 text-sm hover:bg-slate-600 disabled:opacity-50"
+                        >
+                          Fela (drög)
+                        </button>
+                      )}
+                      {car.status !== 'sold' && (
+                        <button
+                          onClick={() => patch(car.id, { status: 'sold' })}
+                          disabled={saving === car.id}
+                          className="px-3 py-1.5 rounded-lg bg-red-500/80 text-sm font-semibold hover:bg-red-500 disabled:opacity-50"
+                        >
+                          Merkja seldan
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
