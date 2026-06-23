@@ -37,6 +37,15 @@ export default function AdminPage() {
   const [edits, setEdits] = useState<Record<string, string>>({})
   const [saving, setSaving] = useState<string | null>(null)
 
+  // Restore a previous session (survives back/forward navigation + refresh).
+  useEffect(() => {
+    const saved = sessionStorage.getItem('edalkaup_admin_pw')
+    if (saved) {
+      setPassword(saved)
+      setAuthed(true)
+    }
+  }, [])
+
   const load = useCallback(async (status: string, pw: string) => {
     setLoading(true)
     setError('')
@@ -47,17 +56,26 @@ export default function AdminPage() {
       if (res.status === 401) {
         setError('Rangt lykilorð')
         setAuthed(false)
+        sessionStorage.removeItem('edalkaup_admin_pw')
         return
       }
       const json = await res.json()
       setCars(json.cars || [])
       setAuthed(true)
+      sessionStorage.setItem('edalkaup_admin_pw', pw)
     } catch {
       setError('Villa við að sækja bíla')
     } finally {
       setLoading(false)
     }
   }, [])
+
+  const logout = () => {
+    sessionStorage.removeItem('edalkaup_admin_pw')
+    setPassword('')
+    setAuthed(false)
+    setCars([])
+  }
 
   useEffect(() => {
     if (authed) load(tab, password)
@@ -127,7 +145,15 @@ export default function AdminPage() {
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold">Eðalkaup — Bílastjórn</h1>
-          <span className="text-slate-400 text-sm">{cars.length} bílar</span>
+          <div className="flex items-center gap-4">
+            <span className="text-slate-400 text-sm">{cars.length} bílar</span>
+            <button
+              onClick={logout}
+              className="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 text-sm hover:bg-slate-700"
+            >
+              Útskrá
+            </button>
+          </div>
         </div>
 
         <div className="flex gap-2 mb-6">
