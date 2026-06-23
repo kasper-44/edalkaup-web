@@ -39,7 +39,7 @@ export default function AdminPage() {
 
   // Restore a previous session (survives back/forward navigation + refresh).
   useEffect(() => {
-    const saved = sessionStorage.getItem('edalkaup_admin_pw')
+    const saved = localStorage.getItem('edalkaup_admin_pw')
     if (saved) {
       setPassword(saved)
       setAuthed(true)
@@ -56,13 +56,13 @@ export default function AdminPage() {
       if (res.status === 401) {
         setError('Rangt lykilorð')
         setAuthed(false)
-        sessionStorage.removeItem('edalkaup_admin_pw')
+        localStorage.removeItem('edalkaup_admin_pw')
         return
       }
       const json = await res.json()
       setCars(json.cars || [])
       setAuthed(true)
-      sessionStorage.setItem('edalkaup_admin_pw', pw)
+      localStorage.setItem('edalkaup_admin_pw', pw)
     } catch {
       setError('Villa við að sækja bíla')
     } finally {
@@ -71,7 +71,7 @@ export default function AdminPage() {
   }, [])
 
   const logout = () => {
-    sessionStorage.removeItem('edalkaup_admin_pw')
+    localStorage.removeItem('edalkaup_admin_pw')
     setPassword('')
     setAuthed(false)
     setCars([])
