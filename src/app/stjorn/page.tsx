@@ -22,6 +22,7 @@ interface Car {
   images_original: string[] | null
   description_is: string | null
   source_url: string | null
+  vin: string | null
   status: string
   location_country: string | null
 }
@@ -210,14 +211,15 @@ export default function AdminPage() {
                           </span>
                         )}
                       </div>
-                      {car.source_url && (
+                      {car.vin && (
                         <a
-                          href={car.source_url}
+                          href={`https://www.google.com/search?q=${encodeURIComponent(car.vin)}`}
                           target="_blank"
                           rel="noopener noreferrer"
+                          title="Leita að VIN á Google til að finna upprunalegu auglýsinguna"
                           className="text-amber-400 text-xs hover:underline whitespace-nowrap"
                         >
-                          Skoða heimild ↗
+                          Leita að VIN ↗
                         </a>
                       )}
                     </div>
