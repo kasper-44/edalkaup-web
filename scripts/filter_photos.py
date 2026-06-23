@@ -36,16 +36,29 @@ OPENAI_KEY = _ENV.get("OPENAI_API_KEY") or _ENV.get("VISION_TOOLS_OPENAI_KEY")
 OPENAI_URL = "https://api.openai.com/v1/chat/completions"
 VISION_MODEL = "gpt-4o-mini"
 
+GEMINI_KEY = _ENV.get("GEMINI_API_KEY") or _ENV.get("GOOGLE_API_KEY")
+GEMINI_MODEL = "gemini-2.0-flash"
+GEMINI_URL = (
+    f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent"
+)
+# Prefer OpenAI (already funded); fall back to Gemini if only that key is present.
+BACKEND = "openai" if OPENAI_KEY else ("gemini" if GEMINI_KEY else None)
+
 PROMPT = (
-    "You are auditing a used-car photo for a reseller who must hide the original "
-    "selling dealer. Answer with a single word: BRANDED or CLEAN.\n"
-    "Answer BRANDED if the image contains ANY of: a dealership name or logo, a "
-    "banner/overlay with text, a website URL, a phone number, a street address, a "
-    "license-plate frame with dealer text, a windshield/window dealer sticker, or "
-    "clearly readable dealership building signage in the background.\n"
-    "Answer CLEAN if it is just the car (studio shot, plain background, interior, "
-    "or a generic lot with no readable dealer identifiers).\n"
-    "Reply with ONLY the word BRANDED or CLEAN."
+    "You audit a used-car photo for a reseller who must hide where the car came from. "
+    "Reply with ONE word: BRANDED or CLEAN.\n\n"
+    "BRANDED = the photo shows it was taken at a dealership / sales lot in ANY way: "
+    "a dealership building or signage (even a generic brand sign like 'CHEVROLET' / "
+    "'TOYOTA' on a building), a banner or text overlay, a website, phone number, "
+    "address, a license-plate frame with any text, a window/windshield sticker, rows "
+    "of other cars for sale, or showroom interior background.\n\n"
+    "CLEAN = the photo is ONLY the car with no dealership context: a studio shot "
+    "(plain white/grey background), the vehicle interior (dashboard, seats, screen), "
+    "or a tight exterior detail (wheel, headlight, badge, grille) with no building, "
+    "no signage, no other cars, no lot visible.\n\n"
+    "When unsure, and the photo is a plain studio/interior/detail close-up with no "
+    "background scenery, choose CLEAN. If any outdoor lot, building, or sign is "
+    "visible, choose BRANDED. Reply ONLY BRANDED or CLEAN."
 )
 
 
@@ -58,7 +71,7 @@ def classify_openai(url: str) -> str:
             "role": "user",
             "content": [
                 {"type": "text", "text": PROMPT},
-                {"type": "image_url", "image_url": {"url": url, "detail": "low"}},
+                {"type": "image_url", "image_url": {"url": url, "detail": "high"}},
             ],
         }],
     }
@@ -69,15 +82,52 @@ def classify_openai(url: str) -> str:
     return "BRANDED" if "BRAND" in ans else "CLEAN"
 
 
+def classify_gemini(url: str) -> str:
+    """Return 'CLEAN' or 'BRANDED' for one image URL via Google Gemini."""
+    # Fetch the image bytes and inline as base64 (Gemini needs inline data).
+    img = requests.get(url, timeout=40)
+    img.raise_for_status()
+    import base64 as _b64
+    b64 = _b64.b64encode(img.content).decode()
+    mime = img.headers.get("Content-Type", "image/jpeg").split(";")[0]
+    body = {
+        "contents": [{
+            "parts": [
+                {"text": PROMPT},
+                {"inline_data": {"mime_type": mime, "data": b64}},
+            ]
+        }],
+        "generationConfig": {"maxOutputTokens": 5, "temperature": 0},
+    }
+    r = requests.post(GEMINI_URL, params={"key": GEMINI_KEY}, json=body, timeout=60)
+    r.raise_for_status()
+    ans = r.json()["candidates"][0]["content"]["parts"][0]["text"].strip().upper()
+    return "BRANDED" if "BRAND" in ans else "CLEAN"
+
+
+def classify(url: str) -> str:
+    return classify_gemini(url) if BACKEND == "gemini" else classify_openai(url)
+
+
+class RateLimited(Exception):
+    """Raised when the vision API daily/again-later quota is hit."""
+
+
 def process_car(car: dict, dry_run: bool) -> dict:
     original = car.get("images_original") or car.get("images") or []
     kept, dropped = [], []
     for url in original:
         try:
-            verdict = classify_openai(url)
+            verdict = classify(url)
+        except requests.HTTPError as e:
+            if e.response is not None and e.response.status_code == 429:
+                # Quota/rate limit — abort cleanly so we never mis-drop photos.
+                raise RateLimited() from e
+            print(f"    ! error on {url[:60]}: {e}; dropping (fail-safe)")
+            dropped.append(url)
+            continue
         except Exception as e:
-            print(f"    ! error on {url[:60]}: {e}; keeping by default? NO -> skip-drop")
-            # On error, be safe: drop it (never risk showing a branded one)
+            print(f"    ! error on {url[:60]}: {e}; dropping (fail-safe)")
             dropped.append(url)
             continue
         (kept if verdict == "CLEAN" else dropped).append(url)
@@ -99,10 +149,10 @@ def main():
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
 
-    if not OPENAI_KEY:
-        print("No OPENAI_API_KEY / VISION_TOOLS_OPENAI_KEY in ~/.hermes/.env.")
-        print("Add one to enable automated batch filtering (Option B).")
+    if not BACKEND:
+        print("No vision key in ~/.hermes/.env (need GEMINI_API_KEY/GOOGLE_API_KEY or OPENAI_API_KEY).")
         sys.exit(1)
+    print(f"Vision backend: {BACKEND}")
 
     if args.car:
         cars = supa_get({"select": "id,make,model,year,images,images_original", "id": f"eq.{args.car}"})
@@ -113,17 +163,27 @@ def main():
                 and c.get("images") and not c.get("images_original")][: args.limit]
 
     print(f"Filtering {len(cars)} cars {'(DRY RUN)' if args.dry_run else ''}...")
-    tot_kept = tot_drop = 0
+    tot_kept = tot_drop = done = 0
     flagged = []
+    stopped_early = False
     for c in cars:
-        res = process_car(c, args.dry_run)
+        try:
+            res = process_car(c, args.dry_run)
+        except RateLimited:
+            print("\n⏳ Vision API daily/rate quota reached — stopping cleanly. "
+                  "Remaining cars keep their original photos and will be processed next run.")
+            stopped_early = True
+            break
+        done += 1
         tot_kept += res["kept"]
         tot_drop += res["dropped"]
         if res["kept"] == 0:
             flagged.append(c["id"])
         print(f"  {c['year']} {c['make']} {c['model']}: kept {res['kept']}/{res['total']}, dropped {res['dropped']}")
 
-    print(f"\n=== TOTAL kept {tot_kept}, dropped {tot_drop} ===")
+    print(f"\n=== Cars filtered this run: {done}/{len(cars)} | kept {tot_kept}, dropped {tot_drop} ===")
+    if stopped_early:
+        print("Run again later (or wait for the nightly cron) to finish the rest.")
     if flagged:
         print(f"⚠️  {len(flagged)} cars left with 0 clean photos (review manually): {flagged}")
 
