@@ -1,11 +1,8 @@
 import HeroVideo from '@/components/HeroVideo'
-import CarCard from '@/components/CarCard'
+import FeaturedCars from '@/components/FeaturedCars'
 import Link from 'next/link'
-import { cars } from '@/data/cars'
 
 export default function Home() {
-  const featuredCars = cars.filter((c) => c.featured).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-
   return (
     <>
       <HeroVideo />
@@ -50,9 +47,7 @@ export default function Home() {
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">Bílar til sölu</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {featuredCars.map((car, i) => (
-            <CarCard key={car.id} car={car} priority={i < 3} />
-          ))}
+          <FeaturedCars />
         </div>
         <div className="text-center mt-10">
           <Link

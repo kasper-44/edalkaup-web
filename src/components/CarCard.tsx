@@ -97,9 +97,6 @@ export default function CarCard({ car, priority = false }: CarCardProps) {
           <div className="mt-4 pt-4 border-t border-black/5 dark:border-white/5 flex items-end justify-between">
             <div>
               <p className="text-2xl font-bold text-gray-900 dark:text-white">{formatPrice(car.price)}</p>
-              {car.priceUSD && (
-                <p className="text-xs text-gray-400 dark:text-slate-500">${car.priceUSD.toLocaleString()} USD</p>
-              )}
             </div>
             <span className="text-accent text-sm font-medium group-hover:translate-x-1 transition-transform">
               Sjá meira →
