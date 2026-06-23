@@ -64,9 +64,6 @@ export default function CarPage() {
   }
 
   const title = `${car.year} ${car.make} ${car.model} ${car.trim || ''}`.trim()
-  const vinMatch = car.description_is?.match(/VIN: (.+)/)?.[1]?.split('\n')[0] || ''
-  const priceMatch = car.description_is?.match(/Original price: (.+)/)?.[1]?.split('\n')[0] || ''
-  const dealerMatch = car.description_is?.match(/Dealer: (.+)/)?.[1] || ''
 
   const specs = [
     { label: 'Árgerð', value: car.year?.toString() || '' },
@@ -117,19 +114,6 @@ export default function CarPage() {
                 ))}
               </div>
             </div>
-
-            {/* Description */}
-            {car.description_is && (
-              <div className="bg-white dark:bg-navy-800 rounded-2xl border border-black/5 dark:border-white/5 p-6 sm:p-8">
-                <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Upplýsingar</h2>
-                <div className="text-gray-600 dark:text-slate-300 leading-relaxed space-y-2">
-                  {vinMatch && <p><span className="font-medium">VIN:</span> {vinMatch}</p>}
-                  {priceMatch && <p><span className="font-medium">Upprunalegt verð:</span> {priceMatch}</p>}
-                  {dealerMatch && <p><span className="font-medium">Söluaðili:</span> {dealerMatch}</p>}
-                  {car.location_country && <p><span className="font-medium">Staðsetning:</span> {car.location_country === 'US' ? 'Bandaríkin' : car.location_country}</p>}
-                </div>
-              </div>
-            )}
           </div>
 
           {/* Right Sidebar */}
