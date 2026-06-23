@@ -18,7 +18,7 @@ export async function POST(req: Request) {
 
     await resend.emails.send({
       from: 'Eðalkaup Vefur <fyrirspurn@edalkaup.is>',
-      to: 'sigurdur@edalkaup.is',
+      to: process.env.CONTACT_EMAIL_TO || 'sigurdur.robertsson@gmail.com',
       replyTo: email,
       subject,
       html: `
