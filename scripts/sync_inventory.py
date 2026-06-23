@@ -154,7 +154,9 @@ def to_row(rec: dict) -> dict:
         "status": "draft",
         "location_country": "CA" if currency == "CAD" else "US",
         "source_site": "auto.dev",
-        "source_url": "https://auto.dev" + (rec.get("vdpUrl") or ""),
+        # Auto.dev's vdpUrl is an internal path that 404s, so we don't store it.
+        # The admin view finds the original listing via a VIN Google search.
+        "source_url": None,
         "last_seen_at": datetime.now(timezone.utc).isoformat(),
     }
 
