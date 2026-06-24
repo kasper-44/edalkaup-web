@@ -33,6 +33,26 @@ interface Car {
 
 const fmt = (n: number) => new Intl.NumberFormat('is-IS').format(n)
 
+// Build ready-to-paste Icelandic post text for Facebook / groups / bland.is.
+function buildPostText(car: Car): string {
+  const title = `${car.year} ${car.make} ${car.model} ${car.trim || ''}`.trim()
+  const lines: string[] = [`🚗 ${title}`, '']
+  if (car.price_isk) lines.push(`💰 Verð: ${fmt(car.price_isk)} kr.`)
+  else lines.push('💰 Verð: við fyrirspurn')
+  if (car.mileage_km) lines.push(`📍 Akstur: ${fmt(car.mileage_km)} km`)
+  if (car.fuel_type) lines.push(`⛽ ${car.fuel_type}`)
+  if (car.engine) lines.push(`🔧 ${car.engine}`)
+  if (car.colour) lines.push(`🎨 ${car.colour}`)
+  lines.push('')
+  lines.push('Innfluttur frá Norður-Ameríku af Eðalkaup — yfir 25 ára reynsla.')
+  lines.push('Hafðu samband fyrir nánari upplýsingar!')
+  lines.push('')
+  lines.push(`👉 https://edalkaup.is/bilar/${car.id}`)
+  lines.push('')
+  lines.push('#bílar #bílainnflutningur #Eðalkaup #' + car.make)
+  return lines.join('\n')
+}
+
 export default function AdminPage() {
   const [password, setPassword] = useState('')
   const [authed, setAuthed] = useState(false)
@@ -260,6 +280,23 @@ export default function AdminPage() {
                       >
                         Forskoða
                       </button>
+                      <button
+                        onClick={() => {
+                          navigator.clipboard.writeText(buildPostText(car))
+                          alert('Texti afritaður! Límdu hann inn á Facebook eða bland.is.')
+                        }}
+                        className="px-3 py-1.5 rounded-lg bg-slate-700 text-white text-sm font-semibold hover:bg-slate-600"
+                      >
+                        Afrita texta
+                      </button>
+                      <a
+                        href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://edalkaup.is/bilar/${car.id}`)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-3 py-1.5 rounded-lg bg-[#1877F2] text-white text-sm font-semibold hover:bg-[#1466d4]"
+                      >
+                        Deila á FB
+                      </a>
                       {car.status !== 'live' && (
                         <button
                           onClick={() => {

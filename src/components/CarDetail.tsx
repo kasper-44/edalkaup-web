@@ -126,10 +126,19 @@ export default function CarDetail({ car }: { car: any }) {
                 WhatsApp
               </a>
               <a
-                href="tel:+3546992011"
-                className="block w-full text-center px-6 py-3 border border-black/10 dark:border-white/10 text-gray-700 dark:text-slate-300 font-semibold rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+                href="tel:+354****2011"
+                className="block w-full text-center px-6 py-3 border border-black/10 dark:border-white/10 text-gray-700 dark:text-slate-300 font-semibold rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors mb-3"
               >
                 Hringja: 699 2011
+              </a>
+              <a
+                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://edalkaup.is/bilar/${car.id}`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 w-full text-center px-6 py-3 bg-[#1877F2] text-white font-semibold rounded-xl hover:bg-[#1466d4] transition-colors"
+              >
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07c0 6 4.39 10.97 10.13 11.87v-8.4H7.08v-3.47h3.05V9.41c0-3.02 1.79-4.7 4.53-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.26h3.33l-.53 3.47h-2.8v8.4C19.61 23.04 24 18.07 24 12.07z"/></svg>
+                Deila á Facebook
               </a>
             </div>
           </div>
