@@ -36,20 +36,18 @@ const fmt = (n: number) => new Intl.NumberFormat('is-IS').format(n)
 // Build ready-to-paste Icelandic post text for Facebook / groups / bland.is.
 function buildPostText(car: Car): string {
   const title = `${car.year} ${car.make} ${car.model} ${car.trim || ''}`.trim()
-  const lines: string[] = [`🚗 ${title}`, '']
-  if (car.price_isk) lines.push(`💰 Verð: ${fmt(car.price_isk)} kr.`)
-  else lines.push('💰 Verð: við fyrirspurn')
-  if (car.mileage_km) lines.push(`📍 Akstur: ${fmt(car.mileage_km)} km`)
-  if (car.fuel_type) lines.push(`⛽ ${car.fuel_type}`)
-  if (car.engine) lines.push(`🔧 ${car.engine}`)
-  if (car.colour) lines.push(`🎨 ${car.colour}`)
+  const lines: string[] = [title, '']
+  if (car.price_isk) lines.push(`Verð: ${fmt(car.price_isk)} kr.`)
+  else lines.push('Verð: við fyrirspurn')
+  if (car.mileage_km) lines.push(`Akstur: ${fmt(car.mileage_km)} km`)
+  if (car.fuel_type) lines.push(`Eldsneyti: ${car.fuel_type}`)
+  if (car.engine) lines.push(`Vél: ${car.engine}`)
+  if (car.colour) lines.push(`Litur: ${car.colour}`)
   lines.push('')
   lines.push('Innfluttur frá Norður-Ameríku af Eðalkaup — yfir 25 ára reynsla.')
-  lines.push('Hafðu samband fyrir nánari upplýsingar!')
+  lines.push('Hafðu samband fyrir nánari upplýsingar.')
   lines.push('')
-  lines.push(`👉 https://edalkaup.is/bilar/${car.id}`)
-  lines.push('')
-  lines.push('#bílar #bílainnflutningur #Eðalkaup #' + car.make)
+  lines.push(`https://edalkaup.is/bilar/${car.id}`)
   return lines.join('\n')
 }
 
