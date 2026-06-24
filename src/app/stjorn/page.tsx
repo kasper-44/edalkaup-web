@@ -18,6 +18,10 @@ interface Car {
   engine: string | null
   fuel_type: string | null
   body_type: string | null
+  transmission: string | null
+  drivetrain: string | null
+  doors: number | null
+  seats: number | null
   images: string[] | null
   images_original: string[] | null
   description_is: string | null
@@ -38,6 +42,7 @@ export default function AdminPage() {
   const [error, setError] = useState('')
   const [edits, setEdits] = useState<Record<string, string>>({})
   const [saving, setSaving] = useState<string | null>(null)
+  const [preview, setPreview] = useState<Car | null>(null)
 
   // Restore a previous session (survives back/forward navigation + refresh).
   useEffect(() => {
@@ -249,6 +254,12 @@ export default function AdminPage() {
                     </div>
 
                     <div className="flex gap-2 mt-3">
+                      <button
+                        onClick={() => setPreview(car)}
+                        className="px-3 py-1.5 rounded-lg bg-sky-600 text-white text-sm font-semibold hover:bg-sky-500"
+                      >
+                        Forskoða
+                      </button>
                       {car.status !== 'live' && (
                         <button
                           onClick={() => patch(car.id, { status: 'live' })}
@@ -285,6 +296,96 @@ export default function AdminPage() {
           </div>
         )}
       </div>
+
+      {/* Preview modal — shows the listing as customers will see it */}
+      {preview && (
+        <div
+          className="fixed inset-0 z-50 bg-black/80 overflow-y-auto p-4 sm:p-8"
+          onClick={() => setPreview(null)}
+        >
+          <div
+            className="max-w-4xl mx-auto bg-white text-slate-900 rounded-2xl overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between px-5 py-3 bg-slate-900 text-white">
+              <span className="text-sm font-semibold">
+                Forskoðun — svona sjá viðskiptavinir bílinn
+              </span>
+              <button
+                onClick={() => setPreview(null)}
+                className="px-3 py-1 rounded-lg bg-slate-700 text-sm hover:bg-slate-600"
+              >
+                Loka ✕
+              </button>
+            </div>
+
+            {/* Photo gallery */}
+            <div className="p-5">
+              <h2 className="text-2xl font-bold mb-1">
+                {preview.year} {preview.make} {preview.model} {preview.trim}
+              </h2>
+              <p className="text-3xl font-bold text-amber-600 mb-4">
+                {preview.price_isk
+                  ? fmt(preview.price_isk) + ' kr.'
+                  : 'Verð við fyrirspurn'}
+              </p>
+
+              {preview.images && preview.images.length > 0 ? (
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-6">
+                  {preview.images.map((src, i) => (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      key={i}
+                      src={src}
+                      alt={`mynd ${i + 1}`}
+                      className="w-full h-40 object-cover rounded-lg"
+                    />
+                  ))}
+                </div>
+              ) : (
+                <p className="text-slate-500 mb-6">Engar myndir.</p>
+              )}
+
+              {/* Spec table — customer-facing only (no VIN / original price / dealer) */}
+              <h3 className="text-lg font-bold mb-3">Tæknilegar upplýsingar</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 text-sm">
+                {[
+                  ['Árgerð', preview.year?.toString()],
+                  ['Framleiðandi', preview.make],
+                  ['Gerð', preview.model],
+                  ['Útgáfa', preview.trim],
+                  ['Akstur', preview.mileage_km ? fmt(preview.mileage_km) + ' km' : 'Nýr'],
+                  ['Litur', preview.colour],
+                  ['Vél', preview.engine],
+                  ['Skipting', preview.transmission],
+                  ['Eldsneyti', preview.fuel_type],
+                  ['Yfirbygging', preview.body_type],
+                  ['Drif', preview.drivetrain],
+                  ['Hurðir', preview.doors?.toString()],
+                  ['Sæti', preview.seats?.toString()],
+                ]
+                  .filter(([, v]) => v)
+                  .map(([label, value]) => (
+                    <div
+                      key={label as string}
+                      className="flex justify-between border-b border-black/5 py-1.5"
+                    >
+                      <span className="text-slate-500">{label}</span>
+                      <span className="font-medium">{value}</span>
+                    </div>
+                  ))}
+              </div>
+
+              {!preview.images_original && (
+                <p className="mt-5 px-3 py-2 rounded-lg bg-amber-100 text-amber-800 text-sm">
+                  ⚠ Myndir hafa ekki verið síaðar enn — sumar myndir gætu enn sýnt
+                  upprunalega söluaðilann. Ekki hægt að birta fyrr en síun er lokið.
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
