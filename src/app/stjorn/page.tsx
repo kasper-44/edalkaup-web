@@ -281,20 +281,12 @@ export default function AdminPage() {
                       <button
                         onClick={() => {
                           navigator.clipboard.writeText(buildPostText(car))
-                          alert('Texti afritaður! Límdu hann inn á Facebook eða bland.is.')
+                          alert('Texti afritaður! Opnaðu Eðalkaup síðuna á Facebook, búðu til færslu og límdu textann inn.')
                         }}
                         className="px-3 py-1.5 rounded-lg bg-slate-700 text-white text-sm font-semibold hover:bg-slate-600"
                       >
-                        Afrita texta
+                        Afrita texta fyrir Facebook
                       </button>
-                      <a
-                        href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://edalkaup.is/bilar/${car.id}`)}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-3 py-1.5 rounded-lg bg-[#1877F2] text-white text-sm font-semibold hover:bg-[#1466d4]"
-                      >
-                        Deila á FB
-                      </a>
                       {car.status !== 'live' && (
                         <button
                           onClick={() => {
