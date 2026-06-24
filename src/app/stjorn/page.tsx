@@ -212,7 +212,7 @@ export default function AdminPage() {
                         </p>
                         {!car.images_original && (
                           <span className="inline-block mt-1 px-2 py-0.5 text-[11px] rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30">
-                            ⚠ Myndir ósíaðar — ekki hægt að birta enn
+                            ⚠ Myndir ósíaðar — skoðaðu í forskoðun fyrst
                           </span>
                         )}
                       </div>
@@ -262,10 +262,21 @@ export default function AdminPage() {
                       </button>
                       {car.status !== 'live' && (
                         <button
-                          onClick={() => patch(car.id, { status: 'live' })}
-                          disabled={saving === car.id || !car.images_original}
-                          title={!car.images_original ? 'Myndir hafa ekki verið síaðar enn' : ''}
-                          className="px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 text-sm font-semibold hover:bg-emerald-400 disabled:opacity-40 disabled:cursor-not-allowed"
+                          onClick={() => {
+                            if (
+                              !car.images_original &&
+                              !confirm(
+                                'Myndir hafa ekki verið síaðar sjálfvirkt. ' +
+                                  'Hefur þú skoðað myndirnar í forskoðun og staðfest að engin þeirra sýni upprunalega söluaðilann?\n\n' +
+                                  'Ýttu á OK til að birta, eða Hætta við til að skoða fyrst.',
+                              )
+                            ) {
+                              return
+                            }
+                            patch(car.id, { status: 'live' })
+                          }}
+                          disabled={saving === car.id}
+                          className="px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 text-sm font-semibold hover:bg-emerald-400 disabled:opacity-50"
                         >
                           Birta (í sölu)
                         </button>
@@ -378,8 +389,8 @@ export default function AdminPage() {
 
               {!preview.images_original && (
                 <p className="mt-5 px-3 py-2 rounded-lg bg-amber-100 text-amber-800 text-sm">
-                  ⚠ Myndir hafa ekki verið síaðar enn — sumar myndir gætu enn sýnt
-                  upprunalega söluaðilann. Ekki hægt að birta fyrr en síun er lokið.
+                  ⚠ Myndir hafa ekki verið síaðar sjálfvirkt enn — gakktu úr skugga
+                  um að engin mynd hér að ofan sýni upprunalega söluaðilann áður en þú birtir.
                 </p>
               )}
             </div>
