@@ -5,6 +5,7 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import ThemeProvider from '@/components/ThemeProvider'
 import MessengerButton from '@/components/MessengerButton'
+import { Analytics } from '@vercel/analytics/react'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -49,6 +50,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Footer />
           <MessengerButton />
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   )
