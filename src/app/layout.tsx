@@ -6,6 +6,7 @@ import Footer from '@/components/Footer'
 import ThemeProvider from '@/components/ThemeProvider'
 import MessengerButton from '@/components/MessengerButton'
 import { Analytics } from '@vercel/analytics/react'
+import MarketingTags from '@/components/MarketingTags'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -44,6 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className={`${inter.className} antialiased`}>
+        <MarketingTags />
         <ThemeProvider>
           <Header />
           <main className="min-h-screen">{children}</main>

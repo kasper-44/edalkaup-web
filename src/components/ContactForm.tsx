@@ -37,6 +37,21 @@ export default function ContactForm({ carTitle }: ContactFormProps) {
         throw new Error(data.error || 'Villa við sendingu')
       }
 
+      // Fire conversion events so ad platforms can optimise + retarget.
+      // (no-ops when the pixel/tag isn't configured)
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const w = window as any
+        if (typeof w.fbq === 'function') {
+          w.fbq('track', 'Lead', { content_name: carTitle || 'Almenn fyrirspurn' })
+        }
+        if (typeof w.gtag === 'function') {
+          w.gtag('event', 'generate_lead', { item_name: carTitle || 'Almenn fyrirspurn' })
+        }
+      } catch {
+        /* ignore tracking errors */
+      }
+
       setSubmitted(true)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Villa við sendingu')
