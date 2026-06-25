@@ -28,9 +28,14 @@ export default function Header() {
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-accent to-accent-dark flex items-center justify-center text-navy-900 font-bold text-xl">
-              E
-            </div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/logo-mark.svg"
+              alt="Eðalkaup"
+              className="w-10 h-10 rounded-lg"
+              width={40}
+              height={40}
+            />
             <div>
               <span className="text-xl font-bold tracking-tight text-gray-900 dark:text-white group-hover:text-accent transition-colors">
                 EÐALKAUP

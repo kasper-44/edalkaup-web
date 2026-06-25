@@ -1,0 +1,20 @@
+<svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Eðalkaup">
+  <defs>
+    <linearGradient id="edGold" x1="22" y1="20" x2="74" y2="76" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#e7cd78"/>
+      <stop offset="0.5" stop-color="#c9a84c"/>
+      <stop offset="1" stop-color="#9c7e2a"/>
+    </linearGradient>
+  </defs>
+  <!-- Emblem -->
+  <rect x="2" y="2" width="92" height="92" rx="24" fill="#0a0f1c"/>
+  <rect x="2.75" y="2.75" width="90.5" height="90.5" rx="23.25" stroke="url(#edGold)" stroke-opacity="0.6" stroke-width="1.5"/>
+
+  <!-- Italicised E monogram for a sense of motion/speed. Slanted via skewX around centre. -->
+  <g fill="url(#edGold)" transform="translate(6 0) skewX(-9)">
+    <rect x="26" y="26" width="9.5" height="44" rx="4.75"/>
+    <rect x="26" y="26" width="42" height="9.5" rx="4.75"/>
+    <rect x="26" y="43.25" width="28" height="9.5" rx="4.75"/>
+    <rect x="26" y="60.5" width="42" height="9.5" rx="4.75"/>
+  </g>
+</svg>
