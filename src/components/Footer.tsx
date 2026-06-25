@@ -8,8 +8,9 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-3 mb-4">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/logo-mark.svg" alt="Eðalkaup" className="w-10 h-10 rounded-lg" width={40} height={40} />
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-accent to-accent-dark flex items-center justify-center text-navy-900 font-bold text-xl">
+                E
+              </div>
               <span className="text-xl font-bold text-gray-900 dark:text-white">EÐALKAUP</span>
             </div>
             <p className="text-sm text-gray-500 dark:text-slate-400 leading-relaxed">
