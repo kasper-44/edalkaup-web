@@ -27,11 +27,25 @@ interface Car {
   description_is: string | null
   source_url: string | null
   vin: string | null
+  last_seen_at: string | null
   status: string
   location_country: string | null
 }
 
 const fmt = (n: number) => new Intl.NumberFormat('is-IS').format(n)
+
+// "37m ago", "2klst ago", "3 dögum síðan" style relative time.
+function timeAgo(iso: string | null): string {
+  if (!iso) return ''
+  const diff = Date.now() - new Date(iso).getTime()
+  const m = Math.floor(diff / 60000)
+  if (m < 1) return 'í gær'
+  if (m < 60) return `${m}m síðan`
+  const h = Math.floor(m / 60)
+  if (h < 24) return `${h}klst síðan`
+  const d = Math.floor(h / 24)
+  return `${d} ${d === 1 ? 'degi' : 'dögum'} síðan`
+}
 
 // Build ready-to-paste Icelandic post text for Facebook / groups / bland.is.
 function buildPostText(car: Car): string {
@@ -249,6 +263,9 @@ export default function AdminPage() {
                         <p className="text-slate-400 text-sm">
                           {car.colour} · {car.mileage_km ? fmt(car.mileage_km) + ' km' : 'Nýr'} ·{' '}
                           {car.location_country}
+                          {car.last_seen_at && (
+                            <span className="text-slate-500"> · {timeAgo(car.last_seen_at)}</span>
+                          )}
                         </p>
                         {!car.images_original && (
                           <span className="inline-block mt-1 px-2 py-0.5 text-[11px] rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30">

@@ -15,9 +15,7 @@ export async function GET(req: Request) {
     .from('cars')
     .select('*')
     .eq('status', status)
-    .order('make', { ascending: true })
-    .order('model', { ascending: true })
-    .order('year', { ascending: false })
+    .order('last_seen_at', { ascending: false })
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 })
