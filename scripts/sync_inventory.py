@@ -35,13 +35,29 @@ AUTODEV_BASE = "https://auto.dev/api/listings"
 # --- Search targets (your 7 models) ---
 # Search targets. `trims` = keyword allowlist (case-insensitive substring match
 # against the listing trim). Empty list = accept all trims for that model.
-# Add your targets here:
-TARGETS = []
+TARGETS = [
+    {"make": "GMC", "model": "Sierra EV", "trims": ["Denali"]},
+]
 
-MIN_YEAR = 2024
+MIN_YEAR = 2025
 MAX_MILES = 35000
-MAX_PAGES_PER_MODEL = 3   # 20 results/page -> up to 60 candidates/model/day
+MAX_PAGES_PER_MODEL = 5   # up to 100 candidates/day
 REQ_PAUSE = 0.4           # be gentle on the API
+
+# --- Auto-pricing (miles → ISK) ---
+# Cars are priced automatically based on mileage and published live.
+PRICE_TIERS = [
+    (10000, 16890000),    # under 10,000 miles → 16.890.000 kr.
+    (25000, 16590000),    # 10,000–25,000 miles → 16.590.000 kr.
+    (35000, 16290000),    # 25,000–35,000 miles → 16.290.000 kr.
+]
+
+def price_for_miles(miles: int) -> int:
+    """Return ISK price based on mileage bracket."""
+    for threshold, price in PRICE_TIERS:
+        if miles < threshold:
+            return price
+    return PRICE_TIERS[-1][1]  # fallback: lowest tier
 
 
 def fetch_model(make: str, model: str, trims: list) -> list:
@@ -94,7 +110,7 @@ def vin_active(vin: str) -> bool:
 
 
 def to_row(rec: dict) -> dict:
-    """Map an Auto.dev record -> Supabase cars row (draft)."""
+    """Map an Auto.dev record -> Supabase cars row (auto-priced, published live)."""
     make = rec.get("make", "")
     model = rec.get("model", "")
     year = rec.get("year")
@@ -103,11 +119,11 @@ def to_row(rec: dict) -> dict:
     meta = meta_for(make, model)
 
     price_num = rec.get("priceUnformatted") or 0
-    # Auto.dev price string is "$X"; CAD listings include "CAD"
     currency = "CAD" if "CAD" in str(rec.get("price", "")) else "USD"
 
     miles = rec.get("mileageUnformatted") or 0
     mileage_km = int(miles * 1.60934)
+    isk_price = price_for_miles(miles)
 
     ext_color_en = rec.get("displayColor") or ""
     photos = [p.split("?")[0] for p in (rec.get("photoUrls") or []) if p][:20]
@@ -119,7 +135,13 @@ def to_row(rec: dict) -> dict:
     loc = ", ".join([x for x in (city, state) if x])
     dealer = rec.get("dealerName") or ""
     cur_sym = "$" if currency == "USD" else "CAD $"
+
+    # Detect electric vehicles — adds the Orkusjóði subsidy note.
+    is_ev = "EV" in model.upper() or "el" in model.lower() or meta["fuel_type"] == "Rafbíll"
+    orkusjodi = "Styrkhæfur bíll frá Orkusjóði.\n" if is_ev else ""
+
     desc = (
+        f"{orkusjodi}"
         f"VIN: {vin}\n"
         f"Original price: {cur_sym}{price_num:,}\n"
         f"Mileage: {miles:,} miles\n"
@@ -130,8 +152,8 @@ def to_row(rec: dict) -> dict:
         "title": f"{year} {make} {model} {trim}".strip() + f" [{vin}]",
         "make": make, "model": model, "year": year, "trim": trim,
         "vin": vin,
-        "price_isk": 0,                      # you set this
-        "price_original": price_num,         # original USD/CAD price
+        "price_isk": isk_price,                # auto-priced by mileage
+        "price_original": price_num,
         "price_currency": currency,
         "mileage_km": mileage_km,
         "fuel_type": meta["fuel_type"], "transmission": meta["transmission"],
@@ -142,11 +164,9 @@ def to_row(rec: dict) -> dict:
         "interior_colour": None,
         "description_is": desc,
         "images": photos,
-        "status": "draft",
+        "status": "live",                      # auto-published
         "location_country": "CA" if currency == "CAD" else "US",
         "source_site": "auto.dev",
-        # Auto.dev's vdpUrl is an internal path that 404s, so we don't store it.
-        # The admin view finds the original listing via a VIN Google search.
         "source_url": None,
         "last_seen_at": datetime.now(timezone.utc).isoformat(),
     }

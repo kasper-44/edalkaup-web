@@ -65,6 +65,14 @@ MODEL_META = {
     'GMC Sierra': {
         'engine': '6.2L V8 (420 HP)', 'fuel_type': 'Bensín', 'body_type': 'Pickup',
         'doors': 4, 'seats': 5, 'drivetrain': '4WD', 'transmission': 'Sjálfskiptur',
+        'features': ['Multimatic DSSV Shocks', 'Locking Front/Rear Diff', '33" All-Terrain Tires', 'Super Cruise', 'Heated Seats'],
+        'image': 'https://upload.wikimedia.org/wikipedia/commons/d/d7/2025_GMC_Sierra_AT4X_au_SIAM_2025.jpg',
+    },
+    'GMC Sierra EV': {
+        'engine': 'Rafmagn — Dual Motor (754 HP)', 'fuel_type': 'Rafbíll', 'body_type': 'Pickup',
+        'doors': 4, 'seats': 5, 'drivetrain': 'e4WD', 'transmission': 'Sjálfskiptur',
+        'features': ['754 HP Dual Motor', 'Super Cruise', 'Carbon Fiber Bed', 'Power Tailgate', 'Heated/Ventilated Seats'],
+        'image': 'https://upload.wikimedia.org/wikipedia/commons/d/d7/2025_GMC_Sierra_AT4X_au_SIAM_2025.jpg',
     },
     'Ford F-150': {
         'engine': '3.5L EcoBoost V6 (450 HP)', 'fuel_type': 'Bensín', 'body_type': 'Pickup',

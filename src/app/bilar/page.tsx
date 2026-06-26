@@ -58,6 +58,7 @@ export default function BilarPage() {
         .from('cars')
         .select('*')
         .eq('status', 'live')
+        .not('images_original', 'is', null)
         .order('year', { ascending: false })
       if (!error && data) {
         setCars(data.map(adaptCar))

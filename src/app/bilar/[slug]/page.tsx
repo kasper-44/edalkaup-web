@@ -11,6 +11,7 @@ async function getCar(slug: string): Promise<any | null> {
     .select('*')
     .eq('id', slug)
     .eq('status', 'live')
+    .not('images_original', 'is', null)
     .single()
   if (error || !data) return null
   return data

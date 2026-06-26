@@ -45,6 +45,7 @@ export default function FeaturedCars() {
         .from('cars')
         .select('*')
         .eq('status', 'live')
+        .not('images_original', 'is', null)
         .gt('price_isk', 0)
         .order('year', { ascending: false })
         .limit(6)
