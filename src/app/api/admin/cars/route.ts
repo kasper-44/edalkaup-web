@@ -60,3 +60,23 @@ export async function PATCH(req: Request) {
   }
   return NextResponse.json({ car: data?.[0] })
 }
+
+// DELETE /api/admin/cars  -> permanently delete one car
+// body: { id }
+export async function DELETE(req: Request) {
+  if (!isAuthorized(req)) {
+    return NextResponse.json({ error: 'Óheimilt' }, { status: 401 })
+  }
+  const body = await req.json()
+  const { id } = body
+  if (!id) {
+    return NextResponse.json({ error: 'Vantar id' }, { status: 400 })
+  }
+
+  const { error } = await supabaseAdmin.from('cars').delete().eq('id', id)
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 })
+  }
+  return NextResponse.json({ ok: true })
+}

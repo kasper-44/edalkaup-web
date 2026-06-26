@@ -137,6 +137,28 @@ export default function AdminPage() {
     patch(id, { price_isk: Number(val) || 0 })
   }
 
+  const deleteCar = async (id: string) => {
+    if (!confirm('Ertu viss um að þú viljir eyða þessum bíl? Þetta er endanlegt og ekki hægt að afturkalla.')) {
+      return
+    }
+    setSaving(id)
+    try {
+      const res = await fetch('/api/admin/cars', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
+        body: JSON.stringify({ id }),
+      })
+      if (!res.ok) {
+        const j = await res.json()
+        alert('Villa: ' + (j.error || res.status))
+        return
+      }
+      setCars((prev) => prev.filter((c) => c.id !== id))
+    } finally {
+      setSaving(null)
+    }
+  }
+
   // --- Login screen ---
   if (!authed) {
     return (
@@ -324,6 +346,16 @@ export default function AdminPage() {
                           className="px-3 py-1.5 rounded-lg bg-red-500/80 text-sm font-semibold hover:bg-red-500 disabled:opacity-50"
                         >
                           Merkja seldan
+                        </button>
+                      )}
+                      {car.status === 'draft' && (
+                        <button
+                          onClick={() => deleteCar(car.id)}
+                          disabled={saving === car.id}
+                          className="px-3 py-1.5 rounded-lg bg-red-900/40 text-red-300 text-sm hover:bg-red-900/60 disabled:opacity-50 ml-auto"
+                          title="Eyða bíl endanlega"
+                        >
+                          Eyða
                         </button>
                       )}
                     </div>
