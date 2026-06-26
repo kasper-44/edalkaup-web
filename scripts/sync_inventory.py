@@ -35,17 +35,8 @@ AUTODEV_BASE = "https://auto.dev/api/listings"
 # --- Search targets (your 7 models) ---
 # Search targets. `trims` = keyword allowlist (case-insensitive substring match
 # against the listing trim). Empty list = accept all trims for that model.
-TARGETS = [
-    {"make": "Toyota", "model": "Land Cruiser", "trims": []},          # all (premium by default)
-    {"make": "Toyota", "model": "Sequoia", "trims": ["TRD Pro", "Platinum", "1794", "Capstone"]},
-    {"make": "Toyota", "model": "Tundra", "trims": ["TRD Pro", "Platinum", "1794", "Capstone", "Limited"]},
-    {"make": "Toyota", "model": "4Runner", "trims": ["TRD Pro", "TRD Off", "Limited", "Platinum", "Trailhunter"]},
-    {"make": "GMC", "model": "Sierra 1500", "trims": ["AT4X", "AT4", "Denali"]},
-    {"make": "GMC", "model": "Sierra EV", "trims": ["Denali", "Max Range", "Extended Range"]},
-    {"make": "Chevrolet", "model": "Silverado 1500", "trims": ["ZR2", "Trail Boss", "High Country", "RST"]},
-    {"make": "Chevrolet", "model": "Silverado EV", "trims": ["RST", "Trail Boss", "Max Range", "Extended Range"]},
-    {"make": "Ford", "model": "F-150", "trims": ["Raptor", "Platinum", "King Ranch", "Tremor", "Lariat"]},
-]
+# Add your targets here:
+TARGETS = []
 
 MIN_YEAR = 2024
 MAX_MILES = 35000
