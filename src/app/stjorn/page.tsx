@@ -173,6 +173,33 @@ export default function AdminPage() {
     }
   }
 
+  const deleteAllDrafts = async () => {
+    if (
+      !confirm(
+        `Ertu viss um að þú viljir eyða ÖLLUM drögum (${cars.length} bílar)? ` +
+          'Þetta er endanlegt og ekki hægt að afturkalla.',
+      )
+    ) {
+      return
+    }
+    setLoading(true)
+    try {
+      const res = await fetch('/api/admin/cars', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
+        body: JSON.stringify({ all: true, status: 'draft' }),
+      })
+      if (!res.ok) {
+        const j = await res.json()
+        alert('Villa: ' + (j.error || res.status))
+        return
+      }
+      setCars([])
+    } finally {
+      setLoading(false)
+    }
+  }
+
   // --- Login screen ---
   if (!authed) {
     return (
@@ -229,6 +256,15 @@ export default function AdminPage() {
               {t === 'draft' ? 'Drög' : t === 'live' ? 'Í sölu' : 'Seldir'}
             </button>
           ))}
+          {tab === 'draft' && cars.length > 0 && (
+            <button
+              onClick={deleteAllDrafts}
+              className="ml-auto px-4 py-2 rounded-lg bg-red-900/40 text-red-300 text-sm font-semibold hover:bg-red-900/60"
+              title="Eyða öllum drögum endanlega"
+            >
+              Eyða öllum drögum
+            </button>
+          )}
         </div>
 
         {loading ? (

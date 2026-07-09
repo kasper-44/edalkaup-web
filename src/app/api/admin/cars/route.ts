@@ -59,14 +59,31 @@ export async function PATCH(req: Request) {
   return NextResponse.json({ car: data?.[0] })
 }
 
-// DELETE /api/admin/cars  -> permanently delete one car
-// body: { id }
+// DELETE /api/admin/cars  -> permanently delete cars
+// body: { id }                       -> delete one car by id
+// body: { all: true, status: 'draft' } -> delete every car with that status
 export async function DELETE(req: Request) {
   if (!isAuthorized(req)) {
     return NextResponse.json({ error: 'Óheimilt' }, { status: 401 })
   }
   const body = await req.json()
-  const { id } = body
+  const { id, all, status } = body
+
+  // Bulk delete: every car with the given status.
+  if (all === true) {
+    if (!['draft', 'live', 'sold'].includes(status)) {
+      return NextResponse.json({ error: 'Ógild staða' }, { status: 400 })
+    }
+    const { error, count } = await supabaseAdmin
+      .from('cars')
+      .delete({ count: 'exact' })
+      .eq('status', status)
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 })
+    }
+    return NextResponse.json({ ok: true, deleted: count ?? 0 })
+  }
+
   if (!id) {
     return NextResponse.json({ error: 'Vantar id' }, { status: 400 })
   }
