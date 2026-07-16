@@ -27,6 +27,7 @@ interface Car {
   description_is: string | null
   source_url: string | null
   vin: string | null
+  last_seen_at: string | null
   status: string
   location_country: string | null
   price_verified: boolean
@@ -34,6 +35,19 @@ interface Car {
 }
 
 const fmt = (n: number) => new Intl.NumberFormat('is-IS').format(n)
+
+// "37m ago", "2klst ago", "3 dögum síðan" style relative time.
+function timeAgo(iso: string | null): string {
+  if (!iso) return ''
+  const diff = Date.now() - new Date(iso).getTime()
+  const m = Math.floor(diff / 60000)
+  if (m < 1) return 'í gær'
+  if (m < 60) return `${m}m síðan`
+  const h = Math.floor(m / 60)
+  if (h < 24) return `${h}klst síðan`
+  const d = Math.floor(h / 24)
+  return `${d} ${d === 1 ? 'degi' : 'dögum'} síðan`
+}
 
 // Build ready-to-paste Icelandic post text for Facebook / groups / bland.is.
 function buildPostText(car: Car): string {
@@ -161,6 +175,33 @@ export default function AdminPage() {
     }
   }
 
+  const deleteAllDrafts = async () => {
+    if (
+      !confirm(
+        `Ertu viss um að þú viljir eyða ÖLLUM drögum (${cars.length} bílar)? ` +
+          'Þetta er endanlegt og ekki hægt að afturkalla.',
+      )
+    ) {
+      return
+    }
+    setLoading(true)
+    try {
+      const res = await fetch('/api/admin/cars', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
+        body: JSON.stringify({ all: true, status: 'draft' }),
+      })
+      if (!res.ok) {
+        const j = await res.json()
+        alert('Villa: ' + (j.error || res.status))
+        return
+      }
+      setCars([])
+    } finally {
+      setLoading(false)
+    }
+  }
+
   // --- Login screen ---
   if (!authed) {
     return (
@@ -217,6 +258,15 @@ export default function AdminPage() {
               {t === 'draft' ? 'Drög' : t === 'live' ? 'Í sölu' : 'Seldir'}
             </button>
           ))}
+          {tab === 'draft' && cars.length > 0 && (
+            <button
+              onClick={deleteAllDrafts}
+              className="ml-auto px-4 py-2 rounded-lg bg-red-900/40 text-red-300 text-sm font-semibold hover:bg-red-900/60"
+              title="Eyða öllum drögum endanlega"
+            >
+              Eyða öllum drögum
+            </button>
+          )}
         </div>
 
         {loading ? (
@@ -251,6 +301,9 @@ export default function AdminPage() {
                         <p className="text-slate-400 text-sm">
                           {car.colour} · {car.mileage_km ? fmt(car.mileage_km) + ' km' : 'Nýr'} ·{' '}
                           {car.location_country}
+                          {car.last_seen_at && (
+                            <span className="text-slate-500"> · {timeAgo(car.last_seen_at)}</span>
+                          )}
                         </p>
                         <div className="flex flex-wrap gap-1 mt-1">
                           {!car.images_original && (
