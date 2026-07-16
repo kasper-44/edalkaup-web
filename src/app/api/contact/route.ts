@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic'
 export async function POST(req: Request) {
   try {
     const resend = new Resend(process.env.RESEND_API_KEY)
-    const { name, email, phone, message, car } = await req.json()
+    const { name, email, phone, message, car, carUrl, carVin } = await req.json()
 
     if (!name || !email || !message) {
       return NextResponse.json({ error: 'Vantar nafn, netfang eða skilaboð' }, { status: 400 })
@@ -26,7 +26,7 @@ export async function POST(req: Request) {
         <p><strong>Nafn:</strong> ${name}</p>
         <p><strong>Netfang:</strong> ${email}</p>
         ${phone ? `<p><strong>Sími:</strong> ${phone}</p>` : ''}
-        ${car ? `<p><strong>Bíll:</strong> ${car}</p>` : ''}
+        ${car ? `<p><strong>Bíll:</strong> ${car}${carVin ? ` (VIN: ${carVin})` : ''}${carUrl ? ` — <a href="${carUrl}">Skoða auglýsingu</a>` : ''}</p>` : ''}
         <hr/>
         <p>${message.replace(/\n/g, '<br/>')}</p>
       `,

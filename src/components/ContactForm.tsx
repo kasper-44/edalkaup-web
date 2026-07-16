@@ -4,9 +4,11 @@ import { useState } from 'react'
 
 interface ContactFormProps {
   carTitle?: string
+  carUrl?: string
+  carVin?: string
 }
 
-export default function ContactForm({ carTitle }: ContactFormProps) {
+export default function ContactForm({ carTitle, carUrl, carVin }: ContactFormProps) {
   const [submitted, setSubmitted] = useState(false)
   const [sending, setSending] = useState(false)
   const [error, setError] = useState('')
@@ -29,6 +31,8 @@ export default function ContactForm({ carTitle }: ContactFormProps) {
           phone: formData.get('phone'),
           message: formData.get('message'),
           car: carTitle || '',
+          carUrl: carUrl || '',
+          carVin: carVin || '',
         }),
       })
 

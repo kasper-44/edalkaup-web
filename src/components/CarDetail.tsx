@@ -71,7 +71,11 @@ export default function CarDetail({ car }: { car: any }) {
             {/* Inquiry form (expands inline) */}
             {showInquiry && (
               <div id="fyrirspurn">
-                <ContactForm carTitle={title} />
+                <ContactForm
+                  carTitle={title}
+                  carUrl={`https://edalkaup.is/bilar/${car.id}`}
+                  carVin={car.vin || undefined}
+                />
               </div>
             )}
           </div>
