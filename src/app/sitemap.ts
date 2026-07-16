@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
-import { cars, deliveredCars } from '@/data/cars'
+import { supabase } from '@/lib/supabase'
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://edalkaup.is'
 
   const staticPages = [
@@ -12,9 +12,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/hafa-samband`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.6 },
   ]
 
-  const carPages = cars.map((car) => ({
-    url: `${baseUrl}/bilar/${car.slug}`,
-    lastModified: new Date(car.createdAt),
+  // Same visibility rule as /bilar and /bilar/[slug]: live + photo-filtered only.
+  const { data } = await supabase
+    .from('cars')
+    .select('id,last_seen_at')
+    .eq('status', 'live')
+    .not('images_original', 'is', null)
+
+  const carPages = (data || []).map((car) => ({
+    url: `${baseUrl}/bilar/${car.id}`,
+    lastModified: car.last_seen_at ? new Date(car.last_seen_at) : new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.8,
   }))

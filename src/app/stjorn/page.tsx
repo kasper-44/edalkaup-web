@@ -29,6 +29,8 @@ interface Car {
   vin: string | null
   status: string
   location_country: string | null
+  price_verified: boolean
+  specs_verified: boolean
 }
 
 const fmt = (n: number) => new Intl.NumberFormat('is-IS').format(n)
@@ -250,11 +252,27 @@ export default function AdminPage() {
                           {car.colour} · {car.mileage_km ? fmt(car.mileage_km) + ' km' : 'Nýr'} ·{' '}
                           {car.location_country}
                         </p>
-                        {!car.images_original && (
-                          <span className="inline-block mt-1 px-2 py-0.5 text-[11px] rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30">
-                            ⚠ Myndir ósíaðar — skoðaðu í forskoðun fyrst
-                          </span>
-                        )}
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          {!car.images_original && (
+                            <span className="inline-block px-2 py-0.5 text-[11px] rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30">
+                              ⚠ Myndir ósíaðar — skoðaðu í forskoðun fyrst
+                            </span>
+                          )}
+                          {car.specs_verified ? (
+                            <span className="inline-block px-2 py-0.5 text-[11px] rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                              ✓ Tæknilegar upplýsingar staðfestar
+                            </span>
+                          ) : (
+                            <span className="inline-block px-2 py-0.5 text-[11px] rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30">
+                              ⚠ Tæknilegar upplýsingar óstaðfestar — opnaðu forskoðun til að staðfesta
+                            </span>
+                          )}
+                          {!car.price_verified && (
+                            <span className="inline-block px-2 py-0.5 text-[11px] rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30">
+                              ⚠ Verð ekki staðfest{car.price_isk > 0 ? '' : ' (og ekki sett)'}
+                            </span>
+                          )}
+                        </div>
                       </div>
                       {car.vin && (
                         <a
@@ -309,27 +327,44 @@ export default function AdminPage() {
                       >
                         Afrita texta fyrir Facebook
                       </button>
-                      {car.status !== 'live' && (
-                        <button
-                          onClick={() => {
-                            if (
-                              !car.images_original &&
-                              !confirm(
-                                'Myndir hafa ekki verið síaðar sjálfvirkt. ' +
-                                  'Hefur þú skoðað myndirnar í forskoðun og staðfest að engin þeirra sýni upprunalega söluaðilann?\n\n' +
-                                  'Ýttu á OK til að birta, eða Hætta við til að skoða fyrst.',
-                              )
-                            ) {
-                              return
-                            }
-                            patch(car.id, { status: 'live' })
-                          }}
-                          disabled={saving === car.id}
-                          className="px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 text-sm font-semibold hover:bg-emerald-400 disabled:opacity-50"
-                        >
-                          Birta (í sölu)
-                        </button>
-                      )}
+                      {car.status !== 'live' && (() => {
+                        const missing: string[] = []
+                        if (!(car.price_isk > 0)) missing.push('verð er ekki sett')
+                        else if (!car.price_verified) missing.push('verð er ekki staðfest')
+                        if (!car.specs_verified) missing.push('tæknilegar upplýsingar eru ekki staðfestar')
+
+                        if (missing.length > 0) {
+                          return (
+                            <span
+                              title={`Vantar: ${missing.join(', ')}`}
+                              className="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-500 text-sm font-semibold cursor-not-allowed select-none"
+                            >
+                              Birta (í sölu) — vantar: {missing.join(', ')}
+                            </span>
+                          )
+                        }
+                        return (
+                          <button
+                            onClick={() => {
+                              if (
+                                !car.images_original &&
+                                !confirm(
+                                  'Myndir hafa ekki verið síaðar sjálfvirkt. ' +
+                                    'Hefur þú skoðað myndirnar í forskoðun og staðfest að engin þeirra sýni upprunalega söluaðilann?\n\n' +
+                                    'Ýttu á OK til að birta, eða Hætta við til að skoða fyrst.',
+                                )
+                              ) {
+                                return
+                              }
+                              patch(car.id, { status: 'live' })
+                            }}
+                            disabled={saving === car.id}
+                            className="px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 text-sm font-semibold hover:bg-emerald-400 disabled:opacity-50"
+                          >
+                            Birta (í sölu)
+                          </button>
+                        )
+                      })()}
                       {car.status !== 'draft' && (
                         <button
                           onClick={() => patch(car.id, { status: 'draft' })}
@@ -444,6 +479,36 @@ export default function AdminPage() {
                       <span className="font-medium">{value}</span>
                     </div>
                   ))}
+              </div>
+
+              {/* Specs verification — required before this car can go live.
+                  "Vél"/"Eldsneyti"/"Drifkerfi" etc. above are auto-filled from a
+                  per-model default table, NOT decoded from this specific car —
+                  check them against the real vehicle before confirming. */}
+              <div className="mt-5 px-3 py-3 rounded-lg bg-slate-100 border border-black/5">
+                {preview.specs_verified ? (
+                  <p className="text-emerald-700 text-sm font-medium">
+                    ✓ Tæknilegar upplýsingar staðfestar
+                  </p>
+                ) : (
+                  <>
+                    <p className="text-amber-800 text-sm mb-2">
+                      ⚠ Upplýsingarnar hér að ofan (vél, eldsneyti, drifkerfi o.fl.) eru
+                      sjálfvirkt útfylltar sjálfgefin gildi fyrir gerðina — EKKI staðfest
+                      fyrir þennan tiltekna bíl. Farðu yfir þær áður en þú staðfestir.
+                    </p>
+                    <button
+                      onClick={async () => {
+                        await patch(preview.id, { specs_verified: true })
+                        setPreview((p) => (p ? { ...p, specs_verified: true } : p))
+                      }}
+                      disabled={saving === preview.id}
+                      className="px-3 py-1.5 rounded-lg bg-amber-500 text-slate-950 text-sm font-semibold hover:bg-amber-400 disabled:opacity-50"
+                    >
+                      Ég hef yfirfarið og staðfesti þessar upplýsingar
+                    </button>
+                  </>
+                )}
               </div>
 
               {!preview.images_original && (

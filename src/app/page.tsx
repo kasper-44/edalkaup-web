@@ -46,9 +46,7 @@ export default function Home() {
           <p className="text-accent text-sm font-semibold uppercase tracking-[0.2em] mb-3">Nýjast á lager</p>
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">Bílar til sölu</h2>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <FeaturedCars />
-        </div>
+        <FeaturedCars />
         <div className="text-center mt-10">
           <Link
             href="/bilar"

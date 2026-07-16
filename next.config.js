@@ -5,6 +5,7 @@ const nextConfig = {
   },
   images: {
     remotePatterns: [
+      { protocol: 'https', hostname: 'auto.dev' },
       { protocol: 'https', hostname: '**.auto.dev' },
       { protocol: 'https', hostname: 'www.auto.dev' },
       { protocol: 'https', hostname: 'images.unsplash.com' },

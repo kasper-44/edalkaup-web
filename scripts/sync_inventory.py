@@ -3,9 +3,10 @@
 Edalkaup daily inventory sync.
 
   1. FETCH  target models from Auto.dev (year >= MIN_YEAR, mileage <= MAX_MILES).
-  2. INSERT new cars into Supabase as status='draft' (hidden until you price them).
-            Original USD/CAD price is stored in price_original / price_currency;
-            price_isk is left 0 for you to set, then you flip status to 'live'.
+  2. INSERT new cars into Supabase as status='draft' (hidden until you review &
+            publish them in /stjorn). Original USD/CAD price is stored in
+            price_original / price_currency; price_isk is pre-filled by the
+            mileage-tier auto-pricing below, but nothing goes live automatically.
   3. SOLD   re-check every existing draft/live car's VIN on Auto.dev; if it no
             longer appears, mark status='sold' (hidden, reversible).
 
@@ -45,7 +46,8 @@ MAX_PAGES_PER_MODEL = 5   # up to 100 candidates/day
 REQ_PAUSE = 0.4           # be gentle on the API
 
 # --- Auto-pricing (miles → ISK) ---
-# Cars are priced automatically based on mileage and published live.
+# Cars are pre-priced automatically based on mileage, as a starting point for
+# the owner to adjust in /stjorn — they still land as status='draft'.
 PRICE_TIERS = [
     (10000, 16890000),    # under 10,000 miles → 16.890.000 kr.
     (25000, 16590000),    # 10,000–25,000 miles → 16.590.000 kr.
@@ -136,9 +138,9 @@ def to_row(rec: dict) -> dict:
     dealer = rec.get("dealerName") or ""
     cur_sym = "$" if currency == "USD" else "CAD $"
 
-    # Detect electric vehicles — adds the Orkusjóði subsidy note.
+    # Detect electric vehicles — adds the Orkusjóði subsidy note (label only, no price math).
     is_ev = "EV" in model.upper() or "el" in model.lower() or meta["fuel_type"] == "Rafbíll"
-    orkusjodi = "Styrkhæfur bíll frá Orkusjóði.\n" if is_ev else ""
+    orkusjodi = "Styrkhæfur frá Orkusjóði\n" if is_ev else ""
 
     desc = (
         f"{orkusjodi}"
@@ -164,7 +166,7 @@ def to_row(rec: dict) -> dict:
         "interior_colour": None,
         "description_is": desc,
         "images": photos,
-        "status": "live",                      # auto-published
+        "status": "draft",                     # never auto-published — owner reviews & flips to live in /stjorn
         "location_country": "CA" if currency == "CAD" else "US",
         "source_site": "auto.dev",
         "source_url": None,
