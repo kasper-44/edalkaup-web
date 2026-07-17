@@ -2,7 +2,8 @@
 """
 Edalkaup daily inventory sync.
 
-  1. FETCH  target models from Auto.dev (year >= MIN_YEAR, mileage <= MAX_MILES).
+  1. FETCH  target models from Auto.dev, per the selected --job's own
+            year/mileage/trim/condition filters (see JOBS below).
   2. INSERT new cars into Supabase as status='draft' (hidden until you review &
             publish them in /stjorn). Original USD/CAD price is stored in
             price_original / price_currency; price_isk is pre-filled by the
@@ -13,9 +14,14 @@ Edalkaup daily inventory sync.
 Secrets come from ~/.hermes/.env (AUTO_DEV_API_KEY, SUPABASE_SERVICE_ROLE_KEY).
 
 Usage:
-  python3 scripts/sync_inventory.py            # full run
-  python3 scripts/sync_inventory.py --dry-run  # no writes, just report
-  python3 scripts/sync_inventory.py --limit 5  # cap new inserts (testing)
+  python3 scripts/sync_inventory.py --job sierra-denali-max-range
+  python3 scripts/sync_inventory.py --job weekly-watchlist
+  python3 scripts/sync_inventory.py --job weekly-watchlist --dry-run  # no writes, just report
+  python3 scripts/sync_inventory.py --job weekly-watchlist --limit 5  # cap new inserts (testing)
+
+`--job` selects which named target set (JOBS, below) this run searches — each
+job has its own models/trims/year/mileage/condition/per-target result cap, so
+different cron schedules can run different searches without touching code.
 """
 import argparse
 import re
@@ -33,16 +39,74 @@ from transform_maps import to_isk_color, meta_for  # noqa: E402
 
 AUTODEV_BASE = "https://auto.dev/api/listings"
 
-# --- Search targets (your 7 models) ---
-# Search targets. `trims` = keyword allowlist (case-insensitive substring match
-# against the listing trim). Empty list = accept all trims for that model.
-TARGETS = [
-    {"make": "GMC", "model": "Sierra EV", "trims": ["Denali"]},
-]
+# --- Search targets, grouped into named jobs so different cron schedules can
+# run different searches. Per-target fields (all optional):
+#   trims          keyword allowlist checked client-side against the listing's
+#                  trim string. A plain string matches if that one keyword is
+#                  a substring (case-insensitive); a tuple requires ALL its
+#                  keywords present (any order) — e.g. ("Denali", "Max Range")
+#                  won't match "Extended Range Denali" or "Elevation Extended
+#                  Range". Omitted/empty = accept all trims. This is the
+#                  authoritative filter — real trim strings vary in word
+#                  order and add suffixes Auto.dev's own exact-match `trim`
+#                  param would miss (confirmed empirically: GMC lists the
+#                  same Denali/Max Range car under both "Denali Max Range"
+#                  AND "Max Range Denali" depending on the dealer feed).
+#   trim_query     optional list of exact trim strings to ALSO pass
+#                  server-side (Auto.dev's `trim` param is an exact match,
+#                  not substring). Pure performance: without it, a target on
+#                  a huge model (e.g. Ford F-150, ~120k total listings across
+#                  all trims) can page through MAX_PAGES_PER_MODEL pages of
+#                  mostly-irrelevant trims and never reach a Raptor — with
+#                  it, each query is pre-narrowed to ~thousands. `trims`
+#                  above still applies afterward as the real filter. Omit
+#                  for models small enough to scan directly (confirmed fine
+#                  for GMC Sierra EV and Cadillac LYRIQ without it).
+#   year_min/year_max     inclusive year bounds. Omitted = no bound.
+#   mileage_min/mileage_max   inclusive mile bounds (Auto.dev's API is in
+#                  miles even for CAD listings). Omitted = no bound.
+#   exclude_new    if True, drop condition == "new" listings client-side
+#                  (kept "used"/"certified pre-owned" — Auto.dev's own
+#                  condition=used query param excludes CPO too, which isn't
+#                  what "no brand new" means, so this filters after fetch).
+#   limit          max new (not-already-in-DB) rows to insert for this
+#                  target this run. Omitted/0 = unlimited.
+JOBS = {
+    # Job 1 (Mon/Thu 11:00): Sierra EV Denali Max Range only — Extended Range
+    # has a different battery/motor and isn't wanted here. Used/CPO only,
+    # 2025-2026, no mileage cap, take everything available.
+    "sierra-denali-max-range": [
+        {
+            "make": "GMC", "model": "Sierra EV",
+            "trims": [("Denali", "Max Range")],
+            "year_min": 2025, "year_max": 2026,
+            "exclude_new": True,
+        },
+    ],
+    # Job 2 (Mon 11:30): weekly watchlist, 3 cars each. Year floors instead of
+    # ceilings (2022+ for the petrol trucks) per 2026-07-17 correction; LYRIQ
+    # AWD can't be filtered server-side (Auto.dev exposes no drivetrain field)
+    # so it's fetched by trim=Luxury only and must be confirmed manually in
+    # /stjorn before publishing, same as every other spec field.
+    "weekly-watchlist": [
+        {"make": "Toyota", "model": "Sequoia", "trims": ["TRD Pro"], "trim_query": ["TRD Pro"],
+         "year_min": 2022, "mileage_max": 37282, "limit": 3},
+        # Tundra TRD Pro has been hybrid-only since its MY2022 redesign — Auto.dev
+        # lists that generation as trim "TRD Pro HV" (vs. plain "TRD Pro" for the
+        # pre-2022 gas V8, which year_min=2022 excludes anyway). Both trim_query
+        # strings are queried so the exact-match server filter doesn't miss the HV one.
+        {"make": "Toyota", "model": "Tundra", "trims": ["TRD Pro"], "trim_query": ["TRD Pro", "TRD Pro HV"],
+         "year_min": 2022, "mileage_max": 37282, "limit": 3},
+        {"make": "Ford", "model": "F-150", "trims": ["Raptor"], "trim_query": ["Raptor"],
+         "year_min": 2022, "mileage_max": 37282, "limit": 3},
+        {"make": "Ford", "model": "Bronco", "trims": ["Raptor"], "trim_query": ["Raptor"],
+         "year_min": 2022, "mileage_max": 37282, "limit": 3},
+        {"make": "Cadillac", "model": "LYRIQ", "trims": ["Luxury"],
+         "year_min": 2024, "limit": 3},
+    ],
+}
 
-MIN_YEAR = 2025
-MAX_MILES = 35000
-MAX_PAGES_PER_MODEL = 5   # up to 100 candidates/day
+MAX_PAGES_PER_MODEL = 15  # up to 300 candidates scanned per target per run
 REQ_PAUSE = 0.4           # be gentle on the API
 
 # --- Auto-pricing (miles → ISK) ---
@@ -62,40 +126,65 @@ def price_for_miles(miles: int) -> int:
     return PRICE_TIERS[-1][1]  # fallback: lowest tier
 
 
-def fetch_model(make: str, model: str, trims: list) -> list:
-    """Fetch listings for one model across a few pages, filtered server-side.
-
-    `trims` is a case-insensitive keyword allowlist; empty = accept all.
+def trim_matches(trim_text: str, groups: list) -> bool:
+    """True if `trim_text` satisfies any group. A group is either a single
+    keyword (matches if present) or a tuple of keywords (matches only if ALL
+    are present, any order). Case-insensitive substring match throughout.
     """
+    if not groups:
+        return True
+    trim_lc = (trim_text or "").lower()
+    for group in groups:
+        keywords = group if isinstance(group, tuple) else (group,)
+        if all(kw.lower() in trim_lc for kw in keywords):
+            return True
+    return False
+
+
+def fetch_model(target: dict) -> list:
+    """Fetch listings for one target's model, filtered by year/mileage/trim
+    server-side where possible (Auto.dev supports year_min/year_max/
+    mileage_min/mileage_max/trim — the last is an EXACT match) and always by
+    `trims`/condition client-side as the authoritative check (see JOBS docs
+    above for why: real trim strings vary in word order and suffixes).
+
+    Runs one paginated pass per `trim_query` value if given (each narrowed
+    server-side), or a single unfiltered-by-trim pass otherwise.
+    """
+    make, model = target["make"], target["model"]
     out, seen = [], set()
-    trims_lc = [t.lower() for t in (trims or [])]
-    for page in range(1, MAX_PAGES_PER_MODEL + 1):
-        params = {
-            "make": make, "model": model,
-            "year_min": str(MIN_YEAR), "mileage_max": str(MAX_MILES),
-            "page": str(page),
-        }
-        try:
-            r = requests.get(AUTODEV_BASE, headers=autodev_headers(), params=params, timeout=30)
-            r.raise_for_status()
-            recs = r.json().get("records", [])
-        except Exception as e:
-            print(f"   ! fetch error {make} {model} p{page}: {e}")
-            break
-        if not recs:
-            break
-        for rec in recs:
-            vin = rec.get("vin")
-            if not vin or vin in seen:
-                continue
-            # trim allowlist
-            if trims_lc:
-                rec_trim = (rec.get("trim") or "").lower()
-                if not any(t in rec_trim for t in trims_lc):
+    base_params = {"make": make, "model": model}
+    for key in ("year_min", "year_max", "mileage_min", "mileage_max"):
+        if target.get(key) is not None:
+            base_params[key] = str(target[key])
+
+    trim_query = target.get("trim_query") or [None]
+    for exact_trim in trim_query:
+        pass_params = dict(base_params)
+        if exact_trim:
+            pass_params["trim"] = exact_trim
+        for page in range(1, MAX_PAGES_PER_MODEL + 1):
+            params = {**pass_params, "page": str(page)}
+            try:
+                r = requests.get(AUTODEV_BASE, headers=autodev_headers(), params=params, timeout=30)
+                r.raise_for_status()
+                recs = r.json().get("records", [])
+            except Exception as e:
+                print(f"   ! fetch error {make} {model} p{page}: {e}")
+                break
+            if not recs:
+                break
+            for rec in recs:
+                vin = rec.get("vin")
+                if not vin or vin in seen:
                     continue
-            seen.add(vin)
-            out.append(rec)
-        time.sleep(REQ_PAUSE)
+                if target.get("exclude_new") and rec.get("condition") == "new":
+                    continue
+                if not trim_matches(rec.get("trim") or "", target.get("trims") or []):
+                    continue
+                seen.add(vin)
+                out.append(rec)
+            time.sleep(REQ_PAUSE)
     return out
 
 
@@ -178,12 +267,17 @@ def to_row(rec: dict) -> dict:
 
 def main():
     ap = argparse.ArgumentParser()
+    ap.add_argument("--job", required=True, choices=sorted(JOBS.keys()),
+                     help="named target set to search (see JOBS)")
     ap.add_argument("--dry-run", action="store_true", help="no DB writes")
-    ap.add_argument("--limit", type=int, default=0, help="cap new inserts (0=all)")
+    ap.add_argument("--limit", type=int, default=0,
+                     help="cap new inserts across the whole run (0=all; each "
+                          "target's own `limit` still applies per-target)")
     ap.add_argument("--skip-sold", action="store_true", help="skip sold-detection pass")
     args = ap.parse_args()
+    targets = JOBS[args.job]
 
-    print(f"=== Edalkaup sync {datetime.now().isoformat(timespec='seconds')} "
+    print(f"=== Edalkaup sync [{args.job}] {datetime.now().isoformat(timespec='seconds')} "
           f"{'(DRY RUN)' if args.dry_run else ''} ===")
 
     # Existing VINs in DB so we only insert genuinely new cars.
@@ -205,15 +299,19 @@ def main():
     # --- 1+2: fetch + insert new ---
     added, candidates = 0, 0
     new_rows = []
-    for t in TARGETS:
-        recs = fetch_model(t["make"], t["model"], t.get("trims", []))
+    for t in targets:
+        recs = fetch_model(t)
         candidates += len(recs)
         fresh = [r for r in recs if r.get("vin") and r["vin"] not in existing_vins]
-        print(f" {t['make']} {t['model']}: {len(recs)} candidates, {len(fresh)} new")
+        # Skip listings with no usable price (noise for manual pricing).
+        fresh = [r for r in fresh if r.get("priceUnformatted")]
+        target_limit = t.get("limit")
+        if target_limit:
+            fresh = fresh[:target_limit]
+        print(f" {t['make']} {t['model']} {t.get('trims', '')}: "
+              f"{len(recs)} candidates, {len(fresh)} new"
+              + (f" (capped at {target_limit})" if target_limit else ""))
         for rec in fresh:
-            # Skip listings with no usable price (noise for manual pricing).
-            if not (rec.get("priceUnformatted") or 0):
-                continue
             new_rows.append(to_row(rec))
             existing_vins.add(rec["vin"])
 
