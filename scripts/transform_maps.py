@@ -74,14 +74,18 @@ MODEL_META = {
         'features': ['Super Cruise', 'Carbon Fiber Bed', 'Power Tailgate', 'Heated/Ventilated Seats'],
         'image': 'https://upload.wikimedia.org/wikipedia/commons/d/d7/2025_GMC_Sierra_AT4X_au_SIAM_2025.jpg',
         # Denali comes in two distinct powertrains — no single default applies.
-        # Matched by substring against the listing's real trim string; anything
-        # that doesn't match falls back to the (deliberately unspecified) base
-        # entry above rather than guessing.
+        # Every required keyword (e.g. both "Denali" AND "Max Range") must
+        # appear in the listing's trim string, in any order, or the override
+        # doesn't apply — otherwise "Max Range"/"Extended Range" alone would
+        # also match non-Denali trims (e.g. "Elevation Extended Range"),
+        # which were never confirmed to share Denali's motor output. Anything
+        # that doesn't match falls back to the (deliberately unspecified)
+        # base entry above rather than guessing.
         'trims': {
-            'Max Range': {
+            ('Denali', 'Max Range'): {
                 'battery_kwh': 205, 'horsepower_hp': 771, 'drivetrain': 'Fjórhjóladrif',
             },
-            'Extended Range': {
+            ('Denali', 'Extended Range'): {
                 'battery_kwh': 170, 'horsepower_hp': 654, 'drivetrain': 'Fjórhjóladrif',
             },
         },
@@ -100,15 +104,18 @@ DEFAULT_META = {
 
 def meta_for(make: str, model: str, trim: str = '') -> dict:
     """Look up per-model spec defaults, applying a trim-specific override if
-    the model has one and the listing's trim string matches it (substring,
-    case-insensitive — real trim strings carry extra words like "Crew Cab").
+    the model has one and the listing's trim string matches it. Override keys
+    are a keyword or tuple of keywords; every keyword must appear somewhere
+    in the trim string (case-insensitive, any order — real trim strings mix
+    up word order and add extras like "Crew Cab") for the override to apply.
     """
     base = dict(MODEL_META.get(f"{make} {model}", DEFAULT_META))
     trims = base.pop('trims', None)
     if trims and trim:
         trim_lc = trim.lower()
         for key, override in trims.items():
-            if key.lower() in trim_lc:
+            keywords = key if isinstance(key, tuple) else (key,)
+            if all(kw.lower() in trim_lc for kw in keywords):
                 base.update(override)
                 break
     return base
