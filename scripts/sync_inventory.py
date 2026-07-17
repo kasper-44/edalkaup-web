@@ -118,7 +118,7 @@ def to_row(rec: dict) -> dict:
     year = rec.get("year")
     trim = rec.get("trim") or ""
     vin = rec.get("vin") or ""
-    meta = meta_for(make, model)
+    meta = meta_for(make, model, trim)
 
     price_num = rec.get("priceUnformatted") or 0
     currency = "CAD" if "CAD" in str(rec.get("price", "")) else "USD"
@@ -161,6 +161,8 @@ def to_row(rec: dict) -> dict:
         "fuel_type": meta["fuel_type"], "transmission": meta["transmission"],
         "body_type": meta["body_type"], "drivetrain": meta["drivetrain"],
         "engine": meta["engine"], "doors": meta["doors"], "seats": meta["seats"],
+        "battery_kwh": meta.get("battery_kwh"), "horsepower_hp": meta.get("horsepower_hp"),
+        "range_km": meta.get("range_km"), "towing_kg": meta.get("towing_kg"),
         "exterior_colour": ext_color_en or None,
         "colour": to_isk_color(ext_color_en),
         "interior_colour": None,

@@ -96,7 +96,8 @@ model_meta = {
 
 engine_overrides = {
     'GMC Sierra': {
-        'EV Denali Crew Cab Max Range': 'Rafmagn — Dual Motor (754 HP)',
+        'EV Denali Crew Cab Max Range': 'Rafmagn — Dual Motor (771 HP)',
+        'EV Denali Crew Cab Extended Range': 'Rafmagn — Dual Motor (654 HP)',
         'AT4X Crew Cab 4WD': '6.2L V8 (420 HP)',
     },
     'Chevrolet Silverado': {
@@ -112,14 +113,20 @@ engine_overrides = {
 }
 
 fuel_overrides = {
-    'GMC Sierra': {'EV Denali Crew Cab Max Range': 'Rafbíll'},
+    'GMC Sierra': {
+        'EV Denali Crew Cab Max Range': 'Rafbíll',
+        'EV Denali Crew Cab Extended Range': 'Rafbíll',
+    },
     'Chevrolet Silverado': {
         'LT Crew Cab e4WD': 'Rafbíll', 'LT Crew Cab Standard Range': 'Rafbíll', 'RST e4WD': 'Rafbíll',
     },
 }
 
 drivetrain_overrides = {
-    'GMC Sierra': {'EV Denali Crew Cab Max Range': 'e4WD'},
+    'GMC Sierra': {
+        'EV Denali Crew Cab Max Range': 'Fjórhjóladrif',
+        'EV Denali Crew Cab Extended Range': 'Fjórhjóladrif',
+    },
     'Chevrolet Silverado': {
         'LT Crew Cab e4WD': 'e4WD', 'LT Crew Cab Standard Range': 'e4WD', 'RST e4WD': 'e4WD',
     },

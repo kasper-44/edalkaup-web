@@ -69,10 +69,22 @@ MODEL_META = {
         'image': 'https://upload.wikimedia.org/wikipedia/commons/d/d7/2025_GMC_Sierra_AT4X_au_SIAM_2025.jpg',
     },
     'GMC Sierra EV': {
-        'engine': 'Rafmagn — Dual Motor (754 HP)', 'fuel_type': 'Rafbíll', 'body_type': 'Pickup',
+        'engine': 'Rafmagn', 'fuel_type': 'Rafbíll', 'body_type': 'Pickup',
         'doors': 4, 'seats': 5, 'drivetrain': 'e4WD', 'transmission': 'Sjálfskiptur',
-        'features': ['754 HP Dual Motor', 'Super Cruise', 'Carbon Fiber Bed', 'Power Tailgate', 'Heated/Ventilated Seats'],
+        'features': ['Super Cruise', 'Carbon Fiber Bed', 'Power Tailgate', 'Heated/Ventilated Seats'],
         'image': 'https://upload.wikimedia.org/wikipedia/commons/d/d7/2025_GMC_Sierra_AT4X_au_SIAM_2025.jpg',
+        # Denali comes in two distinct powertrains — no single default applies.
+        # Matched by substring against the listing's real trim string; anything
+        # that doesn't match falls back to the (deliberately unspecified) base
+        # entry above rather than guessing.
+        'trims': {
+            'Max Range': {
+                'battery_kwh': 205, 'horsepower_hp': 771, 'drivetrain': 'Fjórhjóladrif',
+            },
+            'Extended Range': {
+                'battery_kwh': 170, 'horsepower_hp': 654, 'drivetrain': 'Fjórhjóladrif',
+            },
+        },
     },
     'Ford F-150': {
         'engine': '3.5L EcoBoost V6 (450 HP)', 'fuel_type': 'Bensín', 'body_type': 'Pickup',
@@ -86,5 +98,17 @@ DEFAULT_META = {
 }
 
 
-def meta_for(make: str, model: str) -> dict:
-    return MODEL_META.get(f"{make} {model}", DEFAULT_META)
+def meta_for(make: str, model: str, trim: str = '') -> dict:
+    """Look up per-model spec defaults, applying a trim-specific override if
+    the model has one and the listing's trim string matches it (substring,
+    case-insensitive — real trim strings carry extra words like "Crew Cab").
+    """
+    base = dict(MODEL_META.get(f"{make} {model}", DEFAULT_META))
+    trims = base.pop('trims', None)
+    if trims and trim:
+        trim_lc = trim.lower()
+        for key, override in trims.items():
+            if key.lower() in trim_lc:
+                base.update(override)
+                break
+    return base

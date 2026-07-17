@@ -22,6 +22,10 @@ interface Car {
   drivetrain: string | null
   doors: number | null
   seats: number | null
+  battery_kwh: number | null
+  horsepower_hp: number | null
+  range_km: number | null
+  towing_kg: number | null
   images: string[] | null
   images_original: string[] | null
   description_is: string | null
@@ -58,6 +62,8 @@ function buildPostText(car: Car): string {
   if (car.mileage_km) lines.push(`Akstur: ${fmt(car.mileage_km)} km`)
   if (car.fuel_type) lines.push(`Eldsneyti: ${car.fuel_type}`)
   if (car.engine) lines.push(`Vél: ${car.engine}`)
+  if (car.battery_kwh) lines.push(`Rafhlaða: ${car.battery_kwh} kWh`)
+  if (car.horsepower_hp) lines.push(`Afl: ${car.horsepower_hp} hö`)
   if (car.colour) lines.push(`Litur: ${car.colour}`)
   lines.push('')
   lines.push('Innfluttur frá Norður-Ameríku af Eðalkaup — yfir 25 ára reynsla.')
@@ -515,6 +521,10 @@ export default function AdminPage() {
                   ['Akstur', preview.mileage_km ? fmt(preview.mileage_km) + ' km' : 'Nýr'],
                   ['Litur', preview.colour],
                   ['Vél', preview.engine],
+                  ['Rafhlaða', preview.battery_kwh ? `${preview.battery_kwh} kWh` : undefined],
+                  ['Afl', preview.horsepower_hp ? `${preview.horsepower_hp} hö` : undefined],
+                  ['Drægni', preview.range_km ? `${preview.range_km} km` : undefined],
+                  ['Dráttargeta', preview.towing_kg ? `${preview.towing_kg} kg` : undefined],
                   ['Skipting', preview.transmission],
                   ['Eldsneyti', preview.fuel_type],
                   ['Yfirbygging', preview.body_type],
