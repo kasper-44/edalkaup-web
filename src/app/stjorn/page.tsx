@@ -83,6 +83,8 @@ export default function AdminPage() {
   const [edits, setEdits] = useState<Record<string, string>>({})
   const [saving, setSaving] = useState<string | null>(null)
   const [preview, setPreview] = useState<Car | null>(null)
+  const [photoEditMode, setPhotoEditMode] = useState(false)
+  const [pendingImages, setPendingImages] = useState<string[]>([])
 
   // Restore a previous session (survives back/forward navigation + refresh).
   useEffect(() => {
@@ -157,6 +159,23 @@ export default function AdminPage() {
     const val = edits[id]
     if (val === undefined) return
     patch(id, { price_isk: Number(val) || 0 })
+  }
+
+  const closePreview = () => {
+    setPreview(null)
+    setPhotoEditMode(false)
+  }
+
+  const startPhotoEdit = () => {
+    setPendingImages(preview?.images ? [...preview.images] : [])
+    setPhotoEditMode(true)
+  }
+
+  const savePhotos = async () => {
+    if (!preview) return
+    await patch(preview.id, { images: pendingImages })
+    setPreview((p) => (p ? { ...p, images: pendingImages } : p))
+    setPhotoEditMode(false)
   }
 
   const deleteCar = async (id: string) => {
@@ -372,7 +391,10 @@ export default function AdminPage() {
 
                     <div className="flex gap-2 mt-3">
                       <button
-                        onClick={() => setPreview(car)}
+                        onClick={() => {
+                          setPreview(car)
+                          setPhotoEditMode(false)
+                        }}
                         className="px-3 py-1.5 rounded-lg bg-sky-600 text-white text-sm font-semibold hover:bg-sky-500"
                       >
                         Forskoða
@@ -465,7 +487,7 @@ export default function AdminPage() {
       {preview && (
         <div
           className="fixed inset-0 z-50 bg-black/80 overflow-y-auto p-4 sm:p-8"
-          onClick={() => setPreview(null)}
+          onClick={closePreview}
         >
           <div
             className="max-w-4xl mx-auto bg-white text-slate-900 rounded-2xl overflow-hidden"
@@ -476,7 +498,7 @@ export default function AdminPage() {
                 Forskoðun — svona sjá viðskiptavinir bílinn
               </span>
               <button
-                onClick={() => setPreview(null)}
+                onClick={closePreview}
                 className="px-3 py-1 rounded-lg bg-slate-700 text-sm hover:bg-slate-600"
               >
                 Loka ✕
@@ -494,16 +516,58 @@ export default function AdminPage() {
                   : 'Verð við fyrirspurn'}
               </p>
 
-              {preview.images && preview.images.length > 0 ? (
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-sm font-semibold text-slate-500">
+                  Myndir ({(photoEditMode ? pendingImages : preview.images || []).length})
+                </h3>
+                {photoEditMode ? (
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setPhotoEditMode(false)}
+                      className="px-3 py-1.5 rounded-lg bg-slate-200 text-slate-700 text-sm font-semibold hover:bg-slate-300"
+                    >
+                      Hætta við
+                    </button>
+                    <button
+                      onClick={savePhotos}
+                      disabled={saving === preview.id}
+                      className="px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 text-sm font-semibold hover:bg-emerald-400 disabled:opacity-50"
+                    >
+                      Vista myndir
+                    </button>
+                  </div>
+                ) : (
+                  preview.images && preview.images.length > 0 && (
+                    <button
+                      onClick={startPhotoEdit}
+                      className="px-3 py-1.5 rounded-lg bg-red-50 text-red-600 text-sm font-semibold hover:bg-red-100"
+                    >
+                      Eyða myndum
+                    </button>
+                  )
+                )}
+              </div>
+
+              {(photoEditMode ? pendingImages : preview.images || []).length > 0 ? (
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-6">
-                  {preview.images.map((src, i) => (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      key={i}
-                      src={src}
-                      alt={`mynd ${i + 1}`}
-                      className="w-full h-40 object-cover rounded-lg"
-                    />
+                  {(photoEditMode ? pendingImages : preview.images || []).map((src, i) => (
+                    <div key={src + i} className="relative">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={src}
+                        alt={`mynd ${i + 1}`}
+                        className={`w-full h-40 object-cover rounded-lg ${photoEditMode ? 'opacity-90' : ''}`}
+                      />
+                      {photoEditMode && (
+                        <button
+                          onClick={() => setPendingImages((imgs) => imgs.filter((_, j) => j !== i))}
+                          title="Eyða þessari mynd"
+                          className="absolute top-1.5 right-1.5 w-7 h-7 rounded-full bg-red-600 text-white text-sm font-bold flex items-center justify-center shadow hover:bg-red-500"
+                        >
+                          ✕
+                        </button>
+                      )}
+                    </div>
                   ))}
                 </div>
               ) : (

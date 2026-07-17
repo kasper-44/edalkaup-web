@@ -23,14 +23,14 @@ export async function GET(req: Request) {
   return NextResponse.json({ cars: data })
 }
 
-// PATCH /api/admin/cars  -> update one car's price_isk, verification flags, and/or status
-// body: { id, price_isk?, specs_verified?, status? }
+// PATCH /api/admin/cars  -> update one car's price_isk, verification flags, images, and/or status
+// body: { id, price_isk?, specs_verified?, status?, images? }
 export async function PATCH(req: Request) {
   if (!isAuthorized(req)) {
     return NextResponse.json({ error: 'Óheimilt' }, { status: 401 })
   }
   const body = await req.json()
-  const { id, price_isk, specs_verified, status } = body
+  const { id, price_isk, specs_verified, status, images } = body
   if (!id) {
     return NextResponse.json({ error: 'Vantar id' }, { status: 400 })
   }
@@ -44,6 +44,12 @@ export async function PATCH(req: Request) {
     update.price_verified = true
   }
   if (specs_verified !== undefined) update.specs_verified = Boolean(specs_verified)
+  if (images !== undefined) {
+    if (!Array.isArray(images) || !images.every((u) => typeof u === 'string')) {
+      return NextResponse.json({ error: 'Ógildar myndir' }, { status: 400 })
+    }
+    update.images = images
+  }
   if (status !== undefined) {
     if (!['draft', 'live', 'sold'].includes(status)) {
       return NextResponse.json({ error: 'Ógild staða' }, { status: 400 })
