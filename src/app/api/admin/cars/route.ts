@@ -30,12 +30,16 @@ export async function PATCH(req: Request) {
     return NextResponse.json({ error: 'Óheimilt' }, { status: 401 })
   }
   const body = await req.json()
-  const { id, price_isk, specs_verified, status, images } = body
+  const { id, price_isk, specs_verified, status, images, title, trim, description_is, seats } = body
   if (!id) {
     return NextResponse.json({ error: 'Vantar id' }, { status: 400 })
   }
 
   const update: Record<string, unknown> = {}
+  if (title !== undefined) update.title = String(title).trim()
+  if (trim !== undefined) update.trim = String(trim)
+  if (description_is !== undefined) update.description_is = description_is
+  if (seats !== undefined) update.seats = seats === null || seats === '' ? null : Number(seats)
   if (price_isk !== undefined) {
     update.price_isk = Number(price_isk) || 0
     // Saving a price through the admin UI IS the verification act — a human
