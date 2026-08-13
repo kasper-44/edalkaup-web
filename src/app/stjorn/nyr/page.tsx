@@ -56,6 +56,7 @@ export default function NewCarPage() {
   const submit = async () => {
     setError('')
     setBusy(true)
+    const secret = (typeof window !== 'undefined' && localStorage.getItem('edalkaup_admin_pw')) || pw
     try {
       let images: string[] = []
       if (files.length) {
@@ -67,7 +68,7 @@ export default function NewCarPage() {
           chunk.forEach((f) => fd.append('files', f))
           const up = await fetch('/api/admin/upload', {
             method: 'POST',
-            headers: { 'x-admin-password': pw },
+            headers: { 'x-admin-password': secret },
             body: fd,
           })
           const uj = await up.json()
@@ -95,8 +96,8 @@ export default function NewCarPage() {
 
       const res = await fetch('/api/admin/cars', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-admin-password': pw },
-        body: JSON.stringify(payload),
+        headers: { 'Content-Type': 'application/json', 'x-admin-password': secret },
+        body: JSON.stringify({ ...payload, admin_password: secret }),
       })
       const j = await res.json()
       if (!res.ok) throw new Error(j.error || res.status)

@@ -140,10 +140,13 @@ export async function DELETE(req: Request) {
 
 // POST /api/admin/cars  -> create a new listing
 export async function POST(req: Request) {
-  if (!isAuthorized(req)) {
+  const body = await req.json()
+  const headerOk = isAuthorized(req)
+  const bodyOk = Boolean(process.env.ADMIN_PASSWORD) && body?.admin_password === process.env.ADMIN_PASSWORD
+  if (!headerOk && !bodyOk) {
     return NextResponse.json({ error: 'Óheimilt' }, { status: 401 })
   }
-  const body = await req.json()
+  delete body.admin_password
 
   const title = String(body.title || '').trim()
   const make = String(body.make || '').trim()
