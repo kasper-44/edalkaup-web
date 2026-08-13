@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
+import { usePathname } from 'next/navigation'
 import { useTheme } from './ThemeProvider'
 
 const navItems = [
@@ -21,6 +22,9 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
   const [volvoOpen, setVolvoOpen] = useState(false)
   const { theme, toggle } = useTheme()
+  const pathname = usePathname()
+
+  if (/^\/volvo-ex60\/(diesel|hofdabilar|edalkaup)$/.test(pathname)) return null
 
   return (
     <header className="fixed top-0 left-0 right-0 z-40 bg-white/80 dark:bg-navy-900/80 backdrop-blur-xl border-b border-black/5 dark:border-white/5 transition-colors">

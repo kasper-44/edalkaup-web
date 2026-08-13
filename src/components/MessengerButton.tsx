@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { usePathname } from 'next/navigation'
 
 interface MessengerButtonProps {
   carName?: string // e.g. "2025 Jeep Wrangler Rubicon 4XE"
@@ -8,6 +9,8 @@ interface MessengerButtonProps {
 
 export default function MessengerButton({ carName }: MessengerButtonProps) {
   const [hovered, setHovered] = useState(false)
+  const pathname = usePathname()
+  if (/^\/volvo-ex60\/(diesel|hofdabilar|edalkaup)$/.test(pathname)) return null
 
   // Build Messenger link with optional pre-filled message about the car
   const baseUrl = 'https://m.me/Edalkaup'
