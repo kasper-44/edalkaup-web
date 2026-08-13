@@ -28,7 +28,7 @@ export async function generateMetadata({
     return { title: 'Volvo EX60 Ultra — TWIN Performance' }
   }
   return {
-    title: `Volvo EX60 Ultra — TWIN Performance | ${DEALER_NAMES[dealer]}`,
+    title: { absolute: `Volvo EX60 Ultra — TWIN Performance | ${DEALER_NAMES[dealer]}` },
   }
 }
 
