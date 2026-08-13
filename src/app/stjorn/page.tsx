@@ -259,7 +259,15 @@ export default function AdminPage() {
     <div className="min-h-screen bg-slate-950 text-white">
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold">Eðalkaup — Bílastjórn</h1>
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl font-bold">Eðalkaup — Bílastjórn</h1>
+            <a
+              href="/stjorn/nyr"
+              className="px-3 py-1.5 rounded-lg bg-amber-400 text-slate-950 text-sm font-semibold hover:bg-amber-300"
+            >
+              Bæta við bíl
+            </a>
+          </div>
           <div className="flex items-center gap-4">
             <span className="text-slate-400 text-sm">{cars.length} bílar</span>
             <button
