@@ -137,3 +137,79 @@ export async function DELETE(req: Request) {
   }
   return NextResponse.json({ ok: true })
 }
+
+// POST /api/admin/cars  -> create a new listing
+export async function POST(req: Request) {
+  if (!isAuthorized(req)) {
+    return NextResponse.json({ error: 'Óheimilt' }, { status: 401 })
+  }
+  const body = await req.json()
+
+  const title = String(body.title || '').trim()
+  const make = String(body.make || '').trim()
+  const model = String(body.model || '').trim()
+  const year = Number(body.year)
+  if (!title || !make || !model || !year) {
+    return NextResponse.json({ error: 'Vantar titil, framleiðanda, gerð eða árgerð' }, { status: 400 })
+  }
+
+  const status = body.status || 'draft'
+  if (!['draft', 'live', 'sold'].includes(status)) {
+    return NextResponse.json({ error: 'Ógild staða' }, { status: 400 })
+  }
+
+  const images = Array.isArray(body.images) ? body.images.filter((u: unknown) => typeof u === 'string') : []
+  const price_isk = Number(body.price_isk) || 0
+  const specs_verified = Boolean(body.specs_verified)
+  const price_verified = Boolean(body.price_verified) || price_isk > 0
+
+  if (status === 'live') {
+    const problems: string[] = []
+    if (!price_isk || !price_verified) problems.push('Verð er ekki staðfest')
+    if (!specs_verified) problems.push('Tæknilegar upplýsingar eru ekki staðfestar')
+    if (problems.length) {
+      return NextResponse.json({ error: `Ekki hægt að birta: ${problems.join(', ')}.` }, { status: 400 })
+    }
+  }
+
+  const row: Record<string, unknown> = {
+    title,
+    make,
+    model,
+    year,
+    trim: body.trim || '',
+    price_isk,
+    price_original: body.price_original ?? null,
+    price_currency: body.price_currency ?? null,
+    mileage_km: body.mileage_km === '' || body.mileage_km == null ? null : Number(body.mileage_km),
+    colour: body.colour || null,
+    exterior_colour: body.exterior_colour || body.colour || null,
+    engine: body.engine || null,
+    fuel_type: body.fuel_type || null,
+    body_type: body.body_type || null,
+    transmission: body.transmission || null,
+    drivetrain: body.drivetrain || null,
+    doors: body.doors ? Number(body.doors) : null,
+    seats: body.seats ? Number(body.seats) : null,
+    battery_kwh: body.battery_kwh ? Number(body.battery_kwh) : null,
+    horsepower_hp: body.horsepower_hp ? Number(body.horsepower_hp) : null,
+    range_km: body.range_km ? Number(body.range_km) : null,
+    towing_kg: body.towing_kg ? Number(body.towing_kg) : null,
+    images,
+    images_original: images,
+    description_is: body.description_is || null,
+    source_url: null,
+    vin: body.vin || null,
+    last_seen_at: new Date().toISOString(),
+    status,
+    location_country: body.location_country || null,
+    price_verified,
+    specs_verified,
+  }
+
+  const { data, error } = await supabaseAdmin.from('cars').insert(row).select()
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 })
+  }
+  return NextResponse.json({ car: data?.[0] }, { status: 201 })
+}
