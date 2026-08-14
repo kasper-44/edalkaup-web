@@ -1,8 +1,11 @@
 import { MetadataRoute } from 'next'
 import { supabase } from '@/lib/supabase'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://edalkaup.is'
+  const baseUrl = 'https://www.edalkaup.is'
 
   const staticPages = [
     { url: baseUrl, lastModified: new Date(), changeFrequency: 'weekly' as const, priority: 1.0 },
@@ -12,19 +15,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/hafa-samband`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.6 },
   ]
 
-  // Same visibility rule as /bilar and /bilar/[slug]: live + photo-filtered only.
   const { data } = await supabase
     .from('cars')
-    .select('id,last_seen_at')
+    .select('id,last_seen_at,images,images_original')
     .eq('status', 'live')
-    .not('images_original', 'is', null)
 
-  const carPages = (data || []).map((car) => ({
-    url: `${baseUrl}/bilar/${car.id}`,
-    lastModified: car.last_seen_at ? new Date(car.last_seen_at) : new Date(),
-    changeFrequency: 'weekly' as const,
-    priority: 0.8,
-  }))
+  const carPages = (data || [])
+    .filter((car) => {
+      const live = Array.isArray(car.images) ? car.images.length : 0
+      const orig = Array.isArray(car.images_original) ? car.images_original.length : 0
+      return live + orig > 0
+    })
+    .map((car) => ({
+      url: `${baseUrl}/bilar/${car.id}`,
+      lastModified: car.last_seen_at ? new Date(car.last_seen_at) : new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    }))
 
   return [...staticPages, ...carPages]
 }
