@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import { headers } from 'next/headers'
 import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
@@ -38,7 +39,9 @@ const themeScript = `
 })();
 `
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const hideChrome = (await headers()).get('x-hide-site-chrome') === '1'
+
   return (
     <html lang="is" suppressHydrationWarning>
       <head>
@@ -47,10 +50,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${inter.className} antialiased`}>
         <MarketingTags />
         <ThemeProvider>
-          <Header />
+          {!hideChrome && <Header />}
           <main className="min-h-screen">{children}</main>
-          <Footer />
-          <MessengerButton />
+          {!hideChrome && <Footer />}
+          {!hideChrome && <MessengerButton />}
         </ThemeProvider>
         <Analytics />
       </body>
