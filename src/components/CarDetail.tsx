@@ -15,6 +15,15 @@ function formatMileage(km: number) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
+function displayExteriorColour(car: { exterior_colour?: string | null; colour?: string | null }) {
+  const ext = (car.exterior_colour || '').trim()
+  const col = (car.colour || '').trim()
+  // Configurator dumps like "vanadiumgraumetallic" — prefer the human colour field
+  if (ext && /^[a-z]+$/.test(ext) && col) return col
+  return ext || col || 'Ótilgreint'
+}
+
 export default function CarDetail({ car }: { car: any }) {
   const [showInquiry, setShowInquiry] = useState(false)
   const title = `${car.year} ${car.make} ${car.model} ${car.trim || ''}`.trim()
@@ -25,7 +34,7 @@ export default function CarDetail({ car }: { car: any }) {
     { label: 'Gerð', value: car.model || '' },
     { label: 'Útgáfa', value: car.trim || '' },
     { label: 'Akstur', value: formatMileage(car.mileage_km) },
-    { label: 'Ytri litur', value: car.exterior_colour || car.colour || 'Ótilgreint' },
+    { label: 'Ytri litur', value: displayExteriorColour(car) },
     { label: 'Innri litur', value: car.interior_colour || 'Ótilgreint' },
     { label: 'Drifkerfi', value: car.drivetrain || '4WD' },
     { label: 'Vél', value: car.engine || '' },
@@ -107,10 +116,10 @@ export default function CarDetail({ car }: { car: any }) {
                   <span className="text-gray-500 dark:text-slate-400">Árgerð</span>
                   <span className="font-medium text-gray-900 dark:text-white">{car.year}</span>
                 </div>
-                {(car.exterior_colour || car.colour) && (
+                {displayExteriorColour(car) !== 'Ótilgreint' && (
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-500 dark:text-slate-400">Litur</span>
-                    <span className="font-medium text-gray-900 dark:text-white">{car.exterior_colour || car.colour}</span>
+                    <span className="font-medium text-gray-900 dark:text-white">{displayExteriorColour(car)}</span>
                   </div>
                 )}
               </div>

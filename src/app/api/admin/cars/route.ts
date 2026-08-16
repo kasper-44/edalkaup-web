@@ -30,12 +30,15 @@ export async function PATCH(req: Request) {
     return NextResponse.json({ error: 'Óheimilt' }, { status: 401 })
   }
   const body = await req.json()
-  const { id, price_isk, specs_verified, status, images, title, trim, description_is, seats } = body
+  const { id, price_isk, specs_verified, status, images, title, trim, description_is, seats, colour, exterior_colour, interior_colour } = body
   if (!id) {
     return NextResponse.json({ error: 'Vantar id' }, { status: 400 })
   }
 
   const update: Record<string, unknown> = {}
+  if (colour !== undefined) update.colour = colour === null || colour === '' ? null : String(colour).trim()
+  if (exterior_colour !== undefined) update.exterior_colour = exterior_colour === null || exterior_colour === '' ? null : String(exterior_colour).trim()
+  if (interior_colour !== undefined) update.interior_colour = interior_colour === null || interior_colour === '' ? null : String(interior_colour).trim()
   if (title !== undefined) update.title = String(title).trim()
   if (trim !== undefined) update.trim = String(trim)
   if (description_is !== undefined) update.description_is = description_is
