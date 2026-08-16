@@ -12,9 +12,9 @@ const COLORS: {
   { name: 'Crystal White', hex: '#eceae4', src: '/images/ex60/crystal-white.jpg' },
   { name: 'Vapour Grey', hex: '#8b9296', src: '/images/ex60/vapour-grey.jpg' },
   { name: 'Aurora Silver', hex: '#b7b3bb', src: '/images/ex60/aurora-silver.jpg' },
-  { name: 'Sand Dune', hex: '#c9bdaa' },
+  { name: 'Sand Dune', hex: '#c9bdaa', src: '/images/ex60/sand-dune.jpg' },
   { name: 'Forest Lake', hex: '#42504c', src: '/images/ex60/forest-green.jpg' },
-  { name: 'Heather Bronze', hex: '#9c8482' },
+  { name: 'Heather Bronze', hex: '#9c8482', src: '/images/ex60/heather-bronze.jpg' },
   { name: 'Denim Blue', hex: '#2b3a5c', src: '/images/ex60/denim-blue.jpg' },
 ]
 
