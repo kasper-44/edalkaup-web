@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="is">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ford E-Transit Custom — Rafmagns sendibíll L2H1 | Diesel</title>
+<meta name="description" content="Ford E-Transit Custom L2H1: hurðir beggja vegna, þrísæti, ný 71 kWh rafhlaða og u.þ.b. 390 km WLTP. Rafmagnssendibíll sem dugar sem vinnubíll.">
+<style>
+  :root{
+    --bg:#ffffff; --ink:#0f1113; --sub:#4a4f54; --line:#e4e2dc;
+    --panel:#f7f6f3; --accent:#12335c; --card-shadow:0 1px 2px rgba(15,17,19,.04);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#111316; --ink:#f3f2ee; --sub:#a9adb2; --line:#2a2d31;
+      --panel:#1a1c1f; --accent:#7ea8dd; --card-shadow:0 1px 2px rgba(0,0,0,.3);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#111316; --ink:#f3f2ee; --sub:#a9adb2; --line:#2a2d31;
+    --panel:#1a1c1f; --accent:#7ea8dd; --card-shadow:0 1px 2px rgba(0,0,0,.3);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;line-height:1.55;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px;}
+
+  .dealer-bar{display:flex;align-items:center;justify-content:center;gap:14px;padding:14px 24px;}
+  .dealer-bar--diesel{background:#0a0a0c;}
+  .dealer-bar--diesel img{height:48px;display:block;}
+  .dealer-bar--hofdabilar{background:#136c85;justify-content:flex-start;padding-left:28px;}
+  .dealer-bar--hofdabilar .hb-icon{height:42px;width:42px;display:block;border-radius:50%;}
+  .dealer-bar--hofdabilar .hb-word{color:#ffffff;font-weight:800;font-size:22px;letter-spacing:.01em;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;}
+
+  header.hero{position:relative;background:var(--panel);}
+  header.hero img{width:100%;display:block;max-height:560px;object-fit:cover;}
+  .hero-text{padding:40px 24px 28px;}
+  .kicker{letter-spacing:.14em;text-transform:uppercase;font-size:12px;color:var(--sub);font-weight:600;}
+  h1{font-size:clamp(32px,5vw,52px);margin:6px 0 8px;font-weight:600;letter-spacing:-0.01em;text-wrap:balance;}
+  .tagline{font-size:18px;color:var(--sub);max-width:640px;margin:0;}
+  .specbar{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:28px;}
+  .specbar div{padding:18px 20px;border-left:1px solid var(--line);}
+  .specbar div:first-child{border-left:none;}
+  .specbar .num{font-size:22px;font-weight:600;font-variant-numeric:tabular-nums;}
+  .specbar .lbl{font-size:12px;color:var(--sub);text-transform:uppercase;letter-spacing:.06em;margin-top:2px;}
+  section{padding:56px 0;border-bottom:1px solid var(--line);}
+  section:last-of-type{border-bottom:none;}
+  h2{font-size:28px;margin:0 0 6px;font-weight:600;text-wrap:balance;}
+  .section-intro{color:var(--sub);max-width:680px;margin:0 0 28px;}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px;}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px;}
+  .grid-2 img,.grid-3 img{width:100%;border-radius:10px;display:block;background:var(--panel);object-fit:cover;height:100%;}
+  figure{margin:0;}
+  figcaption{font-size:13px;color:var(--sub);margin-top:8px;}
+  .feature-list{columns:2;column-gap:40px;list-style:none;margin:0;padding:0;}
+  .feature-list li{padding:6px 0;border-bottom:1px dotted var(--line);break-inside:avoid;font-size:15px;}
+  .cat{margin-bottom:32px;}
+  .cat h3{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:0 0 10px;font-weight:700;}
+  .material-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
+  .material-card{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--panel);box-shadow:var(--card-shadow);}
+  .material-card img{width:100%;height:220px;object-fit:cover;display:block;}
+  .material-card .mc-body{padding:18px 20px 22px;}
+  .material-card h3{margin:0 0 6px;font-size:18px;}
+  .material-card .tag{display:inline-block;font-size:11px;text-transform:uppercase;letter-spacing:.06em;background:var(--accent);color:#fff;padding:3px 9px;border-radius:20px;margin-bottom:10px;}
+  .material-card p{margin:0;color:var(--sub);font-size:14px;}
+  .pill-row{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 24px;}
+  .pill{border:1px solid var(--line);border-radius:20px;padding:6px 14px;font-size:13px;color:var(--sub);}
+  .color-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+  .color-card{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--panel);}
+  .color-card img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:var(--panel);}
+  .color-card .cc-body{padding:12px 14px 14px;display:flex;align-items:center;gap:8px;}
+  .color-card .swatch{width:14px;height:14px;border-radius:50%;flex:none;border:1px solid rgba(0,0,0,.15);}
+  .color-card h4{margin:0;font-size:14.5px;font-weight:600;}
+  @media (max-width:720px){
+    .color-grid{grid-template-columns:repeat(2,1fr);}
+  }
+  .video-embed{position:relative;width:100%;aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:var(--panel);}
+  .video-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:40px;}
+  .opt-box{background:var(--panel);border-radius:12px;padding:22px 24px;}
+  .opt-box h3{margin:0 0 10px;font-size:15px;}
+  .opt-box ul{margin:0;padding-left:18px;}
+  .opt-box li{margin:4px 0;font-size:14.5px;}
+  footer{padding:36px 0 60px;color:var(--sub);font-size:13px;}
+  @media (max-width:720px){
+    .grid-3{grid-template-columns:1fr 1fr;}
+    .material-cards{grid-template-columns:1fr;}
+    .two-col{grid-template-columns:1fr;}
+    .feature-list{columns:1;}
+  }
+</style>
+</head>
+<body>
+
+<div class="dealer-bar dealer-bar--diesel">
+  <img src="img/diesel.jpg" alt="Diesel.is">
+</div>
+
+<header class="hero">
+  <img src="img/01.jpg" alt="Ford E-Transit Custom, blár L2H1 sendibíll á ferð" style="object-position:28% center;">
+  <div class="wrap hero-text">
+    <div class="kicker">Ford · Rafmagns sendibíll · L2H1</div>
+    <h1>E-Transit Custom</h1>
+    <p class="tagline">Hurðir beggja vegna. Þrír í stýrishúsi. Ný 71&nbsp;kWh rafhlaða. Þetta er rafmagnssendibíll sem dugar sem vinnubíll — hlaða inn hvorum megin sem er, án þess að ganga hringinn.</p>
+    <div class="specbar">
+      <div><div class="num">3 sæti</div><div class="lbl">Þrír uppi</div></div>
+      <div><div class="num">Hurðir</div><div class="lbl">beggja vegna</div></div>
+      <div><div class="num">71 kWh</div><div class="lbl">Ný rafhlaða</div></div>
+      <div><div class="num">~390 km</div><div class="lbl">WLTP drægni</div></div>
+      <div><div class="num">Fastur krókur</div><div class="lbl">Dráttarbúnaður</div></div>
+      <div><div class="num">H1</div><div class="lbl">Lágt þak</div></div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<section>
+  <h2>Hurðir beggja vegna</h2>
+  <p class="section-intro">Þetta er eiginleikinn sem skiptir máli. Rennihurð á báðum hliðum — þú opnar þá hlið sem er laus. Pallur, kassi, verkfæri: inn og út án hringferðar um bílinn. Þetta er sendibíll sem er smíðaður fyrir vinnu.</p>
+  <div class="grid-3">
+    <figure>
+      <img src="img/03.jpg" alt="E-Transit Custom frá hlið, rennihurð og lágt H1 þak">
+      <figcaption>Rennihurð og lágt H1 þak — heilt hliðarsnið.</figcaption>
+    </figure>
+    <figure>
+      <img src="img/02.jpg" alt="E-Transit Custom, þriggja fjórðu framhorn, hurð sýnileg">
+      <figcaption>Hliðin sem vinnan kallar á. Stöðvaðu og opnaðu.</figcaption>
+    </figure>
+    <figure>
+      <img src="img/11.jpg" alt="Farmrými með opnum hliðum beggja vegna, skilrúmi og LED lýsingu">
+      <figcaption>Op beggja vegna, fullhæðarplötur og Ultra LED lýsing.</figcaption>
+    </figure>
+  </div>
+  <div class="two-col">
+    <div class="opt-box">
+      <h3>Aðal eiginleiki</h3>
+      <ul>
+        <li>Rennihurðir beggja vegna — hlaða inn hvorum megin sem er</li>
+        <li>Engin hringferð um bílinn, hvorki við gangstétt né á svæði</li>
+        <li>Hjarðar afturhurðir sem opnast 90° til 180°</li>
+      </ul>
+    </div>
+    <div class="opt-box">
+      <h3>Vinnubíll, ekki sýningareintak</h3>
+      <ul>
+        <li>Fullhæðar hliðarplötur í farmrými</li>
+        <li>Ultra LED lýsing svo þú sérð hvað þú ert að sækja</li>
+        <li>Skilrúm sem heldur farmi frá fólki</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Þrísæti</h2>
+  <p class="section-intro">Trend Comfort tvöfalt farþegasæti. Þrír sitja að framan. Skilrúm án neðri opnunar, geymsla í farþegarýminu. Þetta er vinnubíll fyrir áhöfn — ekki tvo og tösku.</p>
+  <div class="grid-2">
+    <figure>
+      <img src="img/10.jpg" alt="Tvöfalt farþegasæti, Trend Comfort, vinnugólf">
+      <figcaption>Tvöfalt farþegasæti — þrír í stýrishúsi.</figcaption>
+    </figure>
+    <figure>
+      <img src="img/09.jpg" alt="Stýrishús með 13 tommu SYNC 4 skjá og 12 tommu mælaborði">
+      <figcaption>SYNC 4 með 13" skjá og 12" stafrænu mælaborði.</figcaption>
+    </figure>
+  </div>
+  <div class="pill-row">
+    <span class="pill">Trend Comfort sætispakki</span>
+    <span class="pill">Tvöfalt farþegasæti</span>
+    <span class="pill">Þrír að framan</span>
+    <span class="pill">Skilrúm án neðri opnunar</span>
+    <span class="pill">Geymsla í farþegarými</span>
+    <span class="pill">Upphituð sæti</span>
+    <span class="pill">4-átta stillanlegt ökumannssæti</span>
+  </div>
+</section>
+
+<section>
+  <h2>Rafhlaða sem dugar</h2>
+  <p class="section-intro">Ný 71&nbsp;kWh rafhlaða. U.þ.b. 390&nbsp;km WLTP. Fastur krókur. Þetta er rafmagnssendibíll sem dugar yfir vinnudaginn — drægni, burður og dráttur. Ekki tilraun. Vinnubíll.</p>
+  <div class="grid-2">
+    <figure>
+      <img src="img/08.jpg" alt="E-Transit Custom í hleðslu, LED framljós kveikt">
+      <figcaption>Hleðsla þegar þú stöðvar. Vinnan heldur áfram.</figcaption>
+    </figure>
+    <figure>
+      <img src="img/07.jpg" alt="Hleðslutengi Ford E-Transit Custom">
+      <figcaption>Hleðslutengi — rafmagnssendibíll sem er tilbúinn í vinnu.</figcaption>
+    </figure>
+  </div>
+  <div class="pill-row">
+    <span class="pill">Ný 71 kWh rafhlaða</span>
+    <span class="pill">U.þ.b. 390 km WLTP</span>
+    <span class="pill">Fastur dráttarkrókur</span>
+    <span class="pill">L2H1 — langt undirvagn, lágt þak</span>
+    <span class="pill">Dugar sem vinnubíll</span>
+  </div>
+</section>
+
+<section>
+  <h2>Aukabúnaður</h2>
+  <p class="section-intro">Búnaðurinn sem gerir þennan bíl að vinnubíl — hurðir beggja vegna, þrísæti, krókur og hiti þar sem þú þarft hann.</p>
+  <div class="pill-row">
+    <span class="pill">Hurðir beggja vegna</span>
+    <span class="pill">Trend Comfort sætispakki (tvöfalt farþegasæti)</span>
+    <span class="pill">Fastur dráttarkrókur</span>
+    <span class="pill">Fullhæðar hliðarplötur í farmrými</span>
+    <span class="pill">Ultra LED lýsing í farmrými</span>
+    <span class="pill">Rafdrifnir, samfellanlegir og upphitaðir hliðarspeglar</span>
+    <span class="pill">Upphitað Sensico gervileðurstýri</span>
+    <span class="pill">Upphituð sæti</span>
+  </div>
+  <div class="two-col">
+    <div class="opt-box">
+      <h3>Vinnu- og farmbúnaður</h3>
+      <ul>
+        <li>Hurðir beggja vegna — aðal eiginleiki</li>
+        <li>Fullhæðar hliðarplötur í farmrými</li>
+        <li>Ultra LED lýsing í farmrými</li>
+        <li>Fastur dráttarkrókur</li>
+      </ul>
+    </div>
+    <div class="opt-box">
+      <h3>Þægindi að framan</h3>
+      <ul>
+        <li>Trend Comfort sætispakki (tvöfalt farþegasæti)</li>
+        <li>Upphituð sæti</li>
+        <li>Upphitað Sensico gervileðurstýri</li>
+        <li>Rafdrifnir, samfellanlegir og upphitaðir hliðarspeglar</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Staðalbúnaður</h2>
+  <p class="section-intro">Full tæknilýsing á Ford E-Transit Custom L2H1, 71&nbsp;kWh.</p>
+
+  <div class="cat">
+    <h3>Ytra byrði</h3>
+    <ul class="feature-list">
+      <li>Hjarðar afturhurðir (opnast 90° til 180°)</li>
+      <li>Fram- og afturstangarhlífar að hluta í yfirbyggingarlit</li>
+      <li>Upphitaðir svartir hliðarspeglar</li>
+      <li>Full LED framljós (rafmagnsútgáfa)</li>
+      <li>Stýring á háljósum og lágljósum</li>
+      <li>LED dagljós að aftan (rafmagnsútgáfa)</li>
+      <li>Regn- og ljósaskynjari</li>
+      <li>Lágt þak (H1)</li>
+      <li>Upphituð framrúða (rafmagnsútgáfa)</li>
+      <li>Fullar hjólhlífar / 16" stálfelgur / Goodyear dekk / dekkjaviðgerðarsett</li>
+    </ul>
+  </div>
+
+  <div class="cat">
+    <h3>Farmrými</h3>
+    <ul class="feature-list">
+      <li>LED lýsing í farmrými</li>
+      <li>Tvöfalt farþegarými með geymslu — skilrúm án neðri opnunar</li>
+    </ul>
+  </div>
+
+  <div class="cat">
+    <h3>Sæti og stýri</h3>
+    <ul class="feature-list">
+      <li>Trend sætispakki (tvöfalt farþegasæti)</li>
+      <li>4-átta stillanlegt ökumannssæti (lengd og hæð)</li>
+      <li>Loftræsting og hitun</li>
+      <li>Lítil þakstjórnborð / lítil miðjustjórnborð</li>
+      <li>Rafmagnsrúður að framan (einn takki hjá ökumann)</li>
+    </ul>
+  </div>
+
+  <div class="cat">
+    <h3>Tækni</h3>
+    <ul class="feature-list">
+      <li>12" stafrænt mælaborð</li>
+      <li>SYNC 4 útvarp með 13" snertiskjá og 6 hátalurum</li>
+      <li>FordPass Pro og/eða Ford Telematics Essential (innbyggður 5G mótald)</li>
+      <li>Staðlað 12V hjálparrafhlaða (240 A)</li>
+    </ul>
+  </div>
+
+  <div class="cat">
+    <h3>Öryggi</h3>
+    <ul class="feature-list">
+      <li>Árekstraraðstoð að framan með greiningu á gangandi vegfarendum</li>
+      <li>Hraðaaðstoð / hraðastillir</li>
+      <li>DAT PACK 2 — parkpakki með bakkmyndavél</li>
+      <li>Akreinavari</li>
+      <li>Greindur aðlagandi hraðastillir með umferðarskiltagreiningu</li>
+      <li>Viðvörun við rangri akstursstefnu</li>
+      <li>Parkskynjarar að framan og aftan</li>
+      <li>Bakkmyndavél</li>
+      <li>Farþegaloftdyna</li>
+      <li>Vöktunarmyndavél ökumanns</li>
+    </ul>
+  </div>
+</section>
+
+</div>
+
+<footer class="wrap">
+  <p>Tæknilýsing: Ford E-Transit Custom L2H1, 71&nbsp;kWh. Búnaður og framboð geta breyst eftir framleiðslulotum og mörkuðum. Drægni samkvæmt WLTP; raunveruleg drægni fer eftir hita, hleðslu, aksturslagi og aðstæðum.</p>
+</footer>
+
+</body>
+</html>
