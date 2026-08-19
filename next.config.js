@@ -15,6 +15,12 @@ const nextConfig = {
       { protocol: 'https', hostname: 'fakjyfokweehxsonfbez.supabase.co' },
     ],
   },
+  async rewrites() {
+    return [
+      { source: '/e-transit-custom', destination: '/e-transit-custom/index.html' },
+      { source: '/e-transit-custom/', destination: '/e-transit-custom/index.html' },
+    ]
+  },
   async redirects() {
     return [
       // Old WordPress pages (no trailing slash — Next matches both)
