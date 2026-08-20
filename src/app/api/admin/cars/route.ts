@@ -30,7 +30,7 @@ export async function PATCH(req: Request) {
     return NextResponse.json({ error: 'Óheimilt' }, { status: 401 })
   }
   const body = await req.json()
-  const { id, price_isk, specs_verified, status, images, title, trim, description_is, seats, colour, exterior_colour, interior_colour } = body
+  const { id, price_isk, specs_verified, status, images, title, trim, description_is, seats, colour, exterior_colour, interior_colour, year } = body
   if (!id) {
     return NextResponse.json({ error: 'Vantar id' }, { status: 400 })
   }
@@ -43,6 +43,13 @@ export async function PATCH(req: Request) {
   if (trim !== undefined) update.trim = String(trim)
   if (description_is !== undefined) update.description_is = description_is
   if (seats !== undefined) update.seats = seats === null || seats === '' ? null : Number(seats)
+  if (year !== undefined) {
+    const y = Number(year)
+    if (!Number.isInteger(y) || y < 1990 || y > 2035) {
+      return NextResponse.json({ error: 'Ógilt ár' }, { status: 400 })
+    }
+    update.year = y
+  }
   if (price_isk !== undefined) {
     update.price_isk = Number(price_isk) || 0
     // Saving a price through the admin UI IS the verification act — a human
