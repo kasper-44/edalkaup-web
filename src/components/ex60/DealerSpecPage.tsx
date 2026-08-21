@@ -333,10 +333,10 @@ export default function DealerSpecPage({ dealer }: { dealer: DealerSlug }) {
             alt="Volvo EX60 Ultra, Onyx Black, þriggja fjórðu framhorn"
             fill
             priority
-            className="object-cover"
+            className="object-cover object-[center_55%] brightness-[1.22] saturate-[1.06]"
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#07080a] via-[#07080a]/55 to-black/20" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#07080a] via-[#07080a]/25 to-transparent" />
         </div>
         <div className="relative -mt-40 sm:-mt-48 lg:-mt-56 z-10 mx-auto max-w-6xl px-4 sm:px-6 pb-10">
           <p className="text-[#c9a84c] text-xs sm:text-sm font-semibold uppercase tracking-[0.28em] mb-3">
