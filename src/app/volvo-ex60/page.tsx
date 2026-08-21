@@ -74,7 +74,7 @@ export default function VolvoEX60Page() {
                 src="/images/ex60/hero.jpg"
                 alt="Volvo EX60 P12 Long Range — Crystal White"
                 fill
-                className="object-cover"
+                className="object-cover object-center brightness-110 contrast-[1.04] saturate-[1.04]"
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 priority
               />
