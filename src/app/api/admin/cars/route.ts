@@ -23,14 +23,16 @@ export async function GET(req: Request) {
   return NextResponse.json({ cars: data })
 }
 
-// PATCH /api/admin/cars  -> update one car's price_isk, verification flags, images, and/or status
-// body: { id, price_isk?, specs_verified?, status?, images? }
+// PATCH /api/admin/cars  -> update listing fields without recreating the row
+// body: { id, price_isk?, specs_verified?, status?, images?, title?, trim?,
+//         description_is?, seats?, colour?, exterior_colour?, interior_colour?,
+//         year?, range_km?, battery_kwh?, horsepower_hp?, drivetrain?, vin? }
 export async function PATCH(req: Request) {
   if (!isAuthorized(req)) {
     return NextResponse.json({ error: 'Óheimilt' }, { status: 401 })
   }
   const body = await req.json()
-  const { id, price_isk, specs_verified, status, images, title, trim, description_is, seats, colour, exterior_colour, interior_colour, year, range_km, battery_kwh, horsepower_hp, drivetrain } = body
+  const { id, price_isk, specs_verified, status, images, title, trim, description_is, seats, colour, exterior_colour, interior_colour, year, range_km, battery_kwh, horsepower_hp, drivetrain, vin } = body
   if (!id) {
     return NextResponse.json({ error: 'Vantar id' }, { status: 400 })
   }
@@ -54,6 +56,7 @@ export async function PATCH(req: Request) {
   if (battery_kwh !== undefined) update.battery_kwh = battery_kwh === null || battery_kwh === '' ? null : Number(battery_kwh)
   if (horsepower_hp !== undefined) update.horsepower_hp = horsepower_hp === null || horsepower_hp === '' ? null : Number(horsepower_hp)
   if (drivetrain !== undefined) update.drivetrain = drivetrain === null || drivetrain === '' ? null : String(drivetrain).trim()
+  if (vin !== undefined) update.vin = vin === null || vin === '' ? null : String(vin).trim()
 
   if (price_isk !== undefined) {
     update.price_isk = Number(price_isk) || 0
