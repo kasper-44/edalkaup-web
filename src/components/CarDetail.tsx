@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import CarGallery from '@/components/CarGallery'
 import ContactForm from '@/components/ContactForm'
+import { vatIncludedPriceSubtitle } from '@/lib/priceVat'
 
 function formatPrice(price: number) {
   if (!price || price === 0) return 'Verð óákveðið'
@@ -27,6 +28,7 @@ function displayExteriorColour(car: { exterior_colour?: string | null; colour?: 
 export default function CarDetail({ car }: { car: any }) {
   const [showInquiry, setShowInquiry] = useState(false)
   const title = `${car.year} ${car.make} ${car.model} ${car.trim || ''}`.trim()
+  const vatSubtitle = car.price_isk > 0 ? vatIncludedPriceSubtitle(car) : null
 
   const specs = [
     { label: 'Árgerð', value: car.year?.toString() || '' },
@@ -102,8 +104,8 @@ export default function CarDetail({ car }: { car: any }) {
               <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">{title}</h1>
               <div className="mt-4 mb-6">
                 <p className="text-3xl font-bold text-accent">{formatPrice(car.price_isk)}</p>
-                {car.price_isk > 0 && (
-                  <p className="text-sm text-gray-400 dark:text-slate-500 mt-1">m/VSK</p>
+                {vatSubtitle && (
+                  <p className="text-sm text-gray-400 dark:text-slate-500 mt-1">{vatSubtitle}</p>
                 )}
               </div>
 
