@@ -1,13 +1,14 @@
 import HeroVideo from '@/components/HeroVideo'
 import FeaturedCars from '@/components/FeaturedCars'
 import Link from 'next/link'
+import { SHOW_NEW_VOLVO } from '@/lib/features'
 
 export default function Home() {
   return (
     <>
       <HeroVideo />
 
-      {/* Volvo Section */}
+      {SHOW_NEW_VOLVO && (
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-4">
         <div className="text-center mb-8">
           <p className="text-accent text-sm font-semibold uppercase tracking-[0.2em] mb-3">Volvo</p>
@@ -39,6 +40,7 @@ export default function Home() {
           ))}
         </div>
       </section>
+      )}
 
       {/* Featured Cars */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
