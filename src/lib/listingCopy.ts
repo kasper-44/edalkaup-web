@@ -1,6 +1,6 @@
 /** Lines written by `scripts/sync_inventory.py` — sourcing data, not buyer copy. */
 const PIPELINE_LINE =
-  /^(VIN:|Original price:|Mileage:|Dealer:|Styrkhæfur frá Orkusjóði)\b/i
+  /^(VIN:|Original price:|Mileage:|Dealer:|Styrkhæfur frá Orkusjóði)(?:\s|$)/i
 
 function isPipelineSourcingDump(text: string): boolean {
   const lines = text
