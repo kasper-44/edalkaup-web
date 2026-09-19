@@ -1,25 +1,164 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
+
+const PLAY_RETRY_DELAYS_MS = [150, 350, 700, 1200]
+
+function sleep(ms: number) {
+  return new Promise<void>((resolve) => {
+    window.setTimeout(resolve, ms)
+  })
+}
+
+function isVideoPlaying(video: HTMLVideoElement) {
+  return !video.paused && !video.ended
+}
+
+function muteForAutoplay(video: HTMLVideoElement) {
+  video.defaultMuted = true
+  video.muted = true
+  video.setAttribute('muted', '')
+  video.setAttribute('playsinline', '')
+  video.setAttribute('webkit-playsinline', 'true')
+}
 
 export default function HeroVideo() {
   const videoRef = useRef<HTMLVideoElement>(null)
+  const sectionRef = useRef<HTMLElement>(null)
+  const soundOnRef = useRef(false)
+  const cancelledRef = useRef(false)
+  const playInFlightRef = useRef<Promise<void> | null>(null)
+  const [soundOn, setSoundOn] = useState(false)
+
+  const setVideoNode = (video: HTMLVideoElement | null) => {
+    videoRef.current = video
+    if (!video) return
+    // Set mute flags as soon as the node exists, before effects/autoplay checks.
+    video.defaultMuted = true
+    if (!soundOnRef.current) {
+      muteForAutoplay(video)
+    }
+  }
+
+  const playWithRetries = useCallback(async (video: HTMLVideoElement) => {
+    const attempt = async () => {
+      if (!soundOnRef.current) {
+        muteForAutoplay(video)
+      }
+      await video.play()
+    }
+
+    try {
+      await attempt()
+      return
+    } catch {
+      // First play() often rejects before the first frame is ready.
+    }
+
+    for (const delay of PLAY_RETRY_DELAYS_MS) {
+      await sleep(delay)
+      if (cancelledRef.current) return
+      if (isVideoPlaying(video)) return
+      try {
+        await attempt()
+        return
+      } catch {
+        // Keep retrying while the element is still mounted.
+      }
+    }
+  }, [])
+
+  const requestPlay = useCallback(() => {
+    const video = videoRef.current
+    if (!video || cancelledRef.current) return
+    if (isVideoPlaying(video) || playInFlightRef.current) return
+
+    const run = playWithRetries(video).finally(() => {
+      if (playInFlightRef.current === run) {
+        playInFlightRef.current = null
+      }
+    })
+    playInFlightRef.current = run
+  }, [playWithRetries])
+
+  const toggleSound = () => {
+    const video = videoRef.current
+    const next = !soundOnRef.current
+    soundOnRef.current = next
+    setSoundOn(next)
+
+    if (!video) return
+
+    if (next) {
+      video.muted = false
+      video.volume = 1
+    } else {
+      muteForAutoplay(video)
+    }
+
+    void video.play().catch(() => {
+      if (!next) return
+      // Unmuted play can still fail on some browsers; keep the clip running muted.
+      soundOnRef.current = false
+      setSoundOn(false)
+      muteForAutoplay(video)
+      void video.play().catch(() => {})
+    })
+  }
 
   useEffect(() => {
     const video = videoRef.current
+    const section = sectionRef.current
     if (!video) return
-    video.muted = true
-    video.play().catch(() => {})
-  }, [])
+
+    cancelledRef.current = false
+    muteForAutoplay(video)
+    requestPlay()
+
+    const onReady = () => requestPlay()
+    const onVisibility = () => {
+      if (document.visibilityState === 'visible') requestPlay()
+    }
+    const onPageShow = () => requestPlay()
+
+    video.addEventListener('loadeddata', onReady)
+    video.addEventListener('canplay', onReady)
+    document.addEventListener('visibilitychange', onVisibility)
+    window.addEventListener('pageshow', onPageShow)
+
+    let observer: IntersectionObserver | undefined
+    if (section && 'IntersectionObserver' in window) {
+      observer = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((entry) => entry.isIntersecting)) requestPlay()
+        },
+        { threshold: 0.2 },
+      )
+      observer.observe(section)
+    }
+
+    return () => {
+      cancelledRef.current = true
+      playInFlightRef.current = null
+      video.removeEventListener('loadeddata', onReady)
+      video.removeEventListener('canplay', onReady)
+      document.removeEventListener('visibilitychange', onVisibility)
+      window.removeEventListener('pageshow', onPageShow)
+      observer?.disconnect()
+    }
+  }, [requestPlay])
 
   return (
-    <section className="relative h-screen min-h-[600px] max-h-[900px] flex items-end justify-center overflow-hidden bg-navy-900 pb-32">
+    <section
+      ref={sectionRef}
+      className="relative h-screen min-h-[600px] max-h-[900px] flex items-end justify-center overflow-hidden bg-navy-900 pb-32"
+    >
       {/* Video background — cover on mobile, full 16:9 scene on desktop */}
       <video
-        ref={videoRef}
+        ref={setVideoNode}
         autoPlay
-        muted={true}
+        muted={!soundOn}
         loop
         playsInline
         preload="auto"
@@ -62,6 +201,37 @@ export default function HeroVideo() {
           </Link>
         </div>
       </div>
+
+      <button
+        type="button"
+        onClick={toggleSound}
+        aria-pressed={soundOn}
+        aria-label={soundOn ? 'Slökkva á hljóði' : 'Kveikja á hljóði'}
+        className="absolute bottom-8 left-4 sm:left-8 z-20 inline-flex min-h-11 items-center gap-2 rounded-full border border-white/20 bg-navy-900/75 px-4 py-2.5 text-sm font-semibold text-white shadow-lg backdrop-blur-md transition-all hover:border-accent/50 hover:bg-navy-900/90 hover:text-accent"
+      >
+        {soundOn ? (
+          <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path
+              d="M11 5L6 9H3v6h3l5 4V5zM15.54 8.46a5 5 0 010 7.07M18.07 5.93a9 9 0 010 12.73"
+              stroke="currentColor"
+              strokeWidth={1.8}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        ) : (
+          <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path
+              d="M11 5L6 9H3v6h3l5 4V5zM22 9l-6 6M16 9l6 6"
+              stroke="currentColor"
+              strokeWidth={1.8}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        )}
+        <span>{soundOn ? 'Hljóð af' : 'Hljóð á'}</span>
+      </button>
 
       {/* Scroll indicator */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
