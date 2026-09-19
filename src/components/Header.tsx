@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { useTheme } from './ThemeProvider'
+import { SHOW_NEW_VOLVO } from '@/lib/features'
 
 const navItems = [
   { href: '/', label: 'Forsíða' },
@@ -57,7 +58,7 @@ export default function Header() {
               </Link>
             ))}
 
-            {/* Volvo Dropdown */}
+            {SHOW_NEW_VOLVO && (
             <div
               className="relative"
               onMouseEnter={() => setVolvoOpen(true)}
@@ -88,6 +89,7 @@ export default function Header() {
                 </div>
               )}
             </div>
+            )}
 
             {navItems.slice(2).map((item) => (
               <Link
@@ -170,6 +172,7 @@ export default function Header() {
                 {item.label}
               </Link>
             ))}
+            {SHOW_NEW_VOLVO && (
             <div>
               <button
                 onClick={() => setVolvoOpen(!volvoOpen)}
@@ -195,6 +198,7 @@ export default function Header() {
                 </div>
               )}
             </div>
+            )}
             {navItems.slice(2).map((item) => (
               <Link
                 key={item.href}
