@@ -154,7 +154,7 @@ export default function HeroVideo() {
       ref={sectionRef}
       className="relative h-screen min-h-[600px] max-h-[900px] flex items-end justify-center overflow-hidden bg-navy-900 pb-32"
     >
-      {/* Video background — cover on mobile, full 16:9 scene on desktop */}
+      {/* Video background — cover on mobile; contain + 12% scale on desktop */}
       <video
         ref={setVideoNode}
         autoPlay
@@ -162,7 +162,7 @@ export default function HeroVideo() {
         loop
         playsInline
         preload="auto"
-        className="absolute inset-0 h-full w-full object-cover md:object-contain"
+        className="absolute inset-0 h-full w-full origin-center object-cover md:scale-[1.12] md:object-contain"
         {...{ 'webkit-playsinline': 'true' }}
       >
         <source src="/videos/hero.mp4" type="video/mp4" />
