@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import AutoGrowTextarea from '@/components/AutoGrowTextarea'
 
 interface Car {
   id: string
@@ -85,6 +86,7 @@ export default function AdminPage() {
   const [preview, setPreview] = useState<Car | null>(null)
   const [photoEditMode, setPhotoEditMode] = useState(false)
   const [pendingImages, setPendingImages] = useState<string[]>([])
+  const [descDraft, setDescDraft] = useState('')
 
   // Restore a previous session (survives back/forward navigation + refresh).
   useEffect(() => {
@@ -164,6 +166,15 @@ export default function AdminPage() {
   const closePreview = () => {
     setPreview(null)
     setPhotoEditMode(false)
+    setDescDraft('')
+  }
+
+  const saveDescription = async () => {
+    if (!preview) return
+    const next = descDraft.trim() || null
+    await patch(preview.id, { description_is: next })
+    setDescDraft(next || '')
+    setPreview((p) => (p ? { ...p, description_is: next } : p))
   }
 
   const startPhotoEdit = () => {
@@ -402,6 +413,7 @@ export default function AdminPage() {
                         onClick={() => {
                           setPreview(car)
                           setPhotoEditMode(false)
+                          setDescDraft(car.description_is || '')
                         }}
                         className="px-3 py-1.5 rounded-lg bg-sky-600 text-white text-sm font-semibold hover:bg-sky-500"
                       >
@@ -581,6 +593,26 @@ export default function AdminPage() {
               ) : (
                 <p className="text-slate-500 mb-6">Engar myndir.</p>
               )}
+
+              <div className="mb-6">
+                <div className="flex items-center justify-between mb-2">
+                  <h3 id="preview-lysing" className="text-sm font-semibold text-slate-500">Lýsing</h3>
+                  <button
+                    onClick={saveDescription}
+                    disabled={saving === preview.id || descDraft === (preview.description_is || '')}
+                    className="px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 text-sm font-semibold hover:bg-emerald-400 disabled:opacity-50"
+                  >
+                    Vista lýsingu
+                  </button>
+                </div>
+                <AutoGrowTextarea
+                  value={descDraft}
+                  onChange={(e) => setDescDraft(e.target.value)}
+                  rows={4}
+                  aria-labelledby="preview-lysing"
+                  className="w-full px-3 py-2 rounded-lg bg-slate-50 text-slate-900 border border-black/10"
+                />
+              </div>
 
               {/* Spec table — customer-facing only (no VIN / original price / dealer) */}
               <h3 className="text-lg font-bold mb-3">Tæknilegar upplýsingar</h3>
