@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import AutoGrowTextarea from '@/components/AutoGrowTextarea'
 
 const empty = {
   title: '',
@@ -175,10 +176,10 @@ export default function NewCarPage() {
 
         <label className="block text-sm mb-4">
           <span className="text-slate-400">Lýsing (íslenska)</span>
-          <textarea
+          <AutoGrowTextarea
             value={form.description_is}
             onChange={(e) => set('description_is', e.target.value)}
-            rows={10}
+            rows={4}
             className="mt-1 w-full px-3 py-2 rounded-lg bg-slate-800 text-white border border-white/10"
           />
         </label>

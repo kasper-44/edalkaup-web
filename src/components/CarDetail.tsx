@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import CarGallery from '@/components/CarGallery'
 import ContactForm from '@/components/ContactForm'
+import { listingCopy } from '@/lib/listingCopy'
 import { vatIncludedPriceSubtitle } from '@/lib/priceVat'
 
 function formatPrice(price: number) {
@@ -29,6 +30,7 @@ export default function CarDetail({ car }: { car: any }) {
   const [showInquiry, setShowInquiry] = useState(false)
   const title = `${car.year} ${car.make} ${car.model} ${car.trim || ''}`.trim()
   const vatSubtitle = car.price_isk > 0 ? vatIncludedPriceSubtitle(car) : null
+  const description = listingCopy(car.description_is)
 
   const specs = [
     { label: 'Árgerð', value: car.year?.toString() || '' },
@@ -67,6 +69,15 @@ export default function CarDetail({ car }: { car: any }) {
             ) : (
               <div className="aspect-video bg-gray-100 dark:bg-navy-800 rounded-2xl flex items-center justify-center">
                 <p className="text-gray-400">Engar myndir</p>
+              </div>
+            )}
+
+            {description && (
+              <div className="bg-white dark:bg-navy-800 rounded-2xl border border-black/5 dark:border-white/5 p-6 sm:p-8">
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Lýsing</h2>
+                <div className="text-gray-700 dark:text-slate-300 leading-relaxed whitespace-pre-wrap">
+                  {description}
+                </div>
               </div>
             )}
 
