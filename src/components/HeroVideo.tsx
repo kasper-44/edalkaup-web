@@ -4,14 +4,14 @@ import Link from 'next/link'
 
 export default function HeroVideo() {
   return (
-    <section className="relative h-screen min-h-[600px] max-h-[900px] flex items-end justify-center overflow-hidden pb-32">
+    <section className="relative h-screen min-h-[600px] max-h-[900px] flex items-end justify-center overflow-hidden bg-navy-900 pb-32">
       {/* Video background */}
       <video
         autoPlay
         muted
         loop
         playsInline
-        className="absolute inset-0 w-full h-full object-cover"
+        className="absolute inset-0 h-full w-full scale-[0.88] object-cover"
       >
         <source src="/videos/hero.mp4" type="video/mp4" />
       </video>
