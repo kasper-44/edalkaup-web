@@ -163,7 +163,7 @@ export default function HeroVideo() {
         playsInline
         preload="auto"
         className="absolute inset-0 h-full w-full object-cover md:object-contain"
-        {...{ defaultMuted: true, 'webkit-playsinline': 'true' }}
+        {...{ 'webkit-playsinline': 'true' }}
       >
         <source src="/videos/hero.mp4" type="video/mp4" />
       </video>
