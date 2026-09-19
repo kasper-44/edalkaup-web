@@ -26,13 +26,13 @@ export async function GET(req: Request) {
 // PATCH /api/admin/cars  -> update listing fields without recreating the row
 // body: { id, price_isk?, specs_verified?, status?, images?, title?, trim?,
 //         description_is?, seats?, colour?, exterior_colour?, interior_colour?,
-//         year?, range_km?, battery_kwh?, horsepower_hp?, drivetrain?, vin? }
+//         year?, range_km?, mileage_km?, battery_kwh?, horsepower_hp?, drivetrain?, vin? }
 export async function PATCH(req: Request) {
   if (!isAuthorized(req)) {
     return NextResponse.json({ error: 'Óheimilt' }, { status: 401 })
   }
   const body = await req.json()
-  const { id, price_isk, specs_verified, status, images, title, trim, description_is, seats, colour, exterior_colour, interior_colour, year, range_km, battery_kwh, horsepower_hp, drivetrain, vin } = body
+  const { id, price_isk, specs_verified, status, images, title, trim, description_is, seats, colour, exterior_colour, interior_colour, year, range_km, mileage_km, battery_kwh, horsepower_hp, drivetrain, vin } = body
   if (!id) {
     return NextResponse.json({ error: 'Vantar id' }, { status: 400 })
   }
@@ -53,6 +53,7 @@ export async function PATCH(req: Request) {
     update.year = y
   }
   if (range_km !== undefined) update.range_km = range_km === null || range_km === '' ? null : Number(range_km)
+  if (mileage_km !== undefined) update.mileage_km = mileage_km === null || mileage_km === '' ? null : Number(mileage_km)
   if (battery_kwh !== undefined) update.battery_kwh = battery_kwh === null || battery_kwh === '' ? null : Number(battery_kwh)
   if (horsepower_hp !== undefined) update.horsepower_hp = horsepower_hp === null || horsepower_hp === '' ? null : Number(horsepower_hp)
   if (drivetrain !== undefined) update.drivetrain = drivetrain === null || drivetrain === '' ? null : String(drivetrain).trim()
