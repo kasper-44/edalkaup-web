@@ -1,17 +1,30 @@
 'use client'
 
+import { useEffect, useRef } from 'react'
 import Link from 'next/link'
 
 export default function HeroVideo() {
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+    video.muted = true
+    video.play().catch(() => {})
+  }, [])
+
   return (
-    <section className="relative h-screen min-h-[600px] max-h-[900px] flex items-end justify-center overflow-hidden pb-32">
-      {/* Video background */}
+    <section className="relative h-screen min-h-[600px] max-h-[900px] flex items-end justify-center overflow-hidden bg-navy-900 pb-32">
+      {/* Video background — cover on mobile, full 16:9 scene on desktop */}
       <video
+        ref={videoRef}
         autoPlay
-        muted
+        muted={true}
         loop
         playsInline
-        className="absolute inset-0 w-full h-full object-cover"
+        preload="auto"
+        className="absolute inset-0 h-full w-full object-cover md:object-contain"
+        {...{ 'webkit-playsinline': 'true' }}
       >
         <source src="/videos/hero.mp4" type="video/mp4" />
       </video>
