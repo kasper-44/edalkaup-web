@@ -31,6 +31,16 @@ export default function HeroVideo() {
   const playInFlightRef = useRef<Promise<void> | null>(null)
   const [soundOn, setSoundOn] = useState(false)
 
+  const setVideoNode = (video: HTMLVideoElement | null) => {
+    videoRef.current = video
+    if (!video) return
+    // Set mute flags as soon as the node exists, before effects/autoplay checks.
+    video.defaultMuted = true
+    if (!soundOnRef.current) {
+      muteForAutoplay(video)
+    }
+  }
+
   const playWithRetries = useCallback(async (video: HTMLVideoElement) => {
     const attempt = async () => {
       if (!soundOnRef.current) {
@@ -146,15 +156,14 @@ export default function HeroVideo() {
     >
       {/* Video background — cover on mobile, full 16:9 scene on desktop */}
       <video
-        ref={videoRef}
+        ref={setVideoNode}
         autoPlay
         muted={!soundOn}
-        defaultMuted={true}
         loop
         playsInline
         preload="auto"
         className="absolute inset-0 h-full w-full object-cover md:object-contain"
-        {...{ 'webkit-playsinline': 'true' }}
+        {...{ defaultMuted: true, 'webkit-playsinline': 'true' }}
       >
         <source src="/videos/hero.mp4" type="video/mp4" />
       </video>
