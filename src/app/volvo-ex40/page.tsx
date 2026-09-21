@@ -49,7 +49,7 @@ export default function VolvoEX40Page() {
                 Volvo EX40
               </h1>
               <p className="text-lg text-gray-600 dark:text-slate-300 leading-relaxed mb-6 max-w-lg">
-                Rafmagnsbíll frá Volvo — frá 7.690.000 kr. Hreinn rafmagnsdráttur með allt að 480 km drægni.
+                Rafmagnsbíll frá Volvo — frá {formatEX40Price(7690000)}. Hreinn rafmagnsdráttur með allt að 480 km drægni.
               </p>
               <div className="flex flex-wrap gap-4 mb-8">
                 <div className="bg-white dark:bg-navy-700/60 rounded-xl border border-black/5 dark:border-white/5 px-5 py-3 text-center">

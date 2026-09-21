@@ -1,3 +1,7 @@
+import { formatIskNumber } from '@/lib/formatIsk'
+
+export { formatIsk, formatPrice } from '@/lib/formatIsk'
+
 export interface Car {
   id: string
   slug: string
@@ -34,14 +38,9 @@ export const cars: Car[] = []
 
 export const deliveredCars: Car[] = []
 
-export function formatPrice(price: number): string {
-  if (price === 0) return 'Verð við fyrirspurn'
-  return new Intl.NumberFormat('is-IS').format(price) + ' kr.'
-}
-
 export function formatMileage(km: number): string {
   if (km === 0) return 'Nýr'
-  return new Intl.NumberFormat('is-IS').format(km) + ' km'
+  return formatIskNumber(km) + ' km'
 }
 
 export function getCarTitle(car: Car): string {

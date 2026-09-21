@@ -51,7 +51,7 @@ export default function VolvoEX60Page() {
                 <span className="text-accent">P12 Long Range</span>
               </h1>
               <p className="text-lg text-gray-600 dark:text-slate-300 leading-relaxed mb-6 max-w-lg">
-                Yfir 800 km drægni — frá 12.390.000 kr. Nýjasti rafmagnsbíll Volvo með 5 sæti og fjórhjóladrif.
+                Yfir 800 km drægni — frá {formatEX60Price(12390000)}. Nýjasti rafmagnsbíll Volvo með 5 sæti og fjórhjóladrif.
               </p>
               <div className="flex flex-wrap gap-4 mb-8">
                 <div className="bg-white dark:bg-navy-700/60 rounded-xl border border-black/5 dark:border-white/5 px-5 py-3 text-center">

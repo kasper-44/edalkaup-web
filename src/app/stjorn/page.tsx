@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import AutoGrowTextarea from '@/components/AutoGrowTextarea'
+import { formatIsk, formatIskNumber } from '@/lib/formatIsk'
 
 interface Car {
   id: string
@@ -39,7 +40,7 @@ interface Car {
   specs_verified: boolean
 }
 
-const fmt = (n: number) => new Intl.NumberFormat('is-IS').format(n)
+const fmt = formatIskNumber
 
 // "37m ago", "2klst ago", "3 dögum síðan" style relative time.
 function timeAgo(iso: string | null): string {
@@ -58,7 +59,7 @@ function timeAgo(iso: string | null): string {
 function buildPostText(car: Car): string {
   const title = `${car.year} ${car.make} ${car.model} ${car.trim || ''}`.trim()
   const lines: string[] = [title, '']
-  if (car.price_isk) lines.push(`Verð: ${fmt(car.price_isk)} kr.`)
+  if (car.price_isk) lines.push(`Verð: ${formatIsk(car.price_isk)}`)
   else lines.push('Verð: við fyrirspurn')
   if (car.mileage_km) lines.push(`Akstur: ${fmt(car.mileage_km)} km`)
   if (car.fuel_type) lines.push(`Eldsneyti: ${car.fuel_type}`)
@@ -532,7 +533,7 @@ export default function AdminPage() {
               </h2>
               <p className="text-3xl font-bold text-amber-600 mb-4">
                 {preview.price_isk
-                  ? fmt(preview.price_isk) + ' kr.'
+                  ? formatIsk(preview.price_isk)
                   : 'Verð við fyrirspurn'}
               </p>
 
