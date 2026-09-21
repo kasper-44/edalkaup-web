@@ -1,3 +1,5 @@
+import { formatIsk } from '@/lib/formatIsk'
+
 export interface XC90Car {
   id: string
   config: string // e.g. "Ultra Bright Plug-In Hybrid"
@@ -12,7 +14,7 @@ export interface XC90Car {
 
 /** Format ISK price: 14.990.000 kr. */
 export function formatXC90Price(price: number): string {
-  return price.toLocaleString('de-DE') + ' kr.'
+  return formatIsk(price)
 }
 
 /** Color dot hex values for display */

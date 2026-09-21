@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { supabase } from '@/lib/supabase'
 import CarDetail from '@/components/CarDetail'
+import { formatIskNumber, formatPrice } from '@/lib/formatIsk'
 
 export const dynamic = 'force-dynamic'
 
@@ -33,13 +34,8 @@ export async function generateMetadata({
     return { title: 'Bíll fannst ekki' }
   }
   const title = carTitle(car)
-  const priceText =
-    car.price_isk > 0
-      ? new Intl.NumberFormat('is-IS').format(car.price_isk) + ' kr.'
-      : 'Verð við fyrirspurn'
-  const km = car.mileage_km
-    ? new Intl.NumberFormat('is-IS').format(car.mileage_km) + ' km'
-    : 'nýr'
+  const priceText = formatPrice(car.price_isk)
+  const km = car.mileage_km ? formatIskNumber(car.mileage_km) + ' km' : 'nýr'
   const description = `${title} til sölu hjá Eðalkaup — ${km}, ${priceText}. Innfluttur frá Norður-Ameríku. Hafðu samband fyrir nánari upplýsingar.`
   const image = car.images?.[0]
 

@@ -5,15 +5,11 @@ import CarGallery from '@/components/CarGallery'
 import ContactForm from '@/components/ContactForm'
 import { listingCopy } from '@/lib/listingCopy'
 import { vatIncludedPriceSubtitle } from '@/lib/priceVat'
-
-function formatPrice(price: number) {
-  if (!price || price === 0) return 'Verð óákveðið'
-  return new Intl.NumberFormat('is-IS').format(price) + ' kr.'
-}
+import { formatIskNumber, formatPrice } from '@/lib/formatIsk'
 
 function formatMileage(km: number) {
   if (!km) return 'Ótilgreint'
-  return new Intl.NumberFormat('is-IS').format(km) + ' km'
+  return formatIskNumber(km) + ' km'
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -114,7 +110,7 @@ export default function CarDetail({ car }: { car: any }) {
               </div>
               <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">{title}</h1>
               <div className="mt-4 mb-6">
-                <p className="text-3xl font-bold text-accent">{formatPrice(car.price_isk)}</p>
+                <p className="text-3xl font-bold text-accent">{formatPrice(car.price_isk, 'Verð óákveðið')}</p>
                 {vatSubtitle && (
                   <p className="text-sm text-gray-400 dark:text-slate-500 mt-1">{vatSubtitle}</p>
                 )}

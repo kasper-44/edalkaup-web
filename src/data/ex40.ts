@@ -1,3 +1,5 @@
+import { formatIsk } from '@/lib/formatIsk'
+
 export interface EX40Car {
   id: string
   config: string
@@ -11,7 +13,7 @@ export interface EX40Car {
 }
 
 export function formatEX40Price(price: number): string {
-  return price.toLocaleString('de-DE') + ' kr.'
+  return formatIsk(price)
 }
 
 export const colorHex: Record<string, string> = {

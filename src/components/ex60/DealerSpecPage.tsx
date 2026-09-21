@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import Image from 'next/image'
+import { formatIsk } from '@/lib/formatIsk'
 
 export type DealerSlug = 'diesel' | 'hofdabilar' | 'edalkaup'
 
@@ -19,7 +20,7 @@ const COLORS: {
 ]
 
 const SPECS = [
-  { num: '11.990.000 kr.', lbl: 'Verð' },
+  { num: formatIsk(11990000), lbl: 'Verð' },
   { num: '3,9 sek', lbl: '0–100' },
   { num: '810 km', lbl: 'WLTP' },
   { num: 'TWIN Performance P12 AWD', lbl: 'Tvímótora, fjórhjóladrifið' },
