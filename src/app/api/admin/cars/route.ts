@@ -3,6 +3,14 @@ import { supabaseAdmin, isAuthorized } from '@/lib/supabaseAdmin'
 
 export const dynamic = 'force-dynamic'
 
+/** `true` / `false` / `null`. Anything else is rejected so a typo cannot flip VAT. */
+function parsePriceIncludesVat(
+  value: unknown,
+): { ok: true; value: boolean | null } | { ok: false } {
+  if (value === null || typeof value === 'boolean') return { ok: true, value }
+  return { ok: false }
+}
+
 // GET /api/admin/cars?status=draft  -> list cars for the admin view
 export async function GET(req: Request) {
   if (!isAuthorized(req)) {
@@ -24,7 +32,7 @@ export async function GET(req: Request) {
 }
 
 // PATCH /api/admin/cars  -> update listing fields without recreating the row
-// body: { id, price_isk?, specs_verified?, status?, images?, title?, trim?,
+// body: { id, price_isk?, price_includes_vat?, specs_verified?, status?, images?, title?, trim?,
 //         description_is?, seats?, colour?, exterior_colour?, interior_colour?,
 //         year?, range_km?, mileage_km?, battery_kwh?, horsepower_hp?, drivetrain?, vin? }
 export async function PATCH(req: Request) {
@@ -32,7 +40,7 @@ export async function PATCH(req: Request) {
     return NextResponse.json({ error: 'Óheimilt' }, { status: 401 })
   }
   const body = await req.json()
-  const { id, price_isk, specs_verified, status, images, title, trim, description_is, seats, colour, exterior_colour, interior_colour, year, range_km, mileage_km, battery_kwh, horsepower_hp, drivetrain, vin } = body
+  const { id, price_isk, price_includes_vat, specs_verified, status, images, title, trim, description_is, seats, colour, exterior_colour, interior_colour, year, range_km, mileage_km, battery_kwh, horsepower_hp, drivetrain, vin } = body
   if (!id) {
     return NextResponse.json({ error: 'Vantar id' }, { status: 400 })
   }
@@ -65,6 +73,14 @@ export async function PATCH(req: Request) {
     // just looked at this number and confirmed it, as opposed to the flat
     // mileage-tier placeholder the sync script fills in automatically.
     update.price_verified = true
+  }
+  if (price_includes_vat !== undefined) {
+    const parsed = parsePriceIncludesVat(price_includes_vat)
+    if (!parsed.ok) {
+      return NextResponse.json({ error: 'Ógilt price_includes_vat' }, { status: 400 })
+    }
+    // null restores the body-type default (passenger cars show «m/VSK»).
+    update.price_includes_vat = parsed.value
   }
   if (specs_verified !== undefined) update.specs_verified = Boolean(specs_verified)
   if (images !== undefined) {
@@ -231,6 +247,14 @@ export async function POST(req: Request) {
     location_country: body.location_country || null,
     price_verified,
     specs_verified,
+  }
+
+  if ('price_includes_vat' in body) {
+    const parsed = parsePriceIncludesVat(body.price_includes_vat)
+    if (!parsed.ok) {
+      return NextResponse.json({ error: 'Ógilt price_includes_vat' }, { status: 400 })
+    }
+    row.price_includes_vat = parsed.value
   }
 
   const { data, error } = await supabaseAdmin.from('cars').insert(row).select()

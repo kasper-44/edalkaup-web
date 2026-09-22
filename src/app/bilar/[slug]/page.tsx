@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { supabase } from '@/lib/supabase'
 import CarDetail from '@/components/CarDetail'
+import { ensureGrenadierPriceExcludesVat } from '@/lib/ensureGrenadierVat'
 import { formatIskNumber, formatPrice } from '@/lib/formatIsk'
 
 export const dynamic = 'force-dynamic'
@@ -29,6 +30,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>
 }): Promise<Metadata> {
   const { slug } = await params
+  await ensureGrenadierPriceExcludesVat(slug)
   const car = await getCar(slug)
   if (!car) {
     return { title: 'Bíll fannst ekki' }
@@ -59,6 +61,7 @@ export default async function CarPage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
+  await ensureGrenadierPriceExcludesVat(slug)
   const car = await getCar(slug)
 
   if (!car) {
