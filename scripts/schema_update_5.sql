@@ -8,6 +8,8 @@
 -- true forces «m/VSK» even on a van.
 --
 -- Only the Ineos Grenadier listing is set here. Other rows stay NULL.
+-- The public Grenadier page also omits the VSK line when this column is
+-- still missing, so the listing stays correct until this script is applied.
 
 ALTER TABLE cars ADD COLUMN IF NOT EXISTS price_includes_vat boolean;
 
