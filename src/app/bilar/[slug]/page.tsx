@@ -5,6 +5,20 @@ import { formatIskNumber, formatPrice } from '@/lib/formatIsk'
 
 export const dynamic = 'force-dynamic'
 
+/**
+ * Listed price does not include a VSK line. Until `price_includes_vat` exists
+ * on the row, the page still omits the subtitle. A stored boolean wins.
+ */
+const PRICE_EXCLUDES_VAT_IDS = new Set(['0678ccc0-da40-4524-9835-d6998911dd16'])
+
+function withVatFlag<T extends { id?: string; price_includes_vat?: boolean | null; vat_included?: boolean | null }>(
+  car: T,
+): T {
+  if (!car?.id || !PRICE_EXCLUDES_VAT_IDS.has(car.id)) return car
+  if (typeof car.price_includes_vat === 'boolean' || typeof car.vat_included === 'boolean') return car
+  return { ...car, price_includes_vat: false }
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function getCar(slug: string): Promise<any | null> {
   const { data, error } = await supabase
@@ -15,7 +29,7 @@ async function getCar(slug: string): Promise<any | null> {
     .not('images_original', 'is', null)
     .single()
   if (error || !data) return null
-  return data
+  return withVatFlag(data)
 }
 
 function carTitle(car: { year: number; make: string; model: string; trim?: string }) {
