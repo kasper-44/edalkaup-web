@@ -106,7 +106,7 @@ export async function PATCH(req: Request) {
   if (update.status === 'live') {
     const { data: current, error: fetchError } = await supabaseAdmin
       .from('cars')
-      .select('price_isk,price_verified,specs_verified')
+      .select('price_isk,price_verified,specs_verified,status')
       .eq('id', id)
       .single()
     if (fetchError || !current) {
@@ -126,6 +126,13 @@ export async function PATCH(req: Request) {
         { error: `Ekki hægt að birta: ${problems.join(', ')}.` },
         { status: 400 },
       )
+    }
+
+    // First time this car is actually listed. created_at is what the public
+    // grids sort on, so a draft published today outranks cars imported earlier.
+    // Editing a car that is already live must not move it.
+    if (current.status !== 'live') {
+      update.created_at = new Date().toISOString()
     }
   }
 
@@ -215,6 +222,7 @@ export async function POST(req: Request) {
     }
   }
 
+  const listedAt = new Date().toISOString()
   const row: Record<string, unknown> = {
     title,
     make,
@@ -243,7 +251,10 @@ export async function POST(req: Request) {
     description_is: body.description_is || null,
     source_url: null,
     vin: body.vin || null,
-    last_seen_at: new Date().toISOString(),
+    // created_at is the public newest-first key. last_seen_at stays the
+    // sighting stamp the admin list already sorts and displays.
+    created_at: listedAt,
+    last_seen_at: listedAt,
     status,
     location_country: body.location_country || null,
     price_verified,

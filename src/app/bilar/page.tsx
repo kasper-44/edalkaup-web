@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
+import { orderByNewestListing } from '@/lib/publicCarOrder'
 import CarCard from '@/components/CarCard'
 import FilterSidebar from '@/components/FilterSidebar'
 
@@ -54,12 +55,13 @@ export default function BilarPage() {
 
   useEffect(() => {
     async function fetchCars() {
-      const { data, error } = await supabase
-        .from('cars')
-        .select('*')
-        .eq('status', 'live')
-        .not('images_original', 'is', null)
-        .order('year', { ascending: false })
+      const { data, error } = await orderByNewestListing(
+        supabase
+          .from('cars')
+          .select('*')
+          .eq('status', 'live')
+          .not('images_original', 'is', null),
+      )
       if (!error && data) {
         setCars(data.map(adaptCar))
       }

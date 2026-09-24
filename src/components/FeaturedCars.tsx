@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
+import { orderByNewestListing } from '@/lib/publicCarOrder'
 import CarCard from '@/components/CarCard'
 
 // Adapt a Supabase row into the shape CarCard expects (same mapping as /bilar).
@@ -41,14 +42,14 @@ export default function FeaturedCars() {
   useEffect(() => {
     async function fetchCars() {
       // Newest live cars with a real price and at least one image.
-      const { data, error } = await supabase
-        .from('cars')
-        .select('*')
-        .eq('status', 'live')
-        .not('images_original', 'is', null)
-        .gt('price_isk', 0)
-        .order('year', { ascending: false })
-        .limit(6)
+      const { data, error } = await orderByNewestListing(
+        supabase
+          .from('cars')
+          .select('*')
+          .eq('status', 'live')
+          .not('images_original', 'is', null)
+          .gt('price_isk', 0),
+      ).limit(6)
       if (!error && data) {
         setCars(data.filter((r: any) => r.images && r.images.length > 0).map(adaptCar))
       }
