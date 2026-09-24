@@ -1,44 +1,16 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { Fragment, useState, useEffect, useCallback } from 'react'
 import AutoGrowTextarea from '@/components/AutoGrowTextarea'
+import {
+  LISTING_FIELDS,
+  draftFromCar,
+  listingChanges,
+  type Car,
+  type ListingDraft,
+  type VatChoice,
+} from '@/lib/adminListingDraft'
 import { formatIsk, formatIskNumber } from '@/lib/formatIsk'
-
-interface Car {
-  id: string
-  title: string
-  make: string
-  model: string
-  year: number
-  trim: string
-  price_isk: number
-  price_original: number | null
-  price_currency: string | null
-  mileage_km: number | null
-  colour: string | null
-  exterior_colour: string | null
-  engine: string | null
-  fuel_type: string | null
-  body_type: string | null
-  transmission: string | null
-  drivetrain: string | null
-  doors: number | null
-  seats: number | null
-  battery_kwh: number | null
-  horsepower_hp: number | null
-  range_km: number | null
-  towing_kg: number | null
-  images: string[] | null
-  images_original: string[] | null
-  description_is: string | null
-  source_url: string | null
-  vin: string | null
-  last_seen_at: string | null
-  status: string
-  location_country: string | null
-  price_verified: boolean
-  specs_verified: boolean
-}
 
 const fmt = formatIskNumber
 
@@ -88,6 +60,7 @@ export default function AdminPage() {
   const [photoEditMode, setPhotoEditMode] = useState(false)
   const [pendingImages, setPendingImages] = useState<string[]>([])
   const [descDraft, setDescDraft] = useState('')
+  const [listingDraft, setListingDraft] = useState<ListingDraft | null>(null)
 
   // Restore a previous session (survives back/forward navigation + refresh).
   useEffect(() => {
@@ -133,7 +106,7 @@ export default function AdminPage() {
     if (authed) load(tab, password)
   }, [tab, authed, load, password])
 
-  const patch = async (id: string, payload: Record<string, unknown>) => {
+  const patch = async (id: string, payload: Record<string, unknown>): Promise<Car | null> => {
     setSaving(id)
     try {
       const res = await fetch('/api/admin/cars', {
@@ -141,18 +114,19 @@ export default function AdminPage() {
         headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
         body: JSON.stringify({ id, ...payload }),
       })
+      const j = await res.json().catch(() => ({}))
       if (!res.ok) {
-        const j = await res.json()
         alert('Villa: ' + (j.error || res.status))
-        return
+        return null
       }
+      const updated = (j.car ?? null) as Car | null
       // Remove from current list if status changed away from current tab
       if (payload.status && payload.status !== tab) {
         setCars((prev) => prev.filter((c) => c.id !== id))
-      } else {
-        const j = await res.json()
-        setCars((prev) => prev.map((c) => (c.id === id ? { ...c, ...j.car } : c)))
+      } else if (updated) {
+        setCars((prev) => prev.map((c) => (c.id === id ? { ...c, ...updated } : c)))
       }
+      return updated
     } finally {
       setSaving(null)
     }
@@ -168,14 +142,42 @@ export default function AdminPage() {
     setPreview(null)
     setPhotoEditMode(false)
     setDescDraft('')
+    setListingDraft(null)
   }
 
   const saveDescription = async () => {
     if (!preview) return
     const next = descDraft.trim() || null
-    await patch(preview.id, { description_is: next })
-    setDescDraft(next || '')
-    setPreview((p) => (p ? { ...p, description_is: next } : p))
+    const updated = await patch(preview.id, { description_is: next })
+    if (!updated) return
+    setDescDraft(updated.description_is || '')
+    setPreview(updated)
+  }
+
+  const saveListing = async () => {
+    if (!preview || !listingDraft) return
+    const built = listingChanges(preview, listingDraft)
+    if (built.error) {
+      alert(built.error)
+      return
+    }
+    if (Object.keys(built.payload).length === 0) return
+    const updated = await patch(preview.id, built.payload)
+    if (!updated) return
+    if ('price_isk' in built.payload) {
+      setEdits((prev) => {
+        if (!(preview.id in prev)) return prev
+        const next = { ...prev }
+        delete next[preview.id]
+        return next
+      })
+    }
+    if (updated.status !== tab) {
+      closePreview()
+      return
+    }
+    setPreview(updated)
+    setListingDraft(draftFromCar(updated))
   }
 
   const startPhotoEdit = () => {
@@ -185,8 +187,9 @@ export default function AdminPage() {
 
   const savePhotos = async () => {
     if (!preview) return
-    await patch(preview.id, { images: pendingImages })
-    setPreview((p) => (p ? { ...p, images: pendingImages } : p))
+    const updated = await patch(preview.id, { images: pendingImages })
+    if (!updated) return
+    setPreview(updated)
     setPhotoEditMode(false)
   }
 
@@ -393,6 +396,7 @@ export default function AdminPage() {
                       <div className="flex items-center gap-2 ml-auto">
                         <label className="text-sm text-slate-400">Verð (ISK):</label>
                         <input
+                          key={`${car.id}-${car.price_isk}`}
                           type="number"
                           defaultValue={car.price_isk || ''}
                           onChange={(e) => setEdits((p) => ({ ...p, [car.id]: e.target.value }))}
@@ -415,6 +419,7 @@ export default function AdminPage() {
                           setPreview(car)
                           setPhotoEditMode(false)
                           setDescDraft(car.description_is || '')
+                          setListingDraft(draftFromCar(car))
                         }}
                         className="px-3 py-1.5 rounded-lg bg-sky-600 text-white text-sm font-semibold hover:bg-sky-500"
                       >
@@ -514,16 +519,28 @@ export default function AdminPage() {
             className="max-w-4xl mx-auto bg-white text-slate-900 rounded-2xl overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between px-5 py-3 bg-slate-900 text-white">
+              <div className="flex items-center justify-between gap-3 px-5 py-3 bg-slate-900 text-white">
               <span className="text-sm font-semibold">
                 Forskoðun — svona sjá viðskiptavinir bílinn
               </span>
-              <button
-                onClick={closePreview}
-                className="px-3 py-1 rounded-lg bg-slate-700 text-sm hover:bg-slate-600"
-              >
-                Loka ✕
-              </button>
+              <div className="flex items-center gap-2">
+                {preview.status === 'live' && (
+                  <a
+                    href={`/bilar/${preview.id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3 py-1 rounded-lg bg-slate-700 text-sm hover:bg-slate-600"
+                  >
+                    Opna á vef
+                  </a>
+                )}
+                <button
+                  onClick={closePreview}
+                  className="px-3 py-1 rounded-lg bg-slate-700 text-sm hover:bg-slate-600"
+                >
+                  Loka ✕
+                </button>
+              </div>
             </div>
 
             {/* Photo gallery */}
@@ -615,39 +632,98 @@ export default function AdminPage() {
                 />
               </div>
 
-              {/* Spec table — customer-facing only (no VIN / original price / dealer) */}
-              <h3 className="text-lg font-bold mb-3">Tæknilegar upplýsingar</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 text-sm">
-                {[
-                  ['Árgerð', preview.year?.toString()],
-                  ['Framleiðandi', preview.make],
-                  ['Gerð', preview.model],
-                  ['Útgáfa', preview.trim],
-                  ['Akstur', preview.mileage_km ? fmt(preview.mileage_km) + ' km' : 'Nýr'],
-                  ['Litur', preview.colour],
-                  ['Vél', preview.engine],
-                  ['Rafhlaða', preview.battery_kwh ? `${preview.battery_kwh} kWh` : undefined],
-                  ['Afl', preview.horsepower_hp ? `${preview.horsepower_hp} hö` : undefined],
-                  ['Drægni', preview.range_km ? `${preview.range_km} km` : undefined],
-                  ['Dráttargeta', preview.towing_kg ? `${preview.towing_kg} kg` : undefined],
-                  ['Skipting', preview.transmission],
-                  ['Eldsneyti', preview.fuel_type],
-                  ['Yfirbygging', preview.body_type],
-                  ['Drif', preview.drivetrain],
-                  ['Hurðir', preview.doors?.toString()],
-                  ['Sæti', preview.seats?.toString()],
-                ]
-                  .filter(([, v]) => v)
-                  .map(([label, value]) => (
-                    <div
-                      key={label as string}
-                      className="flex justify-between border-b border-black/5 py-1.5"
+              {listingDraft && (
+                <div>
+                  <div className="flex items-center justify-between gap-3 mb-2">
+                    <h3 className="text-lg font-bold">Breyta skráningu</h3>
+                    <button
+                      onClick={saveListing}
+                      disabled={
+                        saving === preview.id ||
+                        JSON.stringify(draftFromCar(preview)) === JSON.stringify(listingDraft)
+                      }
+                      className="px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 text-sm font-semibold hover:bg-emerald-400 disabled:opacity-50"
                     >
-                      <span className="text-slate-500">{label}</span>
-                      <span className="font-medium">{value}</span>
-                    </div>
-                  ))}
-              </div>
+                      Vista breytingar
+                    </button>
+                  </div>
+                  <p className="text-slate-500 text-sm mb-3">
+                    Tóm svæði vistast sem ótilgreint. Birting í sölu krefst enn staðfests verðs og tæknilegra upplýsinga.
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {LISTING_FIELDS.map((field) => (
+                      <Fragment key={field.key}>
+                        <label className="block text-sm">
+                          <span className="text-slate-500">{field.label}</span>
+                          <input
+                            value={listingDraft[field.key]}
+                            inputMode={
+                              field.numeric === 'decimal' ? 'decimal' : field.numeric === 'int' ? 'numeric' : 'text'
+                            }
+                            onChange={(e) =>
+                              setListingDraft((current) =>
+                                current ? { ...current, [field.key]: e.target.value } : current,
+                              )
+                            }
+                            className="mt-1 w-full px-3 py-2 rounded-lg bg-slate-50 text-slate-900 border border-black/10 outline-none focus:border-amber-500"
+                          />
+                        </label>
+                        {field.key === 'price_isk' && (
+                          <label className="block text-sm">
+                            <span className="text-slate-500">Verð með VSK</span>
+                            <select
+                              value={listingDraft.price_includes_vat}
+                              onChange={(e) =>
+                                setListingDraft((current) =>
+                                  current
+                                    ? { ...current, price_includes_vat: e.target.value as VatChoice }
+                                    : current,
+                                )
+                              }
+                              className="mt-1 w-full px-3 py-2 rounded-lg bg-slate-50 text-slate-900 border border-black/10 outline-none focus:border-amber-500"
+                            >
+                              <option value="">Sjálfgefið</option>
+                              <option value="true">Já — m/VSK</option>
+                              <option value="false">Nei</option>
+                            </select>
+                            <span className="block text-xs text-slate-400 mt-1">
+                              Sjálfgefið: fólksbílar sýna «m/VSK», sendibílar ekki.
+                            </span>
+                          </label>
+                        )}
+                      </Fragment>
+                    ))}
+                    <label className="block text-sm">
+                      <span className="text-slate-500">Staða</span>
+                      <select
+                        value={listingDraft.status}
+                        onChange={(e) =>
+                          setListingDraft((current) =>
+                            current ? { ...current, status: e.target.value } : current,
+                          )
+                        }
+                        className="mt-1 w-full px-3 py-2 rounded-lg bg-slate-50 text-slate-900 border border-black/10 outline-none focus:border-amber-500"
+                      >
+                        <option value="draft">Drög</option>
+                        <option value="live">Í sölu</option>
+                        <option value="sold">Seldur</option>
+                      </select>
+                    </label>
+                  </div>
+                  <div className="mt-4 flex justify-end">
+                    <button
+                      onClick={saveListing}
+                      disabled={
+                        saving === preview.id ||
+                        JSON.stringify(draftFromCar(preview)) === JSON.stringify(listingDraft)
+                      }
+                      className="px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 text-sm font-semibold hover:bg-emerald-400 disabled:opacity-50"
+                    >
+                      Vista breytingar
+                    </button>
+                  </div>
+                </div>
+              )}
 
               {/* Specs verification — required before this car can go live.
                   "Vél"/"Eldsneyti"/"Drifkerfi" etc. above are auto-filled from a
@@ -667,8 +743,8 @@ export default function AdminPage() {
                     </p>
                     <button
                       onClick={async () => {
-                        await patch(preview.id, { specs_verified: true })
-                        setPreview((p) => (p ? { ...p, specs_verified: true } : p))
+                        const updated = await patch(preview.id, { specs_verified: true })
+                        if (updated) setPreview(updated)
                       }}
                       disabled={saving === preview.id}
                       className="px-3 py-1.5 rounded-lg bg-amber-500 text-slate-950 text-sm font-semibold hover:bg-amber-400 disabled:opacity-50"

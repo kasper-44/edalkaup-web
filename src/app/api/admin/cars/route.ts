@@ -31,16 +31,55 @@ export async function GET(req: Request) {
   return NextResponse.json({ cars: data })
 }
 
+function parseOptionalNumber(
+  value: unknown,
+): { ok: true; value: number | null } | { ok: false } {
+  if (value === null || value === '') return { ok: true, value: null }
+  const n = Number(value)
+  if (!Number.isFinite(n)) return { ok: false }
+  return { ok: true, value: n }
+}
+
 // PATCH /api/admin/cars  -> update listing fields without recreating the row
-// body: { id, price_isk?, price_includes_vat?, specs_verified?, status?, images?, title?, trim?,
-//         description_is?, seats?, colour?, exterior_colour?, interior_colour?,
-//         year?, range_km?, mileage_km?, battery_kwh?, horsepower_hp?, drivetrain?, transmission?, vin? }
+// body: { id, price_isk?, price_includes_vat?, specs_verified?, status?, images?, title?, make?, model?, trim?,
+//         description_is?, seats?, doors?, colour?, exterior_colour?, interior_colour?,
+//         year?, range_km?, mileage_km?, battery_kwh?, horsepower_hp?, towing_kg?,
+//         drivetrain?, transmission?, fuel_type?, body_type?, engine?, vin? }
 export async function PATCH(req: Request) {
   if (!isAuthorized(req)) {
     return NextResponse.json({ error: 'Óheimilt' }, { status: 401 })
   }
   const body = await req.json()
-  const { id, price_isk, price_includes_vat, specs_verified, status, images, title, trim, description_is, seats, colour, exterior_colour, interior_colour, year, range_km, mileage_km, battery_kwh, horsepower_hp, drivetrain, transmission, vin } = body
+  const {
+    id,
+    price_isk,
+    price_includes_vat,
+    specs_verified,
+    status,
+    images,
+    title,
+    make,
+    model,
+    trim,
+    description_is,
+    seats,
+    doors,
+    colour,
+    exterior_colour,
+    interior_colour,
+    year,
+    range_km,
+    mileage_km,
+    battery_kwh,
+    horsepower_hp,
+    towing_kg,
+    drivetrain,
+    transmission,
+    fuel_type,
+    body_type,
+    engine,
+    vin,
+  } = body
   if (!id) {
     return NextResponse.json({ error: 'Vantar id' }, { status: 400 })
   }
@@ -50,9 +89,24 @@ export async function PATCH(req: Request) {
   if (exterior_colour !== undefined) update.exterior_colour = exterior_colour === null || exterior_colour === '' ? null : String(exterior_colour).trim()
   if (interior_colour !== undefined) update.interior_colour = interior_colour === null || interior_colour === '' ? null : String(interior_colour).trim()
   if (title !== undefined) update.title = String(title).trim()
+  if (make !== undefined) {
+    const next = String(make).trim()
+    if (!next) return NextResponse.json({ error: 'Vantar framleiðanda' }, { status: 400 })
+    update.make = next
+  }
+  if (model !== undefined) {
+    const next = String(model).trim()
+    if (!next) return NextResponse.json({ error: 'Vantar gerð' }, { status: 400 })
+    update.model = next
+  }
   if (trim !== undefined) update.trim = String(trim)
   if (description_is !== undefined) update.description_is = description_is
   if (seats !== undefined) update.seats = seats === null || seats === '' ? null : Number(seats)
+  if (doors !== undefined) {
+    const parsed = parseOptionalNumber(doors)
+    if (!parsed.ok) return NextResponse.json({ error: 'Ógildar hurðir' }, { status: 400 })
+    update.doors = parsed.value
+  }
   if (year !== undefined) {
     const y = Number(year)
     if (!Number.isInteger(y) || y < 1990 || y > 2035) {
@@ -66,6 +120,14 @@ export async function PATCH(req: Request) {
   if (horsepower_hp !== undefined) update.horsepower_hp = horsepower_hp === null || horsepower_hp === '' ? null : Number(horsepower_hp)
   if (drivetrain !== undefined) update.drivetrain = drivetrain === null || drivetrain === '' ? null : String(drivetrain).trim()
   if (transmission !== undefined) update.transmission = transmission === null || transmission === '' ? null : String(transmission).trim()
+  if (fuel_type !== undefined) update.fuel_type = fuel_type === null || fuel_type === '' ? null : String(fuel_type).trim()
+  if (body_type !== undefined) update.body_type = body_type === null || body_type === '' ? null : String(body_type).trim()
+  if (engine !== undefined) update.engine = engine === null || engine === '' ? null : String(engine).trim()
+  if (towing_kg !== undefined) {
+    const parsed = parseOptionalNumber(towing_kg)
+    if (!parsed.ok) return NextResponse.json({ error: 'Ógild dráttargeta' }, { status: 400 })
+    update.towing_kg = parsed.value
+  }
   if (vin !== undefined) update.vin = vin === null || vin === '' ? null : String(vin).trim()
 
   if (price_isk !== undefined) {
