@@ -1,7 +1,14 @@
 import type { Metadata } from 'next'
 import { supabase } from '@/lib/supabase'
 import CarDetail from '@/components/CarDetail'
-import { formatIskNumber, formatPrice } from '@/lib/formatIsk'
+import {
+  breadcrumbJsonLd,
+  carJsonLd,
+  jsonLdScript,
+  listingCanonical,
+  listingDocumentTitle,
+  listingMetaDescription,
+} from '@/lib/listingSeo'
 
 export const dynamic = 'force-dynamic'
 
@@ -32,10 +39,6 @@ async function getCar(slug: string): Promise<any | null> {
   return withVatFlag(data)
 }
 
-function carTitle(car: { year: number; make: string; model: string; trim?: string }) {
-  return `${car.year} ${car.make} ${car.model} ${car.trim || ''}`.trim()
-}
-
 // --- Per-car SEO metadata (server-rendered) ---
 export async function generateMetadata({
   params,
@@ -47,23 +50,22 @@ export async function generateMetadata({
   if (!car) {
     return { title: 'Bíll fannst ekki' }
   }
-  const title = carTitle(car)
-  const priceText = formatPrice(car.price_isk)
-  const km = car.mileage_km ? formatIskNumber(car.mileage_km) + ' km' : 'nýr'
-  const description = `${title} til sölu hjá Eðalkaup — ${km}, ${priceText}. Innfluttur frá Norður-Ameríku. Hafðu samband fyrir nánari upplýsingar.`
+  const title = listingDocumentTitle(car)
+  const description = listingMetaDescription(car)
   const image = car.images?.[0]
+  const canonical = listingCanonical(slug)
 
   return {
-    title,
+    title: { absolute: title },
     description,
     openGraph: {
       type: 'website',
-      title: `${title} | Eðalkaup`,
+      title,
       description,
       images: image ? [{ url: image }] : undefined,
-      url: `https://edalkaup.is/bilar/${slug}`,
+      url: canonical,
     },
-    alternates: { canonical: `https://edalkaup.is/bilar/${slug}` },
+    alternates: { canonical },
   }
 }
 
@@ -89,40 +91,15 @@ export default async function CarPage({
     )
   }
 
-  const title = carTitle(car)
-
-  // JSON-LD structured data (schema.org/Car) for rich Google results.
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Car',
-    name: title,
-    brand: { '@type': 'Brand', name: car.make },
-    model: car.model,
-    vehicleModelDate: car.year,
-    ...(car.mileage_km
-      ? { mileageFromOdometer: { '@type': 'QuantitativeValue', value: car.mileage_km, unitCode: 'KMT' } }
-      : {}),
-    ...(car.fuel_type ? { fuelType: car.fuel_type } : {}),
-    ...(car.body_type ? { bodyType: car.body_type } : {}),
-    image: car.images || undefined,
-    ...(car.price_isk > 0
-      ? {
-          offers: {
-            '@type': 'Offer',
-            price: car.price_isk,
-            priceCurrency: 'ISK',
-            availability: 'https://schema.org/InStock',
-            seller: { '@type': 'AutoDealer', name: 'Eðalkaup' },
-          },
-        }
-      : {}),
-  }
-
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdScript(carJsonLd(car, slug)) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLdScript(breadcrumbJsonLd(car, slug)) }}
       />
       <CarDetail car={car} />
     </>

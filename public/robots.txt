@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://edalkaup.is/sitemap.xml
+Sitemap: https://www.edalkaup.is/sitemap.xml

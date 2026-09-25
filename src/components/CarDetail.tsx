@@ -3,9 +3,11 @@
 import { useState } from 'react'
 import CarGallery from '@/components/CarGallery'
 import ContactForm from '@/components/ContactForm'
+import { displayExteriorColour } from '@/lib/exteriorColour'
 import { listingCopy } from '@/lib/listingCopy'
 import { vatIncludedPriceSubtitle } from '@/lib/priceVat'
 import { formatIskNumber, formatPrice } from '@/lib/formatIsk'
+import { DEALER_PHONE_TEL, SITE_ORIGIN } from '@/lib/site'
 
 function formatMileage(km: number) {
   if (!km) return 'Ótilgreint'
@@ -13,15 +15,6 @@ function formatMileage(km: number) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-
-function displayExteriorColour(car: { exterior_colour?: string | null; colour?: string | null }) {
-  const ext = (car.exterior_colour || '').trim()
-  const col = (car.colour || '').trim()
-  // Configurator dumps like "vanadiumgraumetallic" — prefer the human colour field
-  if (ext && /^[a-z]+$/.test(ext) && col) return col
-  return ext || col || 'Ótilgreint'
-}
-
 export default function CarDetail({ car }: { car: any }) {
   const [showInquiry, setShowInquiry] = useState(false)
   const title = `${car.year} ${car.make} ${car.model} ${car.trim || ''}`.trim()
@@ -95,7 +88,7 @@ export default function CarDetail({ car }: { car: any }) {
               <div id="fyrirspurn">
                 <ContactForm
                   carTitle={title}
-                  carUrl={`https://edalkaup.is/bilar/${car.id}`}
+                  carUrl={`${SITE_ORIGIN}/bilar/${car.id}`}
                   carVin={car.vin || undefined}
                 />
               </div>
@@ -152,13 +145,13 @@ export default function CarDetail({ car }: { car: any }) {
                 WhatsApp
               </a>
               <a
-                href="tel:+354****2011"
+                href={DEALER_PHONE_TEL}
                 className="block w-full text-center px-6 py-3 border border-black/10 dark:border-white/10 text-gray-700 dark:text-slate-300 font-semibold rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors mb-3"
               >
                 Hringja: 699 2011
               </a>
               <a
-                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://edalkaup.is/bilar/${car.id}`)}`}
+                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${SITE_ORIGIN}/bilar/${car.id}`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 w-full text-center px-6 py-3 bg-[#1877F2] text-white font-semibold rounded-xl hover:bg-[#1466d4] transition-colors"
