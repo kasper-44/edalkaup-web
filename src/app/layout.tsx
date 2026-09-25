@@ -8,11 +8,13 @@ import ThemeProvider from '@/components/ThemeProvider'
 import MessengerButton from '@/components/MessengerButton'
 import { Analytics } from '@vercel/analytics/react'
 import MarketingTags from '@/components/MarketingTags'
+import { jsonLdScript, siteDealerJsonLd } from '@/lib/listingSeo'
+import { SITE_ORIGIN } from '@/lib/site'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://edalkaup.is'),
+  metadataBase: new URL(SITE_ORIGIN),
   title: {
     default: 'Eðalkaup — Innflutningur á bílum frá Ameríku og Evrópu',
     template: '%s | Eðalkaup',
@@ -21,7 +23,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'is_IS',
-    url: 'https://edalkaup.is',
+    url: SITE_ORIGIN,
     siteName: 'Eðalkaup',
     title: 'Eðalkaup — Innflutningur á bílum frá Ameríku og Evrópu',
     description: 'Eðalkaup er dótturfyrirtæki Úranus, sem er einn stærsti bílainnflytjandi Íslands í yfir 25 ár. Við sérhæfum okkur í innflutningi vandaðra bíla frá Bandaríkjunum, Kanada og Evrópu — ökutæki sem ekki eru fáanleg á íslenskum markaði.',
@@ -46,6 +48,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang="is" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        {!hideChrome && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: jsonLdScript(siteDealerJsonLd()) }}
+          />
+        )}
       </head>
       <body className={`${inter.className} antialiased`}>
         <MarketingTags />
