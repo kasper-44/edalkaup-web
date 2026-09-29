@@ -153,7 +153,7 @@ export default function HeroVideo({ children }: { children?: ReactNode }) {
   return (
     <section
       ref={sectionRef}
-      className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden bg-navy-900 px-4 pb-28 pt-24"
+      className="relative flex min-h-[100svh] flex-col justify-start overflow-hidden bg-navy-900 px-4 pb-28 pt-20"
     >
       {/* Video background — cover on mobile; contain + 12% scale on desktop */}
       <video
@@ -175,28 +175,28 @@ export default function HeroVideo({ children }: { children?: ReactNode }) {
 
       {/* Content */}
       <div className="relative z-10 mx-auto w-full max-w-3xl text-center">
-        <div className="inline-block px-4 py-1.5 mb-4 text-xs font-semibold tracking-[0.2em] uppercase text-accent border border-accent/30 rounded-full bg-accent/5">
+        <div className="inline-block px-4 py-1 mb-3 text-xs font-semibold tracking-[0.2em] uppercase text-accent border border-accent/30 rounded-full bg-accent/5">
           Yfir 25 ára reynsla
         </div>
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-gray-900 dark:text-white mb-4">
+        <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-gray-900 dark:text-white mb-3">
           Við finnum{' '}
           <span className="bg-gradient-to-r from-accent to-accent-light bg-clip-text text-transparent">
             bílinn þinn
           </span>
         </h1>
-        <p className="text-base sm:text-lg text-gray-600 dark:text-slate-300 max-w-2xl mx-auto mb-6 leading-relaxed">
+        <p className="text-sm sm:text-lg text-gray-600 dark:text-slate-300 max-w-2xl mx-auto mb-4 leading-relaxed">
           Eðalkaup flytur inn vandaða bíla frá Bandaríkjunum, Kanada og Evrópu. Einn stærsti bílainnflytjandi Íslands í yfir 25 ár.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <CallLink
             placement="hero"
-            className="px-8 py-4 text-base font-semibold bg-accent text-navy-900 rounded-xl hover:bg-accent-light transition-all hover:scale-105"
+            className="px-6 py-3 text-sm sm:px-8 sm:py-4 sm:text-base font-semibold bg-accent text-navy-900 rounded-xl hover:bg-accent-light transition-all hover:scale-105"
           >
             Hringja 699 2011
           </CallLink>
           <Link
             href="/bilar"
-            className="px-8 py-4 text-base font-semibold border border-gray-300 dark:border-white/20 text-gray-900 dark:text-white rounded-xl hover:bg-black/5 dark:hover:bg-white/10 transition-all"
+            className="px-6 py-3 text-sm sm:px-8 sm:py-4 sm:text-base font-semibold border border-gray-300 dark:border-white/20 text-gray-900 dark:text-white rounded-xl hover:bg-black/5 dark:hover:bg-white/10 transition-all"
           >
             Skoða bíla
           </Link>

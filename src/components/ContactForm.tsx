@@ -111,7 +111,7 @@ export default function ContactForm({
         {title}
       </h3>
       {compact && (
-        <p className="text-sm text-gray-500 dark:text-slate-400">
+        <p className="hidden text-sm text-gray-500 dark:text-slate-400 sm:block">
           Nafn og sími nægja. Við svörum á opnunartíma.
         </p>
       )}
@@ -122,7 +122,7 @@ export default function ContactForm({
         </div>
       )}
 
-      <div className={`grid grid-cols-1 gap-4 ${compact ? '' : 'sm:grid-cols-2'}`}>
+      <div className={`grid gap-3 ${compact ? 'grid-cols-2' : 'grid-cols-1 gap-4 sm:grid-cols-2'}`}>
         <div>
           <label className="block text-sm font-medium text-gray-500 dark:text-slate-400 mb-1.5">Nafn</label>
           <input
@@ -130,7 +130,7 @@ export default function ContactForm({
             type="text"
             required
             autoComplete="name"
-            className="w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors"
+            className={`w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors ${compact ? 'py-2.5' : 'px-4 py-3'}`}
             placeholder="Fullt nafn"
           />
         </div>
@@ -141,7 +141,7 @@ export default function ContactForm({
             type="tel"
             required={compact}
             autoComplete="tel"
-            className="w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors"
+            className={`w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors ${compact ? 'py-2.5' : 'px-4 py-3'}`}
             placeholder="000 0000"
           />
         </div>
@@ -177,7 +177,7 @@ export default function ContactForm({
         <label className="block text-sm font-medium text-gray-500 dark:text-slate-400 mb-1.5">Skilaboð</label>
         <textarea
           name="message"
-          rows={compact ? 2 : 4}
+          rows={compact ? 1 : 4}
           required
           className="w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors resize-none"
           placeholder={compact ? 'Hvaða bíl leitarðu að?' : 'Hvað getum við aðstoðað þig með?'}
@@ -187,7 +187,7 @@ export default function ContactForm({
       <button
         type="submit"
         disabled={sending}
-        className="w-full py-3.5 text-base font-semibold bg-accent text-navy-900 rounded-xl hover:bg-accent-light transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className={`w-full font-semibold bg-accent text-navy-900 rounded-xl hover:bg-accent-light transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${compact ? 'py-2.5 text-sm' : 'py-3.5 text-base'}`}
       >
         {sending ? 'Sendi...' : 'Senda fyrirspurn'}
       </button>

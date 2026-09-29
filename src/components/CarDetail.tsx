@@ -61,8 +61,8 @@ export default function CarDetail({ car }: { car: any }) {
           </div>
 
           {/* Right Sidebar */}
-          <div className="space-y-6 lg:col-start-3 lg:row-span-2 lg:row-start-1">
-            <div className="bg-white dark:bg-navy-800 rounded-2xl border border-black/5 dark:border-white/5 p-6">
+          <div className="flex flex-col gap-6 lg:col-start-3 lg:row-span-2 lg:row-start-1">
+            <div className="order-2 rounded-2xl border border-black/5 bg-white p-6 dark:border-white/5 dark:bg-navy-800 lg:order-1">
               <div className="inline-block px-3 py-1 text-xs font-semibold rounded-full border mb-4 bg-emerald-500/20 text-emerald-400 border-emerald-500/30">
                 Til sölu
               </div>
@@ -116,7 +116,7 @@ export default function CarDetail({ car }: { car: any }) {
               </a>
             </div>
 
-            <div id="fyrirspurn" className="scroll-mt-28">
+            <div id="fyrirspurn" className="order-1 scroll-mt-28 lg:order-2">
               <ContactForm
                 carTitle={title}
                 carUrl={`${SITE_ORIGIN}/bilar/${car.id}`}

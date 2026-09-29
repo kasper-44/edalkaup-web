@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <>
       <HeroVideo>
-        <div id="fyrirspurn" className="scroll-mt-28 mx-auto mt-6 w-full max-w-xl text-left">
+        <div id="fyrirspurn" className="scroll-mt-28 mx-auto mt-4 w-full max-w-xl text-left">
           <ContactForm variant="compact" source="forsida" heading="Sendu okkur fyrirspurn" />
         </div>
       </HeroVideo>
