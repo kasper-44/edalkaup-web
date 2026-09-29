@@ -9,6 +9,7 @@ import {
   listingDocumentTitle,
   listingMetaDescription,
   siteDealerJsonLd,
+  vehicleTitle,
 } from '@/lib/listingSeo'
 import { DEALER_PHONE_TEL } from '@/lib/site'
 import type { ListingCar } from '@/lib/listingSeo'
@@ -77,28 +78,28 @@ const sequoia: ListingCar = {
 
 assert.equal(
   listingDocumentTitle(sierraWhite),
-  '2026 GMC Sierra Denali MAX RANGE, hvítur, 5.000 km | Til sölu á Íslandi',
+  'GMC Sierra Denali MAX RANGE, hvítur, 5.000 km | Til sölu á Íslandi',
 )
 assert.equal(
   listingDocumentTitle(sierraRed),
-  '2026 GMC Sierra Denali MAX RANGE, dökkrautt, 44.000 km | Til sölu á Íslandi',
+  'GMC Sierra Denali MAX RANGE, dökkrautt, 44.000 km | Til sölu á Íslandi',
 )
 assert.notEqual(listingDocumentTitle(sierraWhite), listingDocumentTitle(sierraRed))
 
 assert.equal(
   listingDocumentTitle(grenadier),
-  '2023 Ineos Grenadier Off-Road pakki, ljósbrúnn, 36.000 km | Til sölu á Íslandi',
+  'Ineos Grenadier Off-Road pakki, ljósbrúnn, 36.000 km | Til sölu á Íslandi',
 )
 assert.equal(
   listingMetaDescription(grenadier),
-  `2023 Ineos Grenadier Off-Road pakki til sölu hjá Eðalkaup — ljósbrúnn, 36.000 km, ${formatPrice(14990000)} Hringdu í 699 2011.`,
+  `Ineos Grenadier Off-Road pakki til sölu hjá Eðalkaup — ljósbrúnn, 36.000 km, ${formatPrice(14990000)} Hringdu í 699 2011.`,
 )
 assert.equal(listingMetaDescription(grenadier).includes('Norður-Ameríku'), false)
 assert.equal(listingMetaDescription(grenadier).includes(formatPrice(grenadier.price_isk)), true)
 
 assert.equal(
   listingDocumentTitle(transit),
-  '2020 Ford Transit Custom L1H1, dökkgrár, 182.000 km | Til sölu á Íslandi',
+  'Ford Transit Custom L1H1, dökkgrár, 182.000 km | Til sölu á Íslandi',
 )
 assert.equal(listingMetaDescription(transit).includes('Norður-Ameríku'), false)
 assert.equal(listingMetaDescription(transit).includes('2.890.000 kr.'), true)
@@ -146,8 +147,41 @@ assert.equal((fresh.offers as { price: number }).price, 14990000)
 const crumbs = breadcrumbJsonLd(grenadier, slug)
 assert.deepEqual(
   crumbs.itemListElement.map((item) => item.name),
-  ['Forsíða', 'Bílar til sölu', '2023 Ineos Grenadier Off-Road pakki'],
+  ['Forsíða', 'Bílar til sölu', 'Ineos Grenadier Off-Road pakki'],
 )
+
+assert.equal(
+  vehicleTitle({
+    make: 'Chevrolet',
+    model: 'Silverado EV',
+    trim: 'e4WD Crew Cab Max Range Trail Boss',
+    title: 'Chevrolet Silverado EV e4WD Crew Cab Max Range Trail Boss',
+    year: 2026,
+  } as ListingCar),
+  'Chevrolet Silverado EV e4WD Crew Cab Max Range Trail Boss',
+)
+assert.equal(
+  vehicleTitle({
+    make: 'Toyota',
+    model: 'Sequoia',
+    trim: 'TRD Pro',
+    title: '2026 Toyota Sequoia TRD Pro',
+    year: 2026,
+  } as ListingCar),
+  '2026 Toyota Sequoia TRD Pro',
+)
+assert.equal(
+  vehicleTitle({
+    make: 'Toyota',
+    model: 'Sequoia',
+    trim: 'TRD Pro',
+    title: '2026 Toyota Sequoia TRD Pro [7SVAAABA1TX096896]',
+    vin: '7SVAAABA1TX096896',
+    year: 2026,
+  } as ListingCar),
+  '2026 Toyota Sequoia TRD Pro',
+)
+assert.equal(vehicleTitle(grenadier).startsWith('2023'), false)
 assert.equal(listingCanonical(slug).startsWith('https://www.edalkaup.is/bilar/'), true)
 
 const dealer = siteDealerJsonLd()

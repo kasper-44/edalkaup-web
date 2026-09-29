@@ -12,6 +12,7 @@ function adaptCar(row: any) {
   return {
     id: row.id,
     slug: row.id,
+    title: row.title || '',
     make: row.make,
     model: row.model,
     year: row.year,
@@ -29,7 +30,7 @@ function adaptCar(row: any) {
     bodyType: row.body_type || 'SUV',
     doors: row.doors || 4,
     seats: row.seats || 5,
-    vin: vinMatch,
+    vin: row.vin || vinMatch,
     status: 'available' as const,
     featured: false,
     images: row.images || [],

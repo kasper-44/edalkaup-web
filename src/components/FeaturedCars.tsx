@@ -10,6 +10,8 @@ function adaptCar(row: any) {
   return {
     id: row.id,
     slug: row.id,
+    title: row.title || '',
+    vin: row.vin || '',
     make: row.make,
     model: row.model,
     year: row.year,

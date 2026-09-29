@@ -1,10 +1,12 @@
 import { formatIskNumber } from '@/lib/formatIsk'
+import { vehicleTitle } from '@/lib/listingSeo'
 
 export { formatIsk, formatPrice } from '@/lib/formatIsk'
 
 export interface Car {
   id: string
   slug: string
+  title?: string
   make: string
   model: string
   year: number
@@ -44,5 +46,5 @@ export function formatMileage(km: number): string {
 }
 
 export function getCarTitle(car: Car): string {
-  return `${car.year} ${car.make} ${car.model} ${car.trim}`
+  return vehicleTitle(car)
 }

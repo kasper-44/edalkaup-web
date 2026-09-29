@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { Car, formatPrice, formatMileage } from '@/data/cars'
+import { vehicleTitle } from '@/lib/listingSeo'
 
 interface CarCardProps {
   car: Car
@@ -20,6 +21,8 @@ export default function CarCard({ car, priority = false }: CarCardProps) {
     sold: 'Selt',
   }
 
+  const title = vehicleTitle(car)
+
   return (
     <Link href={`/bilar/${car.slug}`} className="group block">
       <article className="bg-white dark:bg-navy-800 rounded-2xl overflow-hidden border border-black/5 dark:border-white/5 hover:border-accent/20 transition-all duration-300 hover:shadow-2xl hover:shadow-accent/5">
@@ -27,7 +30,7 @@ export default function CarCard({ car, priority = false }: CarCardProps) {
         <div className="relative aspect-[16/10] overflow-hidden">
           <Image
             src={car.images[0]}
-            alt={`${car.year} ${car.make} ${car.model} ${car.trim}`}
+            alt={title}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-500"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -47,7 +50,7 @@ export default function CarCard({ car, priority = false }: CarCardProps) {
             <div>
               <p className="text-xs font-medium text-accent uppercase tracking-wider">{car.make}</p>
               <h3 className="text-lg font-bold text-gray-900 dark:text-white group-hover:text-accent transition-colors">
-                {car.year} {car.model} {car.trim}
+                {title}
               </h3>
             </div>
           </div>
