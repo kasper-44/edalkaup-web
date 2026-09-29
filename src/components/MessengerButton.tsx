@@ -27,7 +27,7 @@ export default function MessengerButton({ carName }: MessengerButtonProps) {
       rel="noopener noreferrer"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-40 flex items-center gap-2 bg-[#0084FF] hover:bg-[#0073E6] text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 group"
+      className="fixed bottom-28 right-4 z-40 flex items-center gap-2 bg-[#0084FF] hover:bg-[#0073E6] text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 group lg:bottom-6 lg:right-6"
       style={{ padding: hovered ? '14px 20px 14px 16px' : '16px' }}
     >
       {/* Messenger icon */}

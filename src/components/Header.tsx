@@ -5,6 +5,8 @@ import { useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { useTheme } from './ThemeProvider'
 import { SHOW_NEW_VOLVO } from '@/lib/features'
+import CallLink from '@/components/CallLink'
+import { goToInquiry } from '@/lib/goToInquiry'
 
 const navItems = [
   { href: '/', label: 'Forsíða' },
@@ -118,8 +120,14 @@ export default function Header() {
               )}
             </button>
 
+            <CallLink
+              placement="header"
+              className="ml-2 inline-flex items-center px-4 py-2.5 text-sm font-semibold border border-accent/40 text-gray-900 dark:text-white rounded-lg hover:border-accent hover:text-accent transition-colors"
+            >
+              Hringja 699 2011
+            </CallLink>
             <Link
-              href="/hafa-samband"
+              href="/#fyrirspurn"
               className="ml-2 px-5 py-2.5 text-sm font-semibold bg-accent text-navy-900 rounded-lg hover:bg-accent-light transition-colors"
             >
               Fá tilboð
@@ -128,6 +136,12 @@ export default function Header() {
 
           {/* Mobile: toggle + hamburger */}
           <div className="flex items-center gap-2 lg:hidden">
+            <CallLink
+              placement="header"
+              className="inline-flex items-center px-3 py-2 text-sm font-semibold bg-accent text-navy-900 rounded-lg hover:bg-accent-light transition-colors"
+            >
+              699 2011
+            </CallLink>
             <button
               onClick={toggle}
               className="p-2 rounded-lg text-gray-500 dark:text-slate-300 hover:text-accent transition-colors"
@@ -209,6 +223,22 @@ export default function Header() {
                 {item.label}
               </Link>
             ))}
+            <CallLink
+              placement="header"
+              className="block px-4 py-3 text-base font-semibold text-accent hover:bg-black/5 dark:hover:bg-white/5 rounded-lg transition-colors"
+            >
+              Hringja 699 2011
+            </CallLink>
+            <button
+              type="button"
+              onClick={() => {
+                setIsOpen(false)
+                goToInquiry()
+              }}
+              className="block w-full text-left px-4 py-3 text-base font-semibold text-gray-900 dark:text-white hover:bg-black/5 dark:hover:bg-white/5 rounded-lg transition-colors"
+            >
+              Senda fyrirspurn
+            </button>
           </nav>
         )}
       </div>

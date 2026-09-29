@@ -153,9 +153,25 @@ assert.equal(listingCanonical(slug).startsWith('https://www.edalkaup.is/bilar/')
 const dealer = siteDealerJsonLd()
 assert.equal(dealer['@type'], 'AutoDealer')
 assert.deepEqual(dealer.sameAs, ['https://m.me/Edalkaup'])
-assert.equal('address' in dealer, false)
-assert.equal('openingHours' in dealer, false)
+assert.equal(dealer.address.streetAddress, 'Laugavegur 44')
+assert.equal(dealer.address.postalCode, '101')
+assert.equal(dealer.address.addressLocality, 'Reykjavík')
+assert.equal(dealer.address.addressCountry, 'IS')
+assert.equal(dealer.geo.latitude, 64.1446994)
+assert.equal(dealer.geo.longitude, -21.9248892)
+assert.equal(dealer.openingHours, 'Mo-Fr 09:00-17:00')
+assert.deepEqual(dealer.openingHoursSpecification.dayOfWeek, [
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+])
+assert.equal(dealer.openingHoursSpecification.opens, '09:00')
+assert.equal(dealer.openingHoursSpecification.closes, '17:00')
+assert.equal(dealer.logo, 'https://www.edalkaup.is/logo.svg')
 assert.equal('aggregateRating' in dealer, false)
+assert.equal(JSON.stringify(dealer).toLowerCase().includes('aggregaterating'), false)
 assert.equal(JSON.parse(jsonLdScript(dealer))['@type'], 'AutoDealer')
 assert.equal(DEALER_PHONE_TEL, 'tel:+3546992011')
 

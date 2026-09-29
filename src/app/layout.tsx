@@ -6,6 +6,8 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import ThemeProvider from '@/components/ThemeProvider'
 import MessengerButton from '@/components/MessengerButton'
+import StickyCallBar from '@/components/StickyCallBar'
+import InquiryModal from '@/components/InquiryModal'
 import { Analytics } from '@vercel/analytics/react'
 import MarketingTags from '@/components/MarketingTags'
 import { jsonLdScript, siteDealerJsonLd } from '@/lib/listingSeo'
@@ -61,6 +63,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           {!hideChrome && <Header />}
           <main className="min-h-screen">{children}</main>
           {!hideChrome && <Footer />}
+          {!hideChrome && <StickyCallBar />}
+          {!hideChrome && <InquiryModal />}
           {!hideChrome && <MessengerButton />}
         </ThemeProvider>
         <Analytics />

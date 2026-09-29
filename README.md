@@ -105,12 +105,25 @@ Secrets are **not** committed. Two locations:
 | `SUPABASE_SERVICE_ROLE_KEY` | Vercel + `~/.hermes/.env` | server-side writes (admin API + pipeline). **Secret.** |
 | `ADMIN_PASSWORD` | Vercel | password for `/stjorn` |
 | `RESEND_API_KEY` | Vercel + `~/.hermes/.env` | email sending (contact form + daily summary) |
-| `CONTACT_EMAIL_TO` | Vercel (optional) | contact-form recipient (defaults to Gmail in code) |
+| `CONTACT_EMAIL_TO` | Vercel (optional) | Inbox for `/api/contact`. Defaults to `sigurdur@edalkaup.is` when unset. No secrets belong in the repo. |
 | `AUTO_DEV_API_KEY` | `~/.hermes/.env` | Auto.dev listings API |
-| `EDALKAUP_EMAIL_TO` | `~/.hermes/.env` (optional) | daily-summary recipient (defaults to Gmail) |
+| `EDALKAUP_EMAIL_TO` | `~/.hermes/.env` (optional) | daily-summary recipient (defaults to `sigurdur@edalkaup.is`) |
+| `NEXT_PUBLIC_CALL_TRACKING_TEL` | Vercel (optional) | TODO: set to a `tel:+354…` URI when a call-tracking line exists. Until then every call button dials `tel:+3546992011` and the visible number stays 699 2011. |
+| `NEXT_PUBLIC_GA_ID` | Vercel (optional) | GA4 (`G-…`) or Google Ads (`AW-…`). Leave unset until the id exists — do not invent one. `click_to_call` still reaches Vercel Analytics and `dataLayer`. |
+| `NEXT_PUBLIC_META_PIXEL_ID` | Vercel (optional) | Meta Pixel id. The pixel script renders only when this is set. |
 
 Email sends from `fyrirspurn@edalkaup.is` (Resend domain `edalkaup.is`,
 verified via DKIM/SPF DNS records at Domeneshop/hyp.net).
+
+## Conversion events
+
+| Event | Where | Notes |
+|-------|--------|--------|
+| `click_to_call` | Vercel Analytics custom event, plus `dataLayer` / `gtag` | Fired from header, sticky mobile bar, hero, homepage CTA, footer, car page, and contact page. Property: `placement`. If `NEXT_PUBLIC_GA_ID` is missing, a gtag stub only queues the event — it does not load Google. |
+| `generate_lead` | `gtag`, when the Google tag is loaded | Existing form-success event in `ContactForm`. |
+| `Lead` | Meta Pixel, when the pixel is loaded | Existing form-success event. |
+
+Homepage and car pages post to `POST /api/contact`. A compact form may send name, phone, and message without email. The full contact form still sends email.
 
 ## Deployment
 
@@ -125,6 +138,6 @@ npm run build && npm start   # local production build
 
 - [ ] Add real hero video (`public/videos/hero.mp4`)
 - [ ] Add real Google Maps embed coordinates
-- [ ] Add logo SVG
+- [x] Logo SVG for schema (`public/logo.svg`)
 - [ ] Add privacy policy page (`/personuvernd`)
 - [ ] Tune `MAX_PAGES_PER_MODEL` / `TARGETS` in `sync_inventory.py` as needed
