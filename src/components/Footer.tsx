@@ -2,6 +2,8 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import CallLink from '@/components/CallLink'
+import { KLAKI_EMAIL } from '@/lib/site'
 
 export default function Footer() {
   const pathname = usePathname()
@@ -9,7 +11,7 @@ export default function Footer() {
 
   return (
     <footer className="bg-gray-50 dark:bg-navy-800 border-t border-black/5 dark:border-white/5 transition-colors">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-28 lg:pb-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand */}
           <div>
@@ -47,10 +49,10 @@ export default function Footer() {
             <h3 className="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-4">Samband</h3>
             <ul className="space-y-3 text-sm text-gray-500 dark:text-slate-400">
               <li>
-                <a href="tel:+3546992011" className="hover:text-accent transition-colors flex items-center gap-2">
+                <CallLink placement="footer" className="hover:text-accent transition-colors flex items-center gap-2">
                   <svg className="w-4 h-4 text-accent shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" /></svg>
                   699 2011
-                </a>
+                </CallLink>
               </li>
               <li>
                 <a href="mailto:sigurdur@edalkaup.is" className="hover:text-accent transition-colors flex items-center gap-2">
@@ -76,6 +78,12 @@ export default function Footer() {
           </p>
           <p className="text-[11px] text-gray-400/70 dark:text-slate-600 max-w-2xl mx-auto leading-relaxed">
             Öll viðskipti á edalkaup.is eru við Úranus ehf. kt. 5010963189. Framkvæmdastjóri Eðalkaupa er Sigurður Róbertsson.
+          </p>
+          <p className="text-[11px] text-gray-400 dark:text-slate-500">
+            Vefur í umsjá Klaki ·{' '}
+            <a href={`mailto:${KLAKI_EMAIL}`} className="hover:text-accent transition-colors">
+              {KLAKI_EMAIL}
+            </a>
           </p>
         </div>
       </div>

@@ -1,11 +1,17 @@
 import { displayExteriorColour } from '@/lib/exteriorColour'
 import { formatIskNumber, formatPrice } from '@/lib/formatIsk'
 import {
+  DEALER_COUNTRY,
+  DEALER_GEO,
   DEALER_LEGAL_NAME,
+  DEALER_LOCALITY,
+  DEALER_LOGO_PATH,
   DEALER_NAME,
   DEALER_PHONE_DISPLAY,
   DEALER_PHONE_SCHEMA,
+  DEALER_POSTAL_CODE,
   DEALER_SAME_AS,
+  DEALER_STREET,
   SITE_ORIGIN,
 } from '@/lib/site'
 
@@ -146,12 +152,34 @@ export function listingCanonical(slug: string): string {
 }
 
 export function listingSeller() {
+  const logo = `${SITE_ORIGIN}${DEALER_LOGO_PATH}`
   return {
     '@type': 'AutoDealer' as const,
     name: DEALER_NAME,
     legalName: DEALER_LEGAL_NAME,
     telephone: DEALER_PHONE_SCHEMA,
     url: SITE_ORIGIN,
+    image: logo,
+    logo,
+    address: {
+      '@type': 'PostalAddress' as const,
+      streetAddress: DEALER_STREET,
+      addressLocality: DEALER_LOCALITY,
+      postalCode: DEALER_POSTAL_CODE,
+      addressCountry: DEALER_COUNTRY,
+    },
+    geo: {
+      '@type': 'GeoCoordinates' as const,
+      latitude: DEALER_GEO.latitude,
+      longitude: DEALER_GEO.longitude,
+    },
+    openingHours: 'Mo-Fr 09:00-17:00',
+    openingHoursSpecification: {
+      '@type': 'OpeningHoursSpecification' as const,
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '09:00',
+      closes: '17:00',
+    },
     areaServed: 'Iceland',
   }
 }

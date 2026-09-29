@@ -6,12 +6,28 @@ interface ContactFormProps {
   carTitle?: string
   carUrl?: string
   carVin?: string
+  /** Compact homepage/modal form: name, phone, and message. Email stays on the full form. */
+  variant?: 'full' | 'compact'
+  source?: 'forsida' | 'gluggi' | 'bilur' | 'samband'
+  heading?: string
+  headingId?: string
+  reserveCorner?: boolean
 }
 
-export default function ContactForm({ carTitle, carUrl, carVin }: ContactFormProps) {
+export default function ContactForm({
+  carTitle,
+  carUrl,
+  carVin,
+  variant = 'full',
+  source,
+  heading,
+  headingId,
+  reserveCorner = false,
+}: ContactFormProps) {
   const [submitted, setSubmitted] = useState(false)
   const [sending, setSending] = useState(false)
   const [error, setError] = useState('')
+  const compact = variant === 'compact'
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -27,12 +43,13 @@ export default function ContactForm({ carTitle, carUrl, carVin }: ContactFormPro
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: formData.get('name'),
-          email: formData.get('email'),
-          phone: formData.get('phone'),
+          email: formData.get('email') || '',
+          phone: formData.get('phone') || '',
           message: formData.get('message'),
           car: carTitle || '',
           carUrl: carUrl || '',
           carVin: carVin || '',
+          source: source || '',
         }),
       })
 
@@ -78,11 +95,26 @@ export default function ContactForm({ carTitle, carUrl, carVin }: ContactFormPro
     )
   }
 
+  const title = heading || (carTitle ? `Fyrirspurn um ${carTitle}` : 'Sendu okkur fyrirspurn')
+
   return (
-    <form onSubmit={handleSubmit} className="bg-white dark:bg-navy-800 rounded-2xl border border-black/5 dark:border-white/5 p-6 sm:p-8 space-y-5">
-      <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-        {carTitle ? `Fyrirspurn um ${carTitle}` : 'Sendu okkur fyrirspurn'}
+    <form
+      onSubmit={handleSubmit}
+      className={`bg-white dark:bg-navy-800 rounded-2xl border border-black/5 dark:border-white/5 shadow-xl shadow-black/10 ${
+        compact ? 'p-4 sm:p-5 space-y-3' : 'p-6 sm:p-8 space-y-5'
+      }`}
+    >
+      <h3
+        id={headingId}
+        className={`font-bold text-gray-900 dark:text-white ${compact ? 'text-lg' : 'text-xl'} ${reserveCorner ? 'pr-10' : ''}`}
+      >
+        {title}
       </h3>
+      {compact && (
+        <p className="hidden text-sm text-gray-500 dark:text-slate-400 sm:block">
+          Nafn og sími nægja. Við svörum á opnunartíma.
+        </p>
+      )}
 
       {error && (
         <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3 text-sm text-red-600 dark:text-red-400">
@@ -90,14 +122,15 @@ export default function ContactForm({ carTitle, carUrl, carVin }: ContactFormPro
         </div>
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className={`grid gap-3 ${compact ? 'grid-cols-2' : 'grid-cols-1 gap-4 sm:grid-cols-2'}`}>
         <div>
           <label className="block text-sm font-medium text-gray-500 dark:text-slate-400 mb-1.5">Nafn</label>
           <input
             name="name"
             type="text"
             required
-            className="w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors"
+            autoComplete="name"
+            className={`w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors ${compact ? 'py-2.5' : 'px-4 py-3'}`}
             placeholder="Fullt nafn"
           />
         </div>
@@ -106,22 +139,27 @@ export default function ContactForm({ carTitle, carUrl, carVin }: ContactFormPro
           <input
             name="phone"
             type="tel"
-            className="w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors"
+            required={compact}
+            autoComplete="tel"
+            className={`w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors ${compact ? 'py-2.5' : 'px-4 py-3'}`}
             placeholder="000 0000"
           />
         </div>
       </div>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-500 dark:text-slate-400 mb-1.5">Netfang</label>
-        <input
-          name="email"
-          type="email"
-          required
-          className="w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors"
-          placeholder="netfang@dæmi.is"
-        />
-      </div>
+      {!compact && (
+        <div>
+          <label className="block text-sm font-medium text-gray-500 dark:text-slate-400 mb-1.5">Netfang</label>
+          <input
+            name="email"
+            type="email"
+            required
+            autoComplete="email"
+            className="w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors"
+            placeholder="netfang@dæmi.is"
+          />
+        </div>
+      )}
 
       {carTitle && (
         <div>
@@ -139,17 +177,17 @@ export default function ContactForm({ carTitle, carUrl, carVin }: ContactFormPro
         <label className="block text-sm font-medium text-gray-500 dark:text-slate-400 mb-1.5">Skilaboð</label>
         <textarea
           name="message"
-          rows={4}
+          rows={compact ? 1 : 4}
           required
           className="w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors resize-none"
-          placeholder="Hvað getum við aðstoðað þig með?"
+          placeholder={compact ? 'Hvaða bíl leitarðu að?' : 'Hvað getum við aðstoðað þig með?'}
         />
       </div>
 
       <button
         type="submit"
         disabled={sending}
-        className="w-full py-3.5 text-base font-semibold bg-accent text-navy-900 rounded-xl hover:bg-accent-light transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className={`w-full font-semibold bg-accent text-navy-900 rounded-xl hover:bg-accent-light transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${compact ? 'py-2.5 text-sm' : 'py-3.5 text-base'}`}
       >
         {sending ? 'Sendi...' : 'Senda fyrirspurn'}
       </button>

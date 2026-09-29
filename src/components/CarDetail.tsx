@@ -1,13 +1,13 @@
 'use client'
 
-import { useState } from 'react'
 import CarGallery from '@/components/CarGallery'
 import ContactForm from '@/components/ContactForm'
+import CallLink from '@/components/CallLink'
 import { displayExteriorColour } from '@/lib/exteriorColour'
 import { listingCopy } from '@/lib/listingCopy'
 import { vatIncludedPriceSubtitle } from '@/lib/priceVat'
 import { formatIskNumber, formatPrice } from '@/lib/formatIsk'
-import { DEALER_PHONE_TEL, SITE_ORIGIN } from '@/lib/site'
+import { SITE_ORIGIN } from '@/lib/site'
 
 function formatMileage(km: number) {
   if (!km) return 'Ótilgreint'
@@ -16,7 +16,6 @@ function formatMileage(km: number) {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function CarDetail({ car }: { car: any }) {
-  const [showInquiry, setShowInquiry] = useState(false)
   const title = `${car.year} ${car.make} ${car.model} ${car.trim || ''}`.trim()
   const vatSubtitle = car.price_isk > 0 ? vatIncludedPriceSubtitle(car) : null
   const description = listingCopy(car.description_is)
@@ -50,9 +49,8 @@ export default function CarDetail({ car }: { car: any }) {
           <span className="text-gray-600 dark:text-slate-300">{title}</span>
         </nav>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-          {/* Left — Gallery + Specs */}
-          <div className="lg:col-span-2 space-y-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-10">
+          <div className="lg:col-span-2 lg:col-start-1 lg:row-start-1">
             {car.images && car.images.length > 0 ? (
               <CarGallery images={car.images} alt={title} />
             ) : (
@@ -60,44 +58,11 @@ export default function CarDetail({ car }: { car: any }) {
                 <p className="text-gray-400">Engar myndir</p>
               </div>
             )}
-
-            {description && (
-              <div className="bg-white dark:bg-navy-800 rounded-2xl border border-black/5 dark:border-white/5 p-6 sm:p-8">
-                <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Lýsing</h2>
-                <div className="text-gray-700 dark:text-slate-300 leading-relaxed whitespace-pre-wrap">
-                  {description}
-                </div>
-              </div>
-            )}
-
-            {/* Specs */}
-            <div className="bg-white dark:bg-navy-800 rounded-2xl border border-black/5 dark:border-white/5 p-6 sm:p-8">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Tæknilegar upplýsingar</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {specs.map((spec) => (
-                  <div key={spec.label} className="flex justify-between py-3 border-b border-black/5 dark:border-white/5">
-                    <span className="text-sm text-gray-500 dark:text-slate-400">{spec.label}</span>
-                    <span className="text-sm font-medium text-gray-900 dark:text-white">{spec.value}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Inquiry form (expands inline) */}
-            {showInquiry && (
-              <div id="fyrirspurn">
-                <ContactForm
-                  carTitle={title}
-                  carUrl={`${SITE_ORIGIN}/bilar/${car.id}`}
-                  carVin={car.vin || undefined}
-                />
-              </div>
-            )}
           </div>
 
           {/* Right Sidebar */}
-          <div className="space-y-6">
-            <div className="bg-white dark:bg-navy-800 rounded-2xl border border-black/5 dark:border-white/5 p-6 sticky top-24">
+          <div className="flex flex-col gap-6 lg:col-start-3 lg:row-span-2 lg:row-start-1">
+            <div className="order-2 rounded-2xl border border-black/5 bg-white p-6 dark:border-white/5 dark:bg-navy-800 lg:order-1">
               <div className="inline-block px-3 py-1 text-xs font-semibold rounded-full border mb-4 bg-emerald-500/20 text-emerald-400 border-emerald-500/30">
                 Til sölu
               </div>
@@ -126,16 +91,6 @@ export default function CarDetail({ car }: { car: any }) {
                 )}
               </div>
 
-              {/* Primary CTA: inquiry form for this specific car */}
-              <button
-                onClick={() => {
-                  setShowInquiry(true)
-                  setTimeout(() => document.getElementById('fyrirspurn')?.scrollIntoView({ behavior: 'smooth' }), 50)
-                }}
-                className="block w-full text-center px-6 py-3 bg-accent text-navy-900 font-semibold rounded-xl hover:bg-accent-light transition-colors mb-3"
-              >
-                Senda fyrirspurn um þennan bíl
-              </button>
               <a
                 href={`https://wa.me/3546992011?text=${encodeURIComponent(`Hæ, ég hef áhuga á ${title}`)}`}
                 target="_blank"
@@ -144,12 +99,12 @@ export default function CarDetail({ car }: { car: any }) {
               >
                 WhatsApp
               </a>
-              <a
-                href={DEALER_PHONE_TEL}
-                className="block w-full text-center px-6 py-3 border border-black/10 dark:border-white/10 text-gray-700 dark:text-slate-300 font-semibold rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors mb-3"
+              <CallLink
+                placement="car_detail"
+                className="block w-full text-center px-6 py-3 bg-accent text-navy-900 font-semibold rounded-xl hover:bg-accent-light transition-colors mb-3"
               >
-                Hringja: 699 2011
-              </a>
+                Hringja 699 2011
+              </CallLink>
               <a
                 href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${SITE_ORIGIN}/bilar/${car.id}`)}`}
                 target="_blank"
@@ -159,6 +114,38 @@ export default function CarDetail({ car }: { car: any }) {
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07c0 6 4.39 10.97 10.13 11.87v-8.4H7.08v-3.47h3.05V9.41c0-3.02 1.79-4.7 4.53-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.26h3.33l-.53 3.47h-2.8v8.4C19.61 23.04 24 18.07 24 12.07z"/></svg>
                 Deila á Facebook
               </a>
+            </div>
+
+            <div id="fyrirspurn" className="order-1 scroll-mt-28 lg:order-2">
+              <ContactForm
+                carTitle={title}
+                carUrl={`${SITE_ORIGIN}/bilar/${car.id}`}
+                carVin={car.vin || undefined}
+                source="bilur"
+              />
+            </div>
+          </div>
+
+          <div className="space-y-8 lg:col-span-2 lg:col-start-1 lg:row-start-2">
+            {description && (
+              <div className="bg-white dark:bg-navy-800 rounded-2xl border border-black/5 dark:border-white/5 p-6 sm:p-8">
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Lýsing</h2>
+                <div className="text-gray-700 dark:text-slate-300 leading-relaxed whitespace-pre-wrap">
+                  {description}
+                </div>
+              </div>
+            )}
+
+            <div className="bg-white dark:bg-navy-800 rounded-2xl border border-black/5 dark:border-white/5 p-6 sm:p-8">
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Tæknilegar upplýsingar</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {specs.map((spec) => (
+                  <div key={spec.label} className="flex justify-between py-3 border-b border-black/5 dark:border-white/5">
+                    <span className="text-sm text-gray-500 dark:text-slate-400">{spec.label}</span>
+                    <span className="text-sm font-medium text-gray-900 dark:text-white">{spec.value}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>

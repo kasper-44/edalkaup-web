@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import ContactForm from '@/components/ContactForm'
+import CallLink from '@/components/CallLink'
 
 export const metadata: Metadata = {
   title: 'Hafa samband',
@@ -27,6 +28,7 @@ export default function HafaSambandPage() {
                 title: 'Sími',
                 value: '699 2011',
                 href: 'tel:+3546992011',
+                phone: true,
                 subtitle: 'Mán–Fös 09:00–17:00',
               },
               {
@@ -40,9 +42,15 @@ export default function HafaSambandPage() {
               <div key={item.title} className="bg-white dark:bg-navy-800 rounded-2xl border border-black/5 dark:border-white/5 p-6">
                 <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center text-accent mb-3">{item.icon}</div>
                 <h3 className="font-semibold text-gray-900 dark:text-white">{item.title}</h3>
-                <a href={item.href} className="text-accent hover:text-accent-light transition-colors font-medium">
-                  {item.value}
-                </a>
+                {'phone' in item && item.phone ? (
+                  <CallLink placement="contact" className="text-accent hover:text-accent-light transition-colors font-medium">
+                    {item.value}
+                  </CallLink>
+                ) : (
+                  <a href={item.href} className="text-accent hover:text-accent-light transition-colors font-medium">
+                    {item.value}
+                  </a>
+                )}
                 <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">{item.subtitle}</p>
               </div>
             ))}
@@ -66,8 +74,8 @@ export default function HafaSambandPage() {
           </div>
 
           {/* Contact Form */}
-          <div className="lg:col-span-3">
-            <ContactForm />
+          <div id="fyrirspurn" className="lg:col-span-3 scroll-mt-28">
+            <ContactForm source="samband" />
           </div>
         </div>
       </div>

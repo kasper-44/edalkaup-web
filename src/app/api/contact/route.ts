@@ -1,3 +1,4 @@
+import { escapeHtml, contactInbox, parseContactPayload } from '@/lib/contactRequest'
 import { Resend } from 'resend'
 import { NextResponse } from 'next/server'
 
@@ -5,30 +6,38 @@ export const dynamic = 'force-dynamic'
 
 export async function POST(req: Request) {
   try {
-    const resend = new Resend(process.env.RESEND_API_KEY)
-    const { name, email, phone, message, car, carUrl, carVin } = await req.json()
-
-    if (!name || !email || !message) {
-      return NextResponse.json({ error: 'Vantar nafn, netfang eða skilaboð' }, { status: 400 })
+    const parsed = parseContactPayload(await req.json())
+    if (!parsed.ok) {
+      return NextResponse.json({ error: parsed.error }, { status: 400 })
     }
 
+    const { name, email, phone, message, car, carUrl, carVin, sourceLabel } = parsed.value
+    const where = sourceLabel ? ` (${sourceLabel})` : ''
     const subject = car
-      ? `Fyrirspurn um ${car} — ${name}`
-      : `Ný fyrirspurn frá ${name}`
+      ? `Fyrirspurn um ${car} — ${name}${where}`
+      : `Ný fyrirspurn frá ${name}${where}`
+
+    if (!process.env.RESEND_API_KEY) {
+      console.error('Contact form error: RESEND_API_KEY is not set')
+      return NextResponse.json({ error: 'Villa við sendingu' }, { status: 500 })
+    }
+
+    const resend = new Resend(process.env.RESEND_API_KEY)
+    const safeUrl = /^https:\/\/(www\.)?edalkaup\.is\//.test(carUrl) ? carUrl : ''
 
     await resend.emails.send({
       from: 'Eðalkaup Vefur <fyrirspurn@edalkaup.is>',
-      to: process.env.CONTACT_EMAIL_TO || 'sigurdur.robertsson@gmail.com',
-      replyTo: email,
+      to: contactInbox(),
+      ...(email ? { replyTo: email } : {}),
       subject,
       html: `
-        <h2>${subject}</h2>
-        <p><strong>Nafn:</strong> ${name}</p>
-        <p><strong>Netfang:</strong> ${email}</p>
-        ${phone ? `<p><strong>Sími:</strong> ${phone}</p>` : ''}
-        ${car ? `<p><strong>Bíll:</strong> ${car}${carVin ? ` (VIN: ${carVin})` : ''}${carUrl ? ` — <a href="${carUrl}">Skoða auglýsingu</a>` : ''}</p>` : ''}
+        <h2>${escapeHtml(subject)}</h2>
+        <p><strong>Nafn:</strong> ${escapeHtml(name)}</p>
+        ${email ? `<p><strong>Netfang:</strong> ${escapeHtml(email)}</p>` : ''}
+        ${phone ? `<p><strong>Sími:</strong> ${escapeHtml(phone)}</p>` : ''}
+        ${car ? `<p><strong>Bíll:</strong> ${escapeHtml(car)}${carVin ? ` (VIN: ${escapeHtml(carVin)})` : ''}${safeUrl ? ` — <a href="${escapeHtml(safeUrl)}">Skoða auglýsingu</a>` : ''}</p>` : ''}
         <hr/>
-        <p>${message.replace(/\n/g, '<br/>')}</p>
+        <p>${escapeHtml(message).replace(/\n/g, '<br/>')}</p>
       `,
     })
 

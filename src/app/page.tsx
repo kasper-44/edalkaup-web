@@ -1,5 +1,7 @@
 import HeroVideo from '@/components/HeroVideo'
 import FeaturedCars from '@/components/FeaturedCars'
+import ContactForm from '@/components/ContactForm'
+import CallLink from '@/components/CallLink'
 import Link from 'next/link'
 import { SHOW_NEW_VOLVO } from '@/lib/features'
 import { formatIsk } from '@/lib/formatIsk'
@@ -7,7 +9,11 @@ import { formatIsk } from '@/lib/formatIsk'
 export default function Home() {
   return (
     <>
-      <HeroVideo />
+      <HeroVideo>
+        <div id="fyrirspurn" className="scroll-mt-28 mx-auto mt-4 w-full max-w-xl text-left">
+          <ContactForm variant="compact" source="forsida" heading="Sendu okkur fyrirspurn" />
+        </div>
+      </HeroVideo>
 
       {SHOW_NEW_VOLVO && (
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-4">
@@ -85,13 +91,13 @@ export default function Home() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               {[
-                { number: '25+', label: 'Ára reynsla' },
-                { number: '5000+', label: 'Bílar afhentir' },
-                { number: '100%', label: 'Ánægja viðskiptavina' },
-                { number: '3-6', label: 'Vikur afgreiðslutími' },
+                { kicker: '25+', label: 'Ára reynsla af innflutningi' },
+                { kicker: '3–6', label: 'Vikur í afgreiðslu' },
+                { kicker: 'Um allt land', label: 'Við afhendum bíla' },
+                { kicker: 'Eftirfylgni', label: 'Við svörum hverri fyrirspurn' },
               ].map((stat) => (
                 <div key={stat.label} className="bg-white dark:bg-navy-800 rounded-2xl border border-black/5 dark:border-white/5 p-6 text-center">
-                  <p className="text-3xl font-bold text-accent mb-1">{stat.number}</p>
+                  <p className={`font-bold text-accent mb-1 ${stat.kicker.length > 4 ? 'text-2xl' : 'text-3xl'}`}>{stat.kicker}</p>
                   <p className="text-sm text-gray-500 dark:text-slate-400">{stat.label}</p>
                 </div>
               ))}
@@ -111,12 +117,20 @@ export default function Home() {
             <p className="text-gray-600 dark:text-slate-300 max-w-xl mx-auto mb-8">
               Ertu að leita að ákveðinni bíltegund sem ekki er fáanleg á Íslandi? Við getum fundið hana fyrir þig.
             </p>
-            <Link
-              href="/hafa-samband"
-              className="inline-block px-8 py-4 text-base font-semibold bg-accent text-navy-900 rounded-xl hover:bg-accent-light transition-all hover:scale-105"
-            >
-              Fá ókeypis tilboð
-            </Link>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <CallLink
+                placement="home_cta"
+                className="inline-block px-8 py-4 text-base font-semibold bg-accent text-navy-900 rounded-xl hover:bg-accent-light transition-all hover:scale-105"
+              >
+                Hringja 699 2011
+              </CallLink>
+              <Link
+                href="/#fyrirspurn"
+                className="inline-block px-8 py-4 text-base font-semibold border border-accent/30 text-accent rounded-xl hover:bg-accent/10 transition-colors"
+              >
+                Senda fyrirspurn
+              </Link>
+            </div>
           </div>
         </div>
       </section>
