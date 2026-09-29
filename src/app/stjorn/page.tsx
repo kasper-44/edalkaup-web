@@ -11,6 +11,7 @@ import {
   type VatChoice,
 } from '@/lib/adminListingDraft'
 import { formatIsk, formatIskNumber } from '@/lib/formatIsk'
+import { vehicleTitle } from '@/lib/listingSeo'
 
 const fmt = formatIskNumber
 
@@ -29,7 +30,7 @@ function timeAgo(iso: string | null): string {
 
 // Build ready-to-paste Icelandic post text for Facebook / groups / bland.is.
 function buildPostText(car: Car): string {
-  const title = `${car.year} ${car.make} ${car.model} ${car.trim || ''}`.trim()
+  const title = vehicleTitle(car)
   const lines: string[] = [title, '']
   if (car.price_isk) lines.push(`Verð: ${formatIsk(car.price_isk)}`)
   else lines.push('Verð: við fyrirspurn')
@@ -343,11 +344,9 @@ export default function AdminPage() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-2">
                       <div>
-                        <h3 className="font-semibold">
-                          {car.year} {car.make} {car.model} {car.trim}
-                        </h3>
+                        <h3 className="font-semibold">{vehicleTitle(car)}</h3>
                         <p className="text-slate-400 text-sm">
-                          {car.colour} · {car.mileage_km ? fmt(car.mileage_km) + ' km' : 'Nýr'} ·{' '}
+                          {car.year} · {car.colour} · {car.mileage_km ? fmt(car.mileage_km) + ' km' : 'Nýr'} ·{' '}
                           {car.location_country}
                           {car.last_seen_at && (
                             <span className="text-slate-500"> · {timeAgo(car.last_seen_at)}</span>
@@ -545,9 +544,7 @@ export default function AdminPage() {
 
             {/* Photo gallery */}
             <div className="p-5">
-              <h2 className="text-2xl font-bold mb-1">
-                {preview.year} {preview.make} {preview.model} {preview.trim}
-              </h2>
+              <h2 className="text-2xl font-bold mb-1">{vehicleTitle(preview)}</h2>
               <p className="text-3xl font-bold text-amber-600 mb-4">
                 {preview.price_isk
                   ? formatIsk(preview.price_isk)

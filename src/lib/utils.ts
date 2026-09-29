@@ -16,7 +16,7 @@ export function generateCarJsonLd(car: {
   return {
     '@context': 'https://schema.org',
     '@type': 'Car',
-    name: `${car.year} ${car.make} ${car.model}`,
+    name: `${car.make} ${car.model}`,
     brand: { '@type': 'Brand', name: car.make },
     model: car.model,
     vehicleModelDate: car.year.toString(),

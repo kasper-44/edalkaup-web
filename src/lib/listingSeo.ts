@@ -55,6 +55,9 @@ export type ListingCar = {
   make: string
   model: string
   trim?: string | null
+  /** Stored display name. Shown as-is; a leading year is kept and not repeated. */
+  title?: string | null
+  vin?: string | null
   mileage_km?: number | null
   exterior_colour?: string | null
   colour?: string | null
@@ -65,9 +68,41 @@ export type ListingCar = {
   images?: string[] | null
 }
 
-/** Year, make, model, trim. Never the stored `title` column — some rows embed a VIN there. */
-export function vehicleTitle(car: Pick<ListingCar, 'year' | 'make' | 'model' | 'trim'>): string {
-  return `${car.year} ${car.make} ${car.model} ${car.trim || ''}`.replace(/\s+/g, ' ').trim()
+function collapseSpace(value: string): string {
+  return value.replace(/\s+/g, ' ').trim()
+}
+
+/**
+ * Some stored titles append the VIN in brackets. Public copy must not show it.
+ * The title field itself is left unchanged in the database.
+ */
+function withoutEmbeddedVin(title: string, vin?: string | null): string {
+  let out = title
+  const token = typeof vin === 'string' ? vin.trim() : ''
+  if (token.length >= 8) {
+    const escaped = token.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    out = out.replace(new RegExp(`\\s*\\[\\s*${escaped}\\s*\\]\\s*`, 'gi'), ' ')
+    out = out.replace(new RegExp(escaped, 'gi'), ' ')
+  }
+  out = out.replace(/\s*\[[A-HJ-NPR-Z0-9]{17}\]\s*/gi, ' ')
+  return collapseSpace(out)
+}
+
+/**
+ * Visible listing name. Prefers the stored `title` exactly, including a
+ * leading model year when that title already starts with one. Does not
+ * prepend `year` (so a title that already begins with YYYY is not doubled).
+ * Falls back to make, model, and trim when title is empty.
+ */
+export function vehicleTitle(
+  car: Pick<ListingCar, 'make' | 'model' | 'trim'> & { title?: string | null; vin?: string | null },
+): string {
+  const stored = typeof car.title === 'string' ? collapseSpace(car.title) : ''
+  if (stored) {
+    const cleaned = withoutEmbeddedVin(stored, car.vin)
+    if (cleaned) return cleaned
+  }
+  return collapseSpace(`${car.make} ${car.model} ${car.trim || ''}`)
 }
 
 export function mileageKm(value: unknown): number | null {

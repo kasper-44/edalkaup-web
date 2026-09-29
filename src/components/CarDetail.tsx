@@ -5,6 +5,7 @@ import ContactForm from '@/components/ContactForm'
 import CallLink from '@/components/CallLink'
 import { displayExteriorColour } from '@/lib/exteriorColour'
 import { listingCopy } from '@/lib/listingCopy'
+import { vehicleTitle } from '@/lib/listingSeo'
 import { vatIncludedPriceSubtitle } from '@/lib/priceVat'
 import { formatIskNumber, formatPrice } from '@/lib/formatIsk'
 import { SITE_ORIGIN } from '@/lib/site'
@@ -16,7 +17,7 @@ function formatMileage(km: number) {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function CarDetail({ car }: { car: any }) {
-  const title = `${car.year} ${car.make} ${car.model} ${car.trim || ''}`.trim()
+  const title = vehicleTitle(car)
   const vatSubtitle = car.price_isk > 0 ? vatIncludedPriceSubtitle(car) : null
   const description = listingCopy(car.description_is)
 
