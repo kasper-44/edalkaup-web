@@ -3,7 +3,7 @@
 -- Project: fakjyfokweehxsonfbez
 --
 -- Optional per-car override for the «m/VSK» line under the price.
--- NULL keeps the existing default: passenger cars show «m/VSK», sendibíll / vans omit it.
+-- NULL keeps the body-type default: passenger cars show «m/VSK», sendibíll / vans show «+ VSK».
 -- false omits every VSK subtitle (no «m/VSK», «+ VSK», or «án VSK»).
 -- true forces «m/VSK» even on a van.
 --

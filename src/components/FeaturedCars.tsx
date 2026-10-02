@@ -4,33 +4,41 @@ import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import { orderByNewestListing } from '@/lib/publicCarOrder'
 import CarCard from '@/components/CarCard'
+import { withVatFlag } from '@/lib/priceVat'
 
 // Adapt a Supabase row into the shape CarCard expects (same mapping as /bilar).
 function adaptCar(row: any) {
+  const car = withVatFlag(row)
   return {
-    id: row.id,
-    slug: row.id,
-    title: row.title || '',
-    vin: row.vin || '',
-    make: row.make,
-    model: row.model,
-    year: row.year,
-    trim: row.trim || '',
-    price: row.price_isk,
-    mileage: row.mileage_km || 0,
-    color: row.exterior_colour || 'Ótilgreind',
-    exteriorColor: row.exterior_colour || 'Ótilgreind',
-    interiorColor: row.interior_colour || 'Ótilgreind',
-    drivetrain: row.drivetrain || '4WD',
-    engine: row.engine || '',
-    transmission: row.transmission || 'Sjálfskiptur',
-    fuelType: row.fuel_type || '',
-    bodyType: row.body_type || 'SUV',
-    doors: row.doors || 4,
-    seats: row.seats || 5,
+    id: car.id,
+    slug: car.id,
+    title: car.title || '',
+    vin: car.vin || '',
+    make: car.make,
+    model: car.model,
+    year: car.year,
+    trim: car.trim || '',
+    price: car.price_isk,
+    priceIncludesVat:
+      typeof car.price_includes_vat === 'boolean'
+        ? car.price_includes_vat
+        : typeof car.vat_included === 'boolean'
+          ? car.vat_included
+          : null,
+    mileage: car.mileage_km || 0,
+    color: car.exterior_colour || 'Ótilgreind',
+    exteriorColor: car.exterior_colour || 'Ótilgreind',
+    interiorColor: car.interior_colour || 'Ótilgreind',
+    drivetrain: car.drivetrain || '4WD',
+    engine: car.engine || '',
+    transmission: car.transmission || 'Sjálfskiptur',
+    fuelType: car.fuel_type || '',
+    bodyType: car.body_type || 'SUV',
+    doors: car.doors || 4,
+    seats: car.seats || 5,
     status: 'available' as const,
     featured: false,
-    images: row.images || [],
+    images: car.images || [],
     description: '',
     features: [],
     createdAt: new Date().toISOString(),

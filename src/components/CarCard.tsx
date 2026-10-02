@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Car, formatPrice, formatMileage } from '@/data/cars'
 import { vehicleTitle } from '@/lib/listingSeo'
+import { vatIncludedPriceSubtitle, withVatFlag } from '@/lib/priceVat'
 
 interface CarCardProps {
   car: Car
@@ -22,6 +23,16 @@ export default function CarCard({ car, priority = false }: CarCardProps) {
   }
 
   const title = vehicleTitle(car)
+  const vatSubtitle =
+    car.price > 0
+      ? vatIncludedPriceSubtitle(
+          withVatFlag({
+            id: car.id,
+            bodyType: car.bodyType,
+            priceIncludesVat: car.priceIncludesVat,
+          }),
+        )
+      : null
 
   return (
     <Link href={`/bilar/${car.slug}`} className="group block">
@@ -71,6 +82,9 @@ export default function CarCard({ car, priority = false }: CarCardProps) {
           <div className="mt-4 pt-4 border-t border-black/5 dark:border-white/5 flex items-end justify-between">
             <div>
               <p className="text-2xl font-bold text-gray-900 dark:text-white">{formatPrice(car.price)}</p>
+              {vatSubtitle && (
+                <p className="text-sm text-gray-400 dark:text-slate-500 mt-1">{vatSubtitle}</p>
+              )}
             </div>
             <span className="text-accent text-sm font-medium group-hover:translate-x-1 transition-transform">
               Sjá meira →

@@ -142,7 +142,7 @@ export async function PATCH(req: Request) {
     if (!parsed.ok) {
       return NextResponse.json({ error: 'Ógilt price_includes_vat' }, { status: 400 })
     }
-    // null restores the body-type default (passenger cars show «m/VSK»).
+    // null restores the body-type default (passenger cars «m/VSK», sendibílar «+ VSK»).
     update.price_includes_vat = parsed.value
   }
   if (specs_verified !== undefined) update.specs_verified = Boolean(specs_verified)

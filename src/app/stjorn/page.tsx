@@ -684,7 +684,7 @@ export default function AdminPage() {
                               <option value="false">Nei</option>
                             </select>
                             <span className="block text-xs text-slate-400 mt-1">
-                              Sjálfgefið: fólksbílar sýna «m/VSK», sendibílar ekki.
+                              Sjálfgefið: fólksbílar sýna «m/VSK», sendibílar «+ VSK». «Nei» felur línuna.
                             </span>
                           </label>
                         )}

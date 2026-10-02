@@ -5,39 +5,47 @@ import { supabase } from '@/lib/supabase'
 import { orderByNewestListing } from '@/lib/publicCarOrder'
 import CarCard from '@/components/CarCard'
 import FilterSidebar from '@/components/FilterSidebar'
+import { withVatFlag } from '@/lib/priceVat'
 
 function adaptCar(row: any) {
-  const priceMatch = row.description_is?.match(/Original price: (.+)/)?.[1] || ''
-  const vinMatch = row.description_is?.match(/VIN: (.+)/)?.[1]?.split('\n')[0] || ''
+  const car = withVatFlag(row)
+  const priceMatch = car.description_is?.match(/Original price: (.+)/)?.[1] || ''
+  const vinMatch = car.description_is?.match(/VIN: (.+)/)?.[1]?.split('\n')[0] || ''
   return {
-    id: row.id,
-    slug: row.id,
-    title: row.title || '',
-    make: row.make,
-    model: row.model,
-    year: row.year,
-    trim: row.trim || '',
-    price: row.price_isk,
+    id: car.id,
+    slug: car.id,
+    title: car.title || '',
+    make: car.make,
+    model: car.model,
+    year: car.year,
+    trim: car.trim || '',
+    price: car.price_isk,
+    priceIncludesVat:
+      typeof car.price_includes_vat === 'boolean'
+        ? car.price_includes_vat
+        : typeof car.vat_included === 'boolean'
+          ? car.vat_included
+          : null,
     priceUSD: undefined,
-    mileage: row.mileage_km || 0,
-    color: row.exterior_colour || 'Ótilgreind',
-    exteriorColor: row.exterior_colour || 'Ótilgreind',
-    interiorColor: row.interior_colour || 'Ótilgreind',
-    drivetrain: row.drivetrain || '4WD',
-    engine: row.engine || '',
-    transmission: row.transmission || 'Sjálfskiptur',
-    fuelType: row.fuel_type || '',
-    bodyType: row.body_type || 'SUV',
-    doors: row.doors || 4,
-    seats: row.seats || 5,
-    vin: row.vin || vinMatch,
+    mileage: car.mileage_km || 0,
+    color: car.exterior_colour || 'Ótilgreind',
+    exteriorColor: car.exterior_colour || 'Ótilgreind',
+    interiorColor: car.interior_colour || 'Ótilgreind',
+    drivetrain: car.drivetrain || '4WD',
+    engine: car.engine || '',
+    transmission: car.transmission || 'Sjálfskiptur',
+    fuelType: car.fuel_type || '',
+    bodyType: car.body_type || 'SUV',
+    doors: car.doors || 4,
+    seats: car.seats || 5,
+    vin: car.vin || vinMatch,
     status: 'available' as const,
     featured: false,
-    images: row.images || [],
-    description: row.description_is || '',
+    images: car.images || [],
+    description: car.description_is || '',
     features: [],
     createdAt: new Date().toISOString(),
-    availability: row.location_country === 'US' ? 'Í boði frá Bandaríkjunum' : '',
+    availability: car.location_country === 'US' ? 'Í boði frá Bandaríkjunum' : '',
   }
 }
 
