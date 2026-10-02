@@ -12,6 +12,8 @@ export interface Car {
   year: number
   trim: string
   price: number // ISK
+  /** Stored override. Null/undefined uses the body-type subtitle. */
+  priceIncludesVat?: boolean | null
   priceUSD?: number
   mileage: number // km
   color: string
