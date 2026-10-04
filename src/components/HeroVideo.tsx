@@ -1,239 +1,62 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import CallLink from '@/components/CallLink'
 
-const PLAY_RETRY_DELAYS_MS = [150, 350, 700, 1200]
-
-function sleep(ms: number) {
-  return new Promise<void>((resolve) => {
-    window.setTimeout(resolve, ms)
-  })
-}
-
-function isVideoPlaying(video: HTMLVideoElement) {
-  return !video.paused && !video.ended
-}
-
-function muteForAutoplay(video: HTMLVideoElement) {
-  video.defaultMuted = true
-  video.muted = true
-  video.setAttribute('muted', '')
-  video.setAttribute('playsinline', '')
-  video.setAttribute('webkit-playsinline', 'true')
-}
-
-export default function HeroVideo({ children }: { children?: ReactNode }) {
+export default function HeroVideo() {
   const videoRef = useRef<HTMLVideoElement>(null)
-  const sectionRef = useRef<HTMLElement>(null)
-  const soundOnRef = useRef(false)
-  const cancelledRef = useRef(false)
-  const playInFlightRef = useRef<Promise<void> | null>(null)
-  const [soundOn, setSoundOn] = useState(false)
-
-  const setVideoNode = (video: HTMLVideoElement | null) => {
-    videoRef.current = video
-    if (!video) return
-    // Set mute flags as soon as the node exists, before effects/autoplay checks.
-    video.defaultMuted = true
-    if (!soundOnRef.current) {
-      muteForAutoplay(video)
-    }
-  }
-
-  const playWithRetries = useCallback(async (video: HTMLVideoElement) => {
-    const attempt = async () => {
-      if (!soundOnRef.current) {
-        muteForAutoplay(video)
-      }
-      await video.play()
-    }
-
-    try {
-      await attempt()
-      return
-    } catch {
-      // First play() often rejects before the first frame is ready.
-    }
-
-    for (const delay of PLAY_RETRY_DELAYS_MS) {
-      await sleep(delay)
-      if (cancelledRef.current) return
-      if (isVideoPlaying(video)) return
-      try {
-        await attempt()
-        return
-      } catch {
-        // Keep retrying while the element is still mounted.
-      }
-    }
-  }, [])
-
-  const requestPlay = useCallback(() => {
-    const video = videoRef.current
-    if (!video || cancelledRef.current) return
-    if (isVideoPlaying(video) || playInFlightRef.current) return
-
-    const run = playWithRetries(video).finally(() => {
-      if (playInFlightRef.current === run) {
-        playInFlightRef.current = null
-      }
-    })
-    playInFlightRef.current = run
-  }, [playWithRetries])
-
-  const toggleSound = () => {
-    const video = videoRef.current
-    const next = !soundOnRef.current
-    soundOnRef.current = next
-    setSoundOn(next)
-
-    if (!video) return
-
-    if (next) {
-      video.muted = false
-      video.volume = 1
-    } else {
-      muteForAutoplay(video)
-    }
-
-    void video.play().catch(() => {
-      if (!next) return
-      // Unmuted play can still fail on some browsers; keep the clip running muted.
-      soundOnRef.current = false
-      setSoundOn(false)
-      muteForAutoplay(video)
-      void video.play().catch(() => {})
-    })
-  }
+  const [playing, setPlaying] = useState(false)
 
   useEffect(() => {
     const video = videoRef.current
-    const section = sectionRef.current
-    if (!video) return
-
-    cancelledRef.current = false
-    muteForAutoplay(video)
-    requestPlay()
-
-    const onReady = () => requestPlay()
-    const onVisibility = () => {
-      if (document.visibilityState === 'visible') requestPlay()
+    const preference = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const syncMotion = () => {
+      if (!video) return
+      if (preference.matches) video.pause()
+      else void video.play().catch(() => {})
     }
-    const onPageShow = () => requestPlay()
-
-    video.addEventListener('loadeddata', onReady)
-    video.addEventListener('canplay', onReady)
-    document.addEventListener('visibilitychange', onVisibility)
-    window.addEventListener('pageshow', onPageShow)
-
-    let observer: IntersectionObserver | undefined
-    if (section && 'IntersectionObserver' in window) {
-      observer = new IntersectionObserver(
-        (entries) => {
-          if (entries.some((entry) => entry.isIntersecting)) requestPlay()
-        },
-        { threshold: 0.2 },
-      )
-      observer.observe(section)
-    }
-
-    return () => {
-      cancelledRef.current = true
-      playInFlightRef.current = null
-      video.removeEventListener('loadeddata', onReady)
-      video.removeEventListener('canplay', onReady)
-      document.removeEventListener('visibilitychange', onVisibility)
-      window.removeEventListener('pageshow', onPageShow)
-      observer?.disconnect()
-    }
-  }, [requestPlay])
+    syncMotion()
+    preference.addEventListener('change', syncMotion)
+    return () => preference.removeEventListener('change', syncMotion)
+  }, [])
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative flex min-h-[100svh] flex-col justify-start overflow-hidden bg-navy-900 px-4 pb-28 pt-20"
-    >
-      {/* Video background — cover on mobile; contain + 12% scale on desktop */}
-      <video
-        ref={setVideoNode}
-        autoPlay
-        muted={!soundOn}
-        loop
-        playsInline
-        preload="auto"
-        className="absolute inset-0 h-full w-full origin-center object-cover md:scale-[1.12] md:object-contain"
-        {...{ 'webkit-playsinline': 'true' }}
-      >
-        <source src="/videos/hero.mp4" type="video/mp4" />
-      </video>
-
-      {/* Gradient overlays */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-white dark:from-navy-900/70 dark:via-navy-900/40 dark:to-navy-900" />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/5 dark:from-navy-900/50 to-transparent" />
-
-      {/* Content */}
-      <div className="relative z-10 mx-auto w-full max-w-3xl text-center">
-        <div className="inline-block px-4 py-1 mb-3 text-xs font-semibold tracking-[0.2em] uppercase text-accent border border-accent/30 rounded-full bg-accent/5">
-          Yfir 25 ára reynsla
+    <section className="bg-navy-900 text-white pt-16 lg:pt-20">
+      <div className="max-w-7xl mx-auto grid lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="min-w-0 px-5 sm:px-8 py-12 sm:py-16 lg:py-20 lg:pr-14">
+          <p className="text-accent text-xs font-semibold uppercase tracking-[0.22em] mb-6">Eðalkaup · Bílainnflutningur í yfir 25 ár</p>
+          <h1 className="text-3xl sm:text-5xl xl:text-6xl font-bold tracking-tight leading-[1.08] max-w-2xl">
+            Bílainnflutningur.<br /><span className="text-accent">Við finnum bílinn þinn.</span>
+          </h1>
+          <p className="text-base sm:text-lg text-slate-300 leading-relaxed max-w-xl mt-6">
+            Vandaðir bílar frá Bandaríkjunum, Kanada og Evrópu. Við aðstoðum þig frá leit og kaupum til afhendingar á Íslandi.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 mt-8">
+            <Link href="/bilar" className="inline-flex justify-center items-center gap-8 px-6 py-4 bg-accent text-navy-900 rounded-xl font-semibold hover:bg-accent-light transition-colors">Skoða bíla til sölu <span aria-hidden="true">↗</span></Link>
+            <CallLink placement="hero" className="inline-flex justify-center items-center px-6 py-4 border border-white/25 rounded-xl font-semibold text-white hover:bg-white/10 transition-colors">Hringja 699 2011</CallLink>
+          </div>
+          <div className="mt-10 pt-6 border-t border-white/15 grid grid-cols-2 gap-6 text-sm">
+            <div><p className="font-semibold text-white">Frá leit til afhendingar</p><p className="text-slate-400 mt-1">Kaup, flutningur og tollafgreiðsla</p></div>
+            <div><p className="font-semibold text-white">Þjónusta um allt land</p><p className="text-slate-400 mt-1">Beint samband við okkur</p></div>
+          </div>
         </div>
-        <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-gray-900 dark:text-white mb-3">
-          Við finnum{' '}
-          <span className="bg-gradient-to-r from-accent to-accent-light bg-clip-text text-transparent">
-            bílinn þinn
-          </span>
-        </h1>
-        <p className="text-sm sm:text-lg text-gray-600 dark:text-slate-300 max-w-2xl mx-auto mb-4 leading-relaxed">
-          Eðalkaup flytur inn vandaða bíla frá Bandaríkjunum, Kanada og Evrópu. Einn stærsti bílainnflytjandi Íslands í yfir 25 ár.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <CallLink
-            placement="hero"
-            className="px-6 py-3 text-sm sm:px-8 sm:py-4 sm:text-base font-semibold bg-accent text-navy-900 rounded-xl hover:bg-accent-light transition-all hover:scale-105"
-          >
-            Hringja 699 2011
-          </CallLink>
-          <Link
-            href="/bilar"
-            className="px-6 py-3 text-sm sm:px-8 sm:py-4 sm:text-base font-semibold border border-gray-300 dark:border-white/20 text-gray-900 dark:text-white rounded-xl hover:bg-black/5 dark:hover:bg-white/10 transition-all"
-          >
-            Skoða bíla
-          </Link>
+        <div className="relative min-w-0 min-h-72 sm:min-h-96 lg:min-h-full overflow-hidden bg-navy-800">
+          <video ref={videoRef} muted loop playsInline preload="metadata" poster="/images/cars/tundra-002/01.jpg" onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} className="absolute inset-0 h-full w-full object-cover" aria-label="Bílar hjá Eðalkaup">
+            <source src="/videos/hero.mp4" type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-gradient-to-t from-navy-900/85 via-transparent to-transparent pointer-events-none" />
+          <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between gap-4">
+            <p className="text-sm font-medium text-white">Bandaríkin · Kanada · Evrópa</p>
+            <button type="button" onClick={() => {
+              const video = videoRef.current
+              if (!video) return
+              if (video.paused) void video.play().catch(() => {})
+              else video.pause()
+            }} className="shrink-0 rounded-full border border-white/35 bg-navy-900/60 px-4 py-2.5 text-xs font-semibold text-white hover:bg-navy-900" aria-label={playing ? 'Gera hlé á myndbandi' : 'Spila myndband'}>{playing ? 'Gera hlé' : 'Spila'}</button>
+          </div>
         </div>
-        {children}
       </div>
-
-      <button
-        type="button"
-        onClick={toggleSound}
-        aria-pressed={soundOn}
-        aria-label={soundOn ? 'Slökkva á hljóði' : 'Kveikja á hljóði'}
-        className="absolute top-24 right-4 z-20 inline-flex min-h-11 items-center gap-2 rounded-full border border-white/20 bg-navy-900/75 px-4 py-2.5 text-sm font-semibold text-white shadow-lg backdrop-blur-md transition-all hover:border-accent/50 hover:bg-navy-900/90 hover:text-accent sm:right-8"
-      >
-        {soundOn ? (
-          <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path
-              d="M11 5L6 9H3v6h3l5 4V5zM15.54 8.46a5 5 0 010 7.07M18.07 5.93a9 9 0 010 12.73"
-              stroke="currentColor"
-              strokeWidth={1.8}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        ) : (
-          <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path
-              d="M11 5L6 9H3v6h3l5 4V5zM22 9l-6 6M16 9l6 6"
-              stroke="currentColor"
-              strokeWidth={1.8}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        )}
-        <span>{soundOn ? 'Hljóð af' : 'Hljóð á'}</span>
-      </button>
     </section>
   )
 }

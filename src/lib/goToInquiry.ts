@@ -7,7 +7,7 @@ export function openInquiryModal() {
 export function goToInquiry() {
   const target = document.getElementById('fyrirspurn')
   if (target) {
-    target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    target.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' })
     target.querySelector<HTMLElement>('input, textarea')?.focus({ preventScroll: true })
     return
   }

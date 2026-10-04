@@ -15,7 +15,7 @@ export interface Car {
   /** Stored override. Null/undefined uses the body-type subtitle. */
   priceIncludesVat?: boolean | null
   priceUSD?: number
-  mileage: number // km
+  mileage: number | null // km; null means unknown
   color: string
   exteriorColor: string
   interiorColor: string
@@ -42,8 +42,9 @@ export const cars: Car[] = []
 
 export const deliveredCars: Car[] = []
 
-export function formatMileage(km: number): string {
-  if (km === 0) return 'Nýr'
+export function formatMileage(km: number | null): string {
+  if (km == null) return 'Ótilgreindur akstur'
+  if (km === 0) return '0 km'
   return formatIskNumber(km) + ' km'
 }
 

@@ -21,16 +21,16 @@ export const metadata: Metadata = {
     default: 'Eðalkaup — Innflutningur á bílum frá Ameríku og Evrópu',
     template: '%s | Eðalkaup',
   },
-  description: 'Eðalkaup er dótturfyrirtæki Úranus, sem er einn stærsti bílainnflytjandi Íslands í yfir 25 ár. Við sérhæfum okkur í innflutningi vandaðra bíla frá Bandaríkjunum, Kanada og Evrópu — ökutæki sem ekki eru fáanleg á íslenskum markaði.',
+  description: 'Bílar til sölu og bílainnflutningur hjá Eðalkaup. Skoðaðu úrvalið eða láttu okkur finna bíl frá Bandaríkjunum, Kanada og Evrópu fyrir þig.',
   openGraph: {
     type: 'website',
     locale: 'is_IS',
     url: SITE_ORIGIN,
     siteName: 'Eðalkaup',
     title: 'Eðalkaup — Innflutningur á bílum frá Ameríku og Evrópu',
-    description: 'Eðalkaup er dótturfyrirtæki Úranus, sem er einn stærsti bílainnflytjandi Íslands í yfir 25 ár. Við sérhæfum okkur í innflutningi vandaðra bíla frá Bandaríkjunum, Kanada og Evrópu — ökutæki sem ekki eru fáanleg á íslenskum markaði.',
+    description: 'Bílar til sölu og bílainnflutningur hjá Eðalkaup. Skoðaðu úrvalið eða láttu okkur finna bíl frá Bandaríkjunum, Kanada og Evrópu fyrir þig.',
   },
-  robots: { index: true, follow: true },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large' } },
   icons: { icon: '/favicon.ico' },
 }
 
@@ -58,10 +58,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         )}
       </head>
       <body className={`${inter.className} antialiased`}>
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:bg-white focus:text-navy-900 focus:p-3 focus:rounded-lg">Fara í efni síðunnar</a>
         <MarketingTags />
         <ThemeProvider>
           {!hideChrome && <Header />}
-          <main className="min-h-screen">{children}</main>
+          <main id="main-content" className="min-h-screen" tabIndex={-1}>{children}</main>
           {!hideChrome && <Footer />}
           {!hideChrome && <StickyCallBar />}
           {!hideChrome && <InquiryModal />}

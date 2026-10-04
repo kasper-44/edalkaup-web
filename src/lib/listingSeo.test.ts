@@ -114,8 +114,8 @@ assert.equal(isNorthAmericanOrigin('IS'), false)
 assert.equal(isNorthAmericanOrigin(null), false)
 assert.equal(isNorthAmericanOrigin('UK'), false)
 
-assert.equal(listingDocumentTitle({ ...grenadier, mileage_km: 0 }).endsWith('nýr | Til sölu á Íslandi'), true)
-assert.equal(listingDocumentTitle({ ...grenadier, mileage_km: null }).includes('nýr'), true)
+assert.equal(listingDocumentTitle({ ...grenadier, mileage_km: 0 }).endsWith('0 km | Til sölu á Íslandi'), true)
+assert.equal(listingDocumentTitle({ ...grenadier, mileage_km: null }).includes('akstur ótilgreindur'), true)
 
 const slug = '0678ccc0-da40-4524-9835-d6998911dd16'
 const poisoned = {
@@ -140,7 +140,8 @@ assert.equal(offer.seller.url, 'https://www.edalkaup.is')
 assert.equal(offer.seller.areaServed, 'Iceland')
 
 const fresh = carJsonLd({ ...grenadier, mileage_km: null, price_isk: 14990000 }, slug)
-assert.equal(fresh.itemCondition, 'https://schema.org/NewCondition')
+assert.equal('itemCondition' in fresh, false)
+assert.deepEqual(fresh['@type'], ['Product', 'Car'])
 assert.equal('mileageFromOdometer' in fresh, false)
 assert.equal((fresh.offers as { price: number }).price, 14990000)
 

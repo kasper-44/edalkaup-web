@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useId, useState } from 'react'
 
 interface ContactFormProps {
   carTitle?: string
@@ -24,6 +24,7 @@ export default function ContactForm({
   headingId,
   reserveCorner = false,
 }: ContactFormProps) {
+  const formId = useId()
   const [submitted, setSubmitted] = useState(false)
   const [sending, setSending] = useState(false)
   const [error, setError] = useState('')
@@ -100,6 +101,7 @@ export default function ContactForm({
   return (
     <form
       onSubmit={handleSubmit}
+      aria-busy={sending}
       className={`bg-white dark:bg-navy-800 rounded-2xl border border-black/5 dark:border-white/5 shadow-xl shadow-black/10 ${
         compact ? 'p-4 sm:p-5 space-y-3' : 'p-6 sm:p-8 space-y-5'
       }`}
@@ -117,30 +119,34 @@ export default function ContactForm({
       )}
 
       {error && (
-        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3 text-sm text-red-600 dark:text-red-400">
+        <div role="alert" className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3 text-sm text-red-600 dark:text-red-400">
           {error}
         </div>
       )}
 
       <div className={`grid gap-3 ${compact ? 'grid-cols-2' : 'grid-cols-1 gap-4 sm:grid-cols-2'}`}>
         <div>
-          <label className="block text-sm font-medium text-gray-500 dark:text-slate-400 mb-1.5">Nafn</label>
+          <label htmlFor={`${formId}-name`} className="block text-sm font-medium text-gray-500 dark:text-slate-400 mb-1.5">Nafn</label>
           <input
+            id={`${formId}-name`}
             name="name"
             type="text"
             required
             autoComplete="name"
+            maxLength={120}
             className={`w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors ${compact ? 'py-2.5' : 'px-4 py-3'}`}
             placeholder="Fullt nafn"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-500 dark:text-slate-400 mb-1.5">Sími</label>
+          <label htmlFor={`${formId}-phone`} className="block text-sm font-medium text-gray-500 dark:text-slate-400 mb-1.5">Sími</label>
           <input
+            id={`${formId}-phone`}
             name="phone"
             type="tel"
             required={compact}
             autoComplete="tel"
+            maxLength={40}
             className={`w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors ${compact ? 'py-2.5' : 'px-4 py-3'}`}
             placeholder="000 0000"
           />
@@ -149,12 +155,14 @@ export default function ContactForm({
 
       {!compact && (
         <div>
-          <label className="block text-sm font-medium text-gray-500 dark:text-slate-400 mb-1.5">Netfang</label>
+          <label htmlFor={`${formId}-email`} className="block text-sm font-medium text-gray-500 dark:text-slate-400 mb-1.5">Netfang</label>
           <input
+            id={`${formId}-email`}
             name="email"
             type="email"
             required
             autoComplete="email"
+            maxLength={200}
             className="w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors"
             placeholder="netfang@dæmi.is"
           />
@@ -163,9 +171,10 @@ export default function ContactForm({
 
       {carTitle && (
         <div>
-          <label className="block text-sm font-medium text-gray-500 dark:text-slate-400 mb-1.5">Bíll</label>
+          <label htmlFor={`${formId}-car`} className="block text-sm font-medium text-gray-500 dark:text-slate-400 mb-1.5">Bíll</label>
           <input
             type="text"
+            id={`${formId}-car`}
             readOnly
             value={carTitle}
             className="w-full bg-gray-100 dark:bg-navy-700/50 border border-black/5 dark:border-white/5 rounded-lg px-4 py-3 text-sm text-gray-600 dark:text-slate-300"
@@ -174,16 +183,19 @@ export default function ContactForm({
       )}
 
       <div>
-        <label className="block text-sm font-medium text-gray-500 dark:text-slate-400 mb-1.5">Skilaboð</label>
+        <label htmlFor={`${formId}-message`} className="block text-sm font-medium text-gray-500 dark:text-slate-400 mb-1.5">Skilaboð</label>
         <textarea
+          id={`${formId}-message`}
           name="message"
-          rows={compact ? 1 : 4}
+          maxLength={4000}
+          rows={compact ? 2 : 4}
           required
-          className="w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors resize-none"
+          className="w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors resize-y min-h-20"
           placeholder={compact ? 'Hvaða bíl leitarðu að?' : 'Hvað getum við aðstoðað þig með?'}
         />
       </div>
 
+      <p className="text-xs text-gray-600 dark:text-slate-300">Við notum upplýsingarnar til að svara fyrirspurninni þinni.</p>
       <button
         type="submit"
         disabled={sending}

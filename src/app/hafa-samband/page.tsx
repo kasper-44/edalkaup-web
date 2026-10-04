@@ -1,11 +1,8 @@
-import { Metadata } from 'next'
+import { pageMetadata } from '@/lib/pageSeo'
 import ContactForm from '@/components/ContactForm'
 import CallLink from '@/components/CallLink'
 
-export const metadata: Metadata = {
-  title: 'Hafa samband',
-  description: 'Hafðu samband við Eðalkaup — sími 699 2011, netfang sigurdur@edalkaup.is. Við svörum fyrirspurnum fljótt.',
-}
+export const metadata = pageMetadata('Hafa samband við Eðalkaup', 'Hafðu samband við Eðalkaup í síma 699 2011 eða sendu fyrirspurn. Laugavegur 44, 101 Reykjavík. Opið mánudaga til föstudaga 09:00–17:00.', '/hafa-samband')
 
 export default function HafaSambandPage() {
   return (
@@ -62,6 +59,7 @@ export default function HafaSambandPage() {
                 <p className="text-sm font-semibold text-accent">Laugavegur 44, 101 Reykjavík</p>
               </div>
               <iframe
+                title="Staðsetning Eðalkaupa við Laugaveg 44"
                 src="https://maps.google.com/maps?q=Laugavegur+44,+101+Reykjavík,+Iceland&t=&z=16&ie=UTF8&iwloc=&output=embed"
                 width="100%"
                 height="250"

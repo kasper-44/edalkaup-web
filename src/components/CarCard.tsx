@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Car, formatPrice, formatMileage } from '@/data/cars'
@@ -7,13 +8,14 @@ import { vatIncludedPriceSubtitle, withVatFlag } from '@/lib/priceVat'
 interface CarCardProps {
   car: Car
   priority?: boolean
+  actions?: ReactNode
 }
 
-export default function CarCard({ car, priority = false }: CarCardProps) {
+export default function CarCard({ car, priority = false, actions }: CarCardProps) {
   const statusColors = {
-    available: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
-    'in-transit': 'bg-blue-500/20 text-blue-400 border-blue-500/30',
-    sold: 'bg-red-500/20 text-red-400 border-red-500/30',
+    available: 'bg-white text-emerald-800 border-white/80',
+    'in-transit': 'bg-white text-blue-800 border-white/80',
+    sold: 'bg-white text-red-800 border-white/80',
   }
 
   const statusLabels = {
@@ -35,18 +37,19 @@ export default function CarCard({ car, priority = false }: CarCardProps) {
       : null
 
   return (
-    <Link href={`/bilar/${car.slug}`} className="group block">
-      <article className="bg-white dark:bg-navy-800 rounded-2xl overflow-hidden border border-black/5 dark:border-white/5 hover:border-accent/20 transition-all duration-300 hover:shadow-2xl hover:shadow-accent/5">
+    <article className="h-full flex flex-col rounded-2xl overflow-hidden border border-black/10 dark:border-white/10 bg-white dark:bg-navy-800">
+    <Link href={`/bilar/${car.slug}`} className="group flex flex-col flex-1" aria-label={title}>
+      <div className="flex flex-col flex-1 hover:bg-accent/5 transition-colors">
         {/* Image */}
         <div className="relative aspect-[16/10] overflow-hidden">
-          <Image
+          {car.images[0] ? <Image
             src={car.images[0]}
             alt={title}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-500"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             priority={priority}
-          />
+          /> : <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-navy-700 text-gray-500 dark:text-slate-300">Mynd væntanleg</div>}
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 dark:from-navy-900/60 to-transparent" />
 
           {/* Status badge */}
@@ -56,10 +59,10 @@ export default function CarCard({ car, priority = false }: CarCardProps) {
         </div>
 
         {/* Content */}
-        <div className="p-5">
+        <div className="p-5 flex flex-col flex-1">
           <div className="flex items-start justify-between gap-2 mb-2">
             <div>
-              <p className="text-xs font-medium text-accent uppercase tracking-wider">{car.make}</p>
+              <p className="text-xs font-medium text-accent-dark dark:text-accent uppercase tracking-wider">{car.make}</p>
               <h3 className="text-lg font-bold text-gray-900 dark:text-white group-hover:text-accent transition-colors">
                 {title}
               </h3>
@@ -67,10 +70,9 @@ export default function CarCard({ car, priority = false }: CarCardProps) {
           </div>
 
           {/* Quick specs */}
-          <div className="flex items-center gap-3 mt-3 text-xs text-gray-500 dark:text-slate-400">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-2 mt-3 mb-4 text-sm text-gray-500 dark:text-slate-400">
             <span className="flex items-center gap-1">
-              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-              {car.engine}
+              {car.year}
             </span>
             <span>•</span>
             <span>{car.drivetrain}</span>
@@ -79,19 +81,21 @@ export default function CarCard({ car, priority = false }: CarCardProps) {
           </div>
 
           {/* Price */}
-          <div className="mt-4 pt-4 border-t border-black/5 dark:border-white/5 flex items-end justify-between">
+          <div className="mt-auto pt-4 border-t border-black/5 dark:border-white/5 flex flex-col items-start gap-3">
             <div>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">{formatPrice(car.price)}</p>
+              <p className="text-xl font-bold text-gray-900 dark:text-white whitespace-nowrap">{formatPrice(car.price)}</p>
               {vatSubtitle && (
-                <p className="text-sm text-gray-400 dark:text-slate-500 mt-1">{vatSubtitle}</p>
+                <p className="text-sm text-gray-600 dark:text-slate-400 mt-1">{vatSubtitle}</p>
               )}
             </div>
-            <span className="text-accent text-sm font-medium group-hover:translate-x-1 transition-transform">
+            <span className="self-end text-accent-dark dark:text-accent text-sm font-semibold group-hover:translate-x-1 transition-transform">
               Sjá meira →
             </span>
           </div>
         </div>
-      </article>
+      </div>
     </Link>
+    {actions && <div className="flex border-t border-black/10 dark:border-white/10">{actions}</div>}
+    </article>
   )
 }

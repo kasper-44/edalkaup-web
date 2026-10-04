@@ -9,7 +9,7 @@
   --color-navy-600: #243044;
   --color-accent: #c9a84c;
   --color-accent-light: #e0c36a;
-  --color-accent-dark: #a88a30;
+  --color-accent-dark: #806418;
 
   /* Semantic light-mode defaults */
   --color-surface: #ffffff;
@@ -79,3 +79,34 @@ html {
   align-items: center;
   justify-content: center;
 }
+
+/* Keep keyboard navigation visible across menus, cards and forms. */
+:where(a, button, input, select, textarea):focus-visible {
+  outline: 3px solid var(--color-accent-dark);
+  outline-offset: 4px;
+}
+nav a[aria-current="page"] {
+  color: var(--color-on-surface);
+  background: rgba(201, 168, 76, 0.12);
+}
+.dark nav a[aria-current="page"] { color: white; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.inventory-chip {
+  display: inline-flex; align-items: center; padding: .65rem 1rem;
+  border: 1px solid rgba(0,0,0,.12); border-radius: 999px;
+  background: white; font-size: .875rem; font-weight: 500;
+}
+.inventory-chip:hover { border-color: var(--color-accent-dark); }
+.dark .inventory-chip { background: var(--color-navy-800); border-color: rgba(255,255,255,.2); }
+
+input::placeholder, textarea::placeholder { color: #64748b; opacity: 1; }
+.dark input::placeholder, .dark textarea::placeholder { color: #94a3b8; }
+.dark :is(input, select, textarea) { color-scheme: dark; }

@@ -1,9 +1,6 @@
-import { Metadata } from 'next'
+import { pageMetadata } from '@/lib/pageSeo'
 
-export const metadata: Metadata = {
-  title: 'Um okkur',
-  description: 'Eðalkaup — einn stærsti bílainnflytjandi Íslands í yfir 25 ár. Kynntu þér sögu okkar og þjónustu.',
-}
+export const metadata = pageMetadata('Um Eðalkaup — reynsla af bílainnflutningi', 'Kynntu þér Eðalkaup og þjónustu okkar við leit, kaup og innflutning bíla frá Bandaríkjunum, Kanada og Evrópu til Íslands.', '/um-okkur')
 
 export default function UmOkkurPage() {
   const steps = [

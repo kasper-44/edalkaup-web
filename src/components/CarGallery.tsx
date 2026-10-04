@@ -1,186 +1,49 @@
 'use client'
-
 import Image from 'next/image'
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 
-interface CarGalleryProps {
-  images: string[]
-  alt: string
-}
-
-export default function CarGallery({ images, alt }: CarGalleryProps) {
-  const [selectedIndex, setSelectedIndex] = useState(0)
-  const [lightboxOpen, setLightboxOpen] = useState(false)
-  const touchStartX = useRef<number | null>(null)
-  const touchStartY = useRef<number | null>(null)
-
-  const goNext = useCallback(() => {
-    setSelectedIndex((prev) => (prev + 1) % images.length)
-  }, [images.length])
-
-  const goPrev = useCallback(() => {
-    setSelectedIndex((prev) => (prev - 1 + images.length) % images.length)
-  }, [images.length])
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX
-    touchStartY.current = e.touches[0].clientY
+export default function CarGallery({ images, alt }: { images: string[]; alt: string }) {
+  const [selected, setSelected] = useState(0)
+  const [open, setOpen] = useState(false)
+  const dialog = useRef<HTMLDialogElement>(null)
+  const start = useRef<{ x: number; y: number } | null>(null)
+  const next = useCallback((direction: number) => setSelected((index) => (index + direction + images.length) % images.length), [images.length])
+  useEffect(() => {
+    if (open && !dialog.current?.open) dialog.current?.showModal()
+    else if (!open && dialog.current?.open) dialog.current.close()
+    if (!open) return
+    const old = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => { document.body.style.overflow = old }
+  }, [open])
+  const key = (event: React.KeyboardEvent) => {
+    if (event.key === 'ArrowRight') { event.preventDefault(); next(1) }
+    if (event.key === 'ArrowLeft') { event.preventDefault(); next(-1) }
   }
-
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    if (touchStartX.current === null || touchStartY.current === null) return
-    const dx = e.changedTouches[0].clientX - touchStartX.current
-    const dy = e.changedTouches[0].clientY - touchStartY.current
-    // Only swipe if horizontal movement > vertical (avoid scroll conflict)
-    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
-      if (dx < 0) goNext()
-      else goPrev()
-    }
-    touchStartX.current = null
-    touchStartY.current = null
+  const touchStart = (event: React.TouchEvent) => { start.current = { x: event.touches[0].clientX, y: event.touches[0].clientY } }
+  const touchEnd = (event: React.TouchEvent) => {
+    if (!start.current) return
+    const dx = event.changedTouches[0].clientX - start.current.x
+    const dy = event.changedTouches[0].clientY - start.current.y
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) next(dx < 0 ? 1 : -1)
+    start.current = null
   }
-
-  return (
-    <>
-      {/* Main image with swipe + arrows */}
-      <div
-        className="relative aspect-[16/9] rounded-2xl overflow-hidden cursor-pointer group"
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
-      >
-        <Image
-          src={images[selectedIndex]}
-          alt={alt}
-          fill
-          className="object-cover"
-          priority
-          sizes="(max-width: 768px) 100vw, 66vw"
-        />
-
-        {/* Tap to open lightbox overlay */}
-        <div
-          className="absolute inset-0 flex items-center justify-center"
-          onClick={() => setLightboxOpen(true)}
-        >
-          <svg className="w-12 h-12 text-white/0 group-hover:text-white/80 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-          </svg>
-        </div>
-
-        {/* Left/Right arrows (visible on hover desktop, always on mobile) */}
-        {images.length > 1 && (
-          <>
-            <button
-              className="absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-black/40 hover:bg-black/60 rounded-full text-white/80 hover:text-white transition-all sm:opacity-0 sm:group-hover:opacity-100"
-              onClick={(e) => { e.stopPropagation(); goPrev() }}
-            >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" /></svg>
-            </button>
-            <button
-              className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-black/40 hover:bg-black/60 rounded-full text-white/80 hover:text-white transition-all sm:opacity-0 sm:group-hover:opacity-100"
-              onClick={(e) => { e.stopPropagation(); goNext() }}
-            >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
-            </button>
-          </>
-        )}
-
-        {/* Dot indicators */}
-        {images.length > 1 && (
-          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
-            {images.map((_, i) => (
-              <button
-                key={i}
-                onClick={(e) => { e.stopPropagation(); setSelectedIndex(i) }}
-                className={`w-2 h-2 rounded-full transition-all ${
-                  i === selectedIndex ? 'bg-white w-4' : 'bg-white/50 hover:bg-white/70'
-                }`}
-              />
-            ))}
-          </div>
-        )}
-
-        {/* Photo counter */}
-        <div className="absolute top-3 right-3 bg-black/50 text-white text-xs px-2 py-1 rounded-full">
-          {selectedIndex + 1} / {images.length}
-        </div>
+  const arrowClass = 'absolute top-1/2 -translate-y-1/2 bg-navy-900/80 text-white rounded-full w-11 h-11 flex items-center justify-center text-2xl hover:bg-navy-900'
+  return <div onKeyDown={key}>
+    <div className="relative aspect-[16/10] rounded-2xl overflow-hidden bg-gray-100 dark:bg-navy-800" onTouchStart={touchStart} onTouchEnd={touchEnd}>
+      <button onClick={() => setOpen(true)} className="absolute inset-0 w-full h-full" aria-label={`Stækka mynd ${selected + 1} af ${images.length}: ${alt}`}>
+        <Image src={images[selected]} alt={`${alt} — mynd ${selected + 1}`} fill sizes="(max-width: 1024px) 100vw, 66vw" priority className="object-contain" />
+      </button>
+      {images.length > 1 && <><button aria-label="Fyrri mynd" onClick={() => next(-1)} className={`${arrowClass} left-3`}>‹</button><button aria-label="Næsta mynd" onClick={() => next(1)} className={`${arrowClass} right-3`}>›</button></>}
+      <span className="absolute bottom-3 right-3 bg-navy-900/80 text-white text-xs px-3 py-2 rounded-full pointer-events-none" aria-live="polite">{selected + 1} / {images.length}</span>
+    </div>
+    {images.length > 1 && <div className="flex gap-2 mt-3 overflow-x-auto py-2" aria-label="Velja mynd">{images.map((image, index) => <button key={`${image}-${index}`} aria-label={`Sýna mynd ${index + 1}`} aria-pressed={index === selected} onClick={() => setSelected(index)} className={`relative w-20 h-14 sm:w-24 sm:h-16 shrink-0 rounded-lg overflow-hidden border-2 ${index === selected ? 'border-accent-dark dark:border-accent' : 'border-transparent'}`}><Image src={image} alt="" fill sizes="96px" className="object-cover" /></button>)}</div>}
+    <dialog ref={dialog} aria-label={`Myndir af ${alt}`} onClose={() => setOpen(false)} className="m-auto w-[95vw] max-w-6xl h-[90svh] p-0 border-0 rounded-xl bg-navy-900 text-white backdrop:bg-black/85" onTouchStart={touchStart} onTouchEnd={touchEnd}>
+      <div className="relative w-full h-full">
+        <div className="absolute top-4 left-5 right-4 z-10 flex justify-between items-center gap-3"><p className="text-sm">Mynd {selected + 1} / {images.length}</p><button autoFocus onClick={() => setOpen(false)} className="rounded-lg bg-navy-800 px-4 py-3 font-semibold">Loka</button></div>
+        <Image src={images[selected]} alt={`${alt} — mynd ${selected + 1}`} fill sizes="95vw" className="object-contain px-12 py-20" />
+        {images.length > 1 && <><button aria-label="Fyrri mynd í stækkuðum glugga" onClick={() => next(-1)} className={`${arrowClass} left-2`}>‹</button><button aria-label="Næsta mynd í stækkuðum glugga" onClick={() => next(1)} className={`${arrowClass} right-2`}>›</button></>}
       </div>
-
-      {/* Thumbnails */}
-      {images.length > 1 && (
-        <div className="flex gap-2 mt-3 overflow-x-auto pb-2 scrollbar-hide">
-          {images.map((img, i) => (
-            <button
-              key={i}
-              onClick={() => setSelectedIndex(i)}
-              className={`relative w-20 h-14 sm:w-24 sm:h-16 rounded-lg overflow-hidden flex-shrink-0 border-2 transition-colors ${
-                i === selectedIndex ? 'border-accent' : 'border-transparent hover:border-white/20'
-              }`}
-            >
-              <Image src={img} alt={`${alt} ${i + 1}`} fill className="object-cover" sizes="96px" />
-            </button>
-          ))}
-        </div>
-      )}
-
-      {/* Lightbox */}
-      {lightboxOpen && (
-        <div
-          className="lightbox-overlay cursor-pointer"
-          onClick={() => setLightboxOpen(false)}
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
-        >
-          <button
-            className="absolute top-4 right-4 text-white/70 hover:text-white z-50"
-            onClick={() => setLightboxOpen(false)}
-          >
-            <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-
-          {images.length > 1 && (
-            <>
-              <button
-                className="absolute left-4 top-1/2 -translate-y-1/2 p-2 text-white/70 hover:text-white z-50"
-                onClick={(e) => { e.stopPropagation(); goPrev() }}
-              >
-                <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
-              </button>
-              <button
-                className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-white/70 hover:text-white z-50"
-                onClick={(e) => { e.stopPropagation(); goNext() }}
-              >
-                <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-              </button>
-            </>
-          )}
-
-          {/* Dot indicators in lightbox */}
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-50">
-            {images.map((_, i) => (
-              <button
-                key={i}
-                onClick={(e) => { e.stopPropagation(); setSelectedIndex(i) }}
-                className={`w-2.5 h-2.5 rounded-full transition-all ${
-                  i === selectedIndex ? 'bg-white w-5' : 'bg-white/50 hover:bg-white/70'
-                }`}
-              />
-            ))}
-          </div>
-
-          <div className="relative max-w-5xl max-h-[85vh] w-full mx-4" onClick={(e) => e.stopPropagation()}>
-            <Image
-              src={images[selectedIndex]}
-              alt={alt}
-              width={1200}
-              height={800}
-              className="w-full h-auto max-h-[85vh] object-contain rounded-lg"
-            />
-          </div>
-        </div>
-      )}
-    </>
-  )
+    </dialog>
+  </div>
 }
