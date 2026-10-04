@@ -1,5 +1,7 @@
 import mcData from './data.json'
 
+export const metadata = { title: 'Yfirlit', robots: { index: false, follow: false } }
+
 const statusEmoji: Record<string, string> = {
   'live': '🟢',
   'in-progress': '🟡',

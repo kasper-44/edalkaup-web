@@ -1,7 +1,9 @@
 import type { Metadata } from 'next'
-import { supabase } from '@/lib/supabase'
+import { notFound } from 'next/navigation'
+import { getPublicCar, getPublicCars } from '@/lib/publicInventory'
+import { adaptCar } from '@/lib/adaptPublicCar'
+import CarCard from '@/components/CarCard'
 import CarDetail from '@/components/CarDetail'
-import { withVatFlag } from '@/lib/priceVat'
 import {
   breadcrumbJsonLd,
   carJsonLd,
@@ -13,19 +15,6 @@ import {
 
 export const dynamic = 'force-dynamic'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-async function getCar(slug: string): Promise<any | null> {
-  const { data, error } = await supabase
-    .from('cars')
-    .select('*')
-    .eq('id', slug)
-    .eq('status', 'live')
-    .not('images_original', 'is', null)
-    .single()
-  if (error || !data) return null
-  return withVatFlag(data)
-}
-
 // --- Per-car SEO metadata (server-rendered) ---
 export async function generateMetadata({
   params,
@@ -33,9 +22,9 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>
 }): Promise<Metadata> {
   const { slug } = await params
-  const car = await getCar(slug)
+  const car = await getPublicCar(slug)
   if (!car) {
-    return { title: 'Bíll fannst ekki' }
+    notFound()
   }
   const title = listingDocumentTitle(car)
   const description = listingMetaDescription(car)
@@ -53,6 +42,7 @@ export async function generateMetadata({
       url: canonical,
     },
     alternates: { canonical },
+    twitter: { card: 'summary_large_image', title, description, images: image ? [image] : undefined },
   }
 }
 
@@ -62,21 +52,12 @@ export default async function CarPage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const car = await getCar(slug)
+  const car = await getPublicCar(slug)
 
-  if (!car) {
-    return (
-      <div className="pt-20 lg:pt-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 text-center">
-          <h1 className="text-4xl font-bold text-gray-300 dark:text-slate-600 mb-4">404</h1>
-          <p className="text-xl text-gray-500 dark:text-slate-400 mb-6">Bíll fannst ekki</p>
-          <a href="/bilar" className="inline-block px-6 py-3 bg-accent text-white rounded-lg hover:bg-accent/90 transition-colors">
-            Fara á bílasíðu
-          </a>
-        </div>
-      </div>
-    )
-  }
+  if (!car) notFound()
+  const publicCar = adaptCar(car)
+  const related = (await getPublicCars()).filter((candidate) => candidate.id !== car.id)
+    .sort((a, b) => Number(b.make === car.make) - Number(a.make === car.make) || Number(b.bodyType === publicCar.bodyType) - Number(a.bodyType === publicCar.bodyType)).slice(0, 3)
 
   return (
     <>
@@ -89,6 +70,10 @@ export default async function CarPage({
         dangerouslySetInnerHTML={{ __html: jsonLdScript(breadcrumbJsonLd(car, slug)) }}
       />
       <CarDetail car={car} />
+      {related.length > 0 && <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Skoðaðu líka</h2>
+        <div className="grid md:grid-cols-3 gap-6">{related.map((candidate) => <CarCard key={candidate.id} car={candidate} />)}</div>
+      </section>}
     </>
   )
 }

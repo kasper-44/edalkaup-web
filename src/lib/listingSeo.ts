@@ -1,3 +1,4 @@
+import { listingCopy } from '@/lib/listingCopy'
 import { displayExteriorColour } from '@/lib/exteriorColour'
 import { formatIskNumber, formatPrice } from '@/lib/formatIsk'
 import {
@@ -66,6 +67,7 @@ export type ListingCar = {
   fuel_type?: string | null
   body_type?: string | null
   images?: string[] | null
+  description_is?: string | null
 }
 
 function collapseSpace(value: string): string {
@@ -115,12 +117,13 @@ export function mileageKm(value: unknown): number | null {
 /** Public copy already calls 0 / missing mileage "nýr" in the meta description. */
 export function isListedAsNew(mileage: unknown): boolean {
   const km = mileageKm(mileage)
-  return km == null || km === 0
+  return km === 0
 }
 
 export function mileagePhrase(mileage: unknown): string {
   const km = mileageKm(mileage)
-  if (km == null || km === 0) return 'nýr'
+  if (km == null) return 'akstur ótilgreindur'
+  if (km === 0) return '0 km'
   return `${formatIskNumber(km)} km`
 }
 
@@ -233,22 +236,24 @@ export function carJsonLd(car: ListingCar, slug: string) {
   const km = mileageKm(car.mileage_km)
   const jsonLd: Record<string, unknown> = {
     '@context': 'https://schema.org',
-    '@type': 'Car',
+    '@type': ['Product', 'Car'],
+    '@id': `${url}#vehicle`,
+    sku: slug,
     name: vehicleTitle(car),
     url,
-    itemCondition: isListedAsNew(car.mileage_km)
-      ? 'https://schema.org/NewCondition'
-      : 'https://schema.org/UsedCondition',
     brand: { '@type': 'Brand', name: car.make },
     model: car.model,
     vehicleModelDate: car.year,
   }
 
+  if (km != null && km > 0) jsonLd.itemCondition = 'https://schema.org/UsedCondition'
   if (colour) jsonLd.color = colour
   // VIN stays off the public page (not in the spec list). Do not emit it here.
   if (km != null && km > 0) {
     jsonLd.mileageFromOdometer = { '@type': 'QuantitativeValue', value: km, unitCode: 'KMT' }
   }
+  const description = listingCopy(car.description_is)
+  if (description) jsonLd.description = withoutEmbeddedVin(description, car.vin).slice(0, 1000)
   if (car.fuel_type) jsonLd.fuelType = car.fuel_type
   if (car.body_type) jsonLd.bodyType = car.body_type
   if (car.images && car.images.length > 0) jsonLd.image = car.images
@@ -259,7 +264,7 @@ export function carJsonLd(car: ListingCar, slug: string) {
       url,
       price: car.price_isk,
       priceCurrency: 'ISK',
-      availability: 'https://schema.org/InStock',
+      availability: 'https://schema.org/LimitedAvailability',
       seller: listingSeller(),
     }
   }

@@ -1,3 +1,6 @@
+import { pageMetadata } from '@/lib/pageSeo'
+import { getPublicCars } from '@/lib/publicInventory'
+import { INVENTORY_CATEGORIES, normalizeSearch } from '@/lib/inventory'
 import HeroVideo from '@/components/HeroVideo'
 import FeaturedCars from '@/components/FeaturedCars'
 import ContactForm from '@/components/ContactForm'
@@ -6,14 +9,16 @@ import Link from 'next/link'
 import { SHOW_NEW_VOLVO } from '@/lib/features'
 import { formatIsk } from '@/lib/formatIsk'
 
-export default function Home() {
+export const dynamic = 'force-dynamic'
+
+export const metadata = pageMetadata('Bílar til sölu og bílainnflutningur', 'Finndu næsta bíl hjá Eðalkaup. Skoðaðu bíla til sölu eða fáðu aðstoð við innflutning frá Bandaríkjunum, Kanada og Evrópu.', '/')
+
+export default async function Home() {
+  const cars = await getPublicCars()
+  const makes = [...new Set(cars.map((car) => car.make))].sort()
   return (
     <>
-      <HeroVideo>
-        <div id="fyrirspurn" className="scroll-mt-28 mx-auto mt-4 w-full max-w-xl text-left">
-          <ContactForm variant="compact" source="forsida" heading="Sendu okkur fyrirspurn" />
-        </div>
-      </HeroVideo>
+      <HeroVideo />
 
       {SHOW_NEW_VOLVO && (
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-4">
@@ -49,9 +54,13 @@ export default function Home() {
       </section>
       )}
 
+      <section className="max-w-7xl mx-auto px-5 sm:px-8 pt-10">
+        <h2 className="text-xl font-bold mb-4">Hvernig bíl leitarðu að?</h2>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">{INVENTORY_CATEGORIES.map((category) => <Link key={category.slug} href={`/bilar/flokkur/${category.slug}`} className="rounded-xl border border-black/10 dark:border-white/15 p-5 hover:border-accent transition-colors"><span className="block font-semibold">{category.short} <span aria-hidden="true">↗</span></span><span className="block text-sm text-gray-600 dark:text-slate-300 mt-2">Bílar: {cars.filter(category.matches).length}</span></Link>)}</div>
+      </section>
       {/* Featured Cars */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="text-center mb-12">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+        <div className="text-left mb-8">
           <p className="text-accent text-sm font-semibold uppercase tracking-[0.2em] mb-3">Nýjast á lager</p>
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">Bílar til sölu</h2>
         </div>
@@ -67,6 +76,7 @@ export default function Home() {
         </div>
       </section>
 
+      {makes.length > 0 && <section className="max-w-7xl mx-auto px-5 sm:px-8 pb-14"><h2 className="text-xl font-bold mb-4">Leita eftir framleiðanda</h2><nav aria-label="Framleiðendur" className="flex flex-wrap gap-2">{makes.map((make) => <Link key={make} href={`/bilar/framleidandi/${normalizeSearch(make).replace(/\s+/g, '-')}`} className="inventory-chip">{make}</Link>)}</nav></section>}
       {/* About Section */}
       <section className="bg-gray-50 dark:bg-navy-800/50 border-y border-black/5 dark:border-white/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
@@ -92,7 +102,7 @@ export default function Home() {
             <div className="grid grid-cols-2 gap-4">
               {[
                 { kicker: '25+', label: 'Ára reynsla af innflutningi' },
-                { kicker: '3–6', label: 'Vikur í afgreiðslu' },
+                { kicker: 'Frá A–Ö', label: 'Leit, kaup og flutningur' },
                 { kicker: 'Um allt land', label: 'Við afhendum bíla' },
                 { kicker: 'Eftirfylgni', label: 'Við svörum hverri fyrirspurn' },
               ].map((stat) => (
@@ -106,34 +116,18 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="relative bg-gradient-to-r from-accent/10 to-accent/5 rounded-3xl border border-accent/20 p-10 sm:p-16 text-center overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(201,168,76,0.1),transparent_70%)]" />
-          <div className="relative">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              Finndu draumabílinn þinn
-            </h2>
-            <p className="text-gray-600 dark:text-slate-300 max-w-xl mx-auto mb-8">
-              Ertu að leita að ákveðinni bíltegund sem ekki er fáanleg á Íslandi? Við getum fundið hana fyrir þig.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <CallLink
-                placement="home_cta"
-                className="inline-block px-8 py-4 text-base font-semibold bg-accent text-navy-900 rounded-xl hover:bg-accent-light transition-all hover:scale-105"
-              >
-                Hringja 699 2011
-              </CallLink>
-              <Link
-                href="/#fyrirspurn"
-                className="inline-block px-8 py-4 text-base font-semibold border border-accent/30 text-accent rounded-xl hover:bg-accent/10 transition-colors"
-              >
-                Senda fyrirspurn
-              </Link>
-            </div>
+      <section id="fyrirspurn" className="scroll-mt-24 bg-gray-50 dark:bg-navy-800/50 border-b border-black/5 dark:border-white/5">
+        <div className="max-w-7xl mx-auto px-5 sm:px-8 py-14 sm:py-20 grid lg:grid-cols-2 gap-10 lg:gap-20 items-center">
+          <div>
+            <p className="text-accent-dark dark:text-accent text-xs font-semibold uppercase tracking-[0.2em] mb-4">Leitum fyrir þig</p>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-white">Ertu með ákveðinn bíl í huga?</h2>
+            <p className="mt-5 text-gray-600 dark:text-slate-300 leading-relaxed max-w-lg">Segðu okkur hvaða bíl þú leitar að. Við skoðum möguleikana í Bandaríkjunum, Kanada og Evrópu og höfum samband við þig.</p>
+            <p className="mt-6 text-sm text-gray-600 dark:text-slate-400">Viltu frekar tala við okkur? <CallLink placement="home_cta" className="font-semibold text-gray-900 dark:text-white underline underline-offset-4">699 2011</CallLink></p>
           </div>
+          <ContactForm variant="compact" source="forsida" heading="Sendu okkur fyrirspurn" />
         </div>
       </section>
+
     </>
   )
 }

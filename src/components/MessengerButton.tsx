@@ -23,11 +23,12 @@ export default function MessengerButton({ carName }: MessengerButtonProps) {
   return (
     <a
       href={messengerLink}
+      aria-label={buttonText}
       target="_blank"
       rel="noopener noreferrer"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="fixed bottom-28 right-4 z-40 flex items-center gap-2 bg-[#0084FF] hover:bg-[#0073E6] text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 group lg:bottom-6 lg:right-6"
+      className="fixed bottom-44 right-4 z-40 hidden xl:flex items-center gap-2 bg-[#0084FF] hover:bg-[#0073E6] text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 group lg:bottom-28 lg:right-6"
       style={{ padding: hovered ? '14px 20px 14px 16px' : '16px' }}
     >
       {/* Messenger icon */}
@@ -44,8 +45,8 @@ export default function MessengerButton({ carName }: MessengerButtonProps) {
         {buttonText}
       </span>
 
-      {/* Pulse ring animation */}
-      <span className="absolute inset-0 rounded-full bg-[#0084FF] animate-ping opacity-20 pointer-events-none" />
+      {/* Static ring keeps attention on the inventory. */}
+      <span className="absolute inset-0 rounded-full bg-[#0084FF] opacity-20 pointer-events-none" />
     </a>
   )
 }

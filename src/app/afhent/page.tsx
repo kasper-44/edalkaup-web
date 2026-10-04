@@ -4,6 +4,8 @@ import { deliveredCars, getCarTitle, formatPrice, formatMileage } from '@/data/c
 
 export const metadata: Metadata = {
   title: 'Afhentir bílar',
+  alternates: { canonical: '/afhent' },
+  robots: { index: deliveredCars.length > 0, follow: true },
   description: 'Bílar sem við höfum flutt inn og afhent viðskiptavinum á Íslandi.',
 }
 

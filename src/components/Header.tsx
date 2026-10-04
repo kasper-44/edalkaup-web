@@ -11,6 +11,7 @@ import { goToInquiry } from '@/lib/goToInquiry'
 const navItems = [
   { href: '/', label: 'Forsíða' },
   { href: '/bilar', label: 'Bílar' },
+  { href: '/bilainnflutningur', label: 'Innflutningur' },
   { href: '/um-okkur', label: 'Um okkur' },
   { href: '/hafa-samband', label: 'Hafa samband' },
 ]
@@ -34,12 +35,12 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-accent to-accent-dark flex items-center justify-center text-navy-900 font-bold text-xl">
+          <Link href="/" className="flex items-center gap-2 sm:gap-3 group">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-gradient-to-br from-accent to-accent-dark flex items-center justify-center text-navy-900 font-bold text-xl">
               E
             </div>
             <div>
-              <span className="text-xl font-bold tracking-tight text-gray-900 dark:text-white group-hover:text-accent transition-colors">
+              <span className="text-base sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white group-hover:text-accent transition-colors">
                 EÐALKAUP
               </span>
               <span className="hidden sm:block text-[10px] uppercase tracking-[0.3em] text-gray-500 dark:text-slate-400">
@@ -49,12 +50,13 @@ export default function Header() {
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-1">
+          <nav className="hidden xl:flex items-center gap-1">
             {navItems.slice(0, 2).map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="px-4 py-2 text-sm font-medium text-gray-600 dark:text-slate-300 hover:text-accent transition-colors rounded-lg hover:bg-black/5 dark:hover:bg-white/5"
+                aria-current={(item.href === '/' ? pathname === '/' : pathname.startsWith(item.href)) ? 'page' : undefined}
+                className="px-3 py-2 text-sm font-medium text-gray-600 dark:text-slate-300 hover:text-accent transition-colors rounded-lg hover:bg-black/5 dark:hover:bg-white/5"
               >
                 {item.label}
               </Link>
@@ -67,7 +69,7 @@ export default function Header() {
               onMouseLeave={() => setVolvoOpen(false)}
             >
               <button
-                className="px-4 py-2 text-sm font-medium text-gray-600 dark:text-slate-300 hover:text-accent transition-colors rounded-lg hover:bg-black/5 dark:hover:bg-white/5 flex items-center gap-1"
+                className="px-3 py-2 text-sm font-medium text-gray-600 dark:text-slate-300 hover:text-accent transition-colors rounded-lg hover:bg-black/5 dark:hover:bg-white/5 flex items-center gap-1"
                 onClick={() => setVolvoOpen(!volvoOpen)}
               >
                 Volvo
@@ -97,7 +99,8 @@ export default function Header() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="px-4 py-2 text-sm font-medium text-gray-600 dark:text-slate-300 hover:text-accent transition-colors rounded-lg hover:bg-black/5 dark:hover:bg-white/5"
+                aria-current={(item.href === '/' ? pathname === '/' : pathname.startsWith(item.href)) ? 'page' : undefined}
+                className="px-3 py-2 text-sm font-medium text-gray-600 dark:text-slate-300 hover:text-accent transition-colors rounded-lg hover:bg-black/5 dark:hover:bg-white/5"
               >
                 {item.label}
               </Link>
@@ -122,7 +125,7 @@ export default function Header() {
 
             <CallLink
               placement="header"
-              className="ml-2 inline-flex items-center px-4 py-2.5 text-sm font-semibold border border-accent/40 text-gray-900 dark:text-white rounded-lg hover:border-accent hover:text-accent transition-colors"
+              className="ml-2 inline-flex items-center px-3 py-2.5 text-sm font-semibold border border-accent/40 text-gray-900 dark:text-white rounded-lg hover:border-accent hover:text-accent transition-colors"
             >
               Hringja 699 2011
             </CallLink>
@@ -135,7 +138,7 @@ export default function Header() {
           </nav>
 
           {/* Mobile: toggle + hamburger */}
-          <div className="flex items-center gap-2 lg:hidden">
+          <div className="flex items-center gap-2 xl:hidden">
             <CallLink
               placement="header"
               className="inline-flex items-center px-3 py-2 text-sm font-semibold bg-accent text-navy-900 rounded-lg hover:bg-accent-light transition-colors"
@@ -144,7 +147,7 @@ export default function Header() {
             </CallLink>
             <button
               onClick={toggle}
-              className="p-2 rounded-lg text-gray-500 dark:text-slate-300 hover:text-accent transition-colors"
+              className="hidden min-[380px]:block p-2 rounded-lg text-gray-500 dark:text-slate-300 hover:text-accent transition-colors"
               aria-label="Skipta um þema"
             >
               {theme === 'dark' ? (
@@ -160,7 +163,9 @@ export default function Header() {
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="p-2 text-gray-600 dark:text-slate-300 hover:text-gray-900 dark:hover:text-white"
-              aria-label="Toggle menu"
+              aria-label={isOpen ? 'Loka valmynd' : 'Opna valmynd'}
+              aria-expanded={isOpen}
+              aria-controls="mobile-navigation"
             >
               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 {isOpen ? (
@@ -175,11 +180,12 @@ export default function Header() {
 
         {/* Mobile Nav */}
         {isOpen && (
-          <nav className="lg:hidden pb-4 border-t border-black/5 dark:border-white/5 pt-4 space-y-1">
+          <nav id="mobile-navigation" aria-label="Aðalvalmynd" className="xl:hidden pb-4 border-t border-black/5 dark:border-white/5 pt-4 space-y-1">
             {navItems.slice(0, 2).map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
+                aria-current={(item.href === '/' ? pathname === '/' : pathname.startsWith(item.href)) ? 'page' : undefined}
                 onClick={() => setIsOpen(false)}
                 className="block px-4 py-3 text-base font-medium text-gray-600 dark:text-slate-300 hover:text-accent hover:bg-black/5 dark:hover:bg-white/5 rounded-lg transition-colors"
               >
@@ -217,6 +223,7 @@ export default function Header() {
               <Link
                 key={item.href}
                 href={item.href}
+                aria-current={(item.href === '/' ? pathname === '/' : pathname.startsWith(item.href)) ? 'page' : undefined}
                 onClick={() => setIsOpen(false)}
                 className="block px-4 py-3 text-base font-medium text-gray-600 dark:text-slate-300 hover:text-accent hover:bg-black/5 dark:hover:bg-white/5 rounded-lg transition-colors"
               >

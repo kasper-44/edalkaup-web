@@ -21,5 +21,5 @@ export function listingCopy(value: unknown): string | null {
   const text = value.trim()
   if (!text) return null
   if (isPipelineSourcingDump(text)) return null
-  return text
+  return text.split(/\r?\n/).filter((line) => !PIPELINE_LINE.test(line.trim())).join('\n').trim() || null
 }

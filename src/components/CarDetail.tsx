@@ -1,5 +1,8 @@
 'use client'
 
+import Link from 'next/link'
+import { useSavedCars } from '@/components/useSavedCars'
+import { fuelLabel } from '@/lib/inventory'
 import CarGallery from '@/components/CarGallery'
 import ContactForm from '@/components/ContactForm'
 import CallLink from '@/components/CallLink'
@@ -10,13 +13,14 @@ import { vatIncludedPriceSubtitle } from '@/lib/priceVat'
 import { formatIskNumber, formatPrice } from '@/lib/formatIsk'
 import { SITE_ORIGIN } from '@/lib/site'
 
-function formatMileage(km: number) {
-  if (!km) return 'Ótilgreint'
+function formatMileage(km: number | null) {
+  if (km == null) return 'Ótilgreint'
   return formatIskNumber(km) + ' km'
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function CarDetail({ car }: { car: any }) {
+  const { saved, toggle } = useSavedCars()
   const title = vehicleTitle(car)
   const vatSubtitle = car.price_isk > 0 ? vatIncludedPriceSubtitle(car) : null
   const description = listingCopy(car.description_is)
@@ -29,23 +33,23 @@ export default function CarDetail({ car }: { car: any }) {
     { label: 'Akstur', value: formatMileage(car.mileage_km) },
     { label: 'Ytri litur', value: displayExteriorColour(car) },
     { label: 'Innri litur', value: car.interior_colour || 'Ótilgreint' },
-    { label: 'Drifkerfi', value: car.drivetrain || '4WD' },
+    { label: 'Drifkerfi', value: car.drivetrain || 'Ótilgreint' },
     { label: 'Vél', value: car.engine || '' },
     { label: 'Rafhlaða', value: car.battery_kwh ? `${car.battery_kwh} kWh` : '' },
     { label: 'Afl', value: car.horsepower_hp ? `${car.horsepower_hp} hö` : '' },
     { label: 'Drægni', value: car.range_km ? `${car.range_km} km` : '' },
     { label: 'Dráttargeta', value: car.towing_kg ? `${car.towing_kg} kg` : '' },
-    { label: 'Gírkassi', value: car.transmission || 'Sjálfskiptur' },
-    { label: 'Eldsneyti', value: car.fuel_type || '' },
-    { label: 'Tegund', value: car.body_type || 'SUV' },
+    { label: 'Gírkassi', value: car.transmission || 'Ótilgreint' },
+    { label: 'Eldsneyti', value: fuelLabel(car.fuel_type || '') },
+    { label: 'Tegund', value: car.body_type || 'Ótilgreint' },
   ].filter((s) => s.value)
 
   return (
-    <div className="pt-20 lg:pt-24">
+    <div className="pt-20 lg:pt-24 bg-gray-50 dark:bg-navy-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {/* Breadcrumb */}
-        <nav className="text-sm text-gray-400 dark:text-slate-500 mb-6">
-          <a href="/bilar" className="hover:text-accent transition-colors">Bílar</a>
+        <nav aria-label="Slóð" className="text-sm text-gray-600 dark:text-slate-300 mb-6">
+          <Link href="/bilar" className="hover:text-accent transition-colors">Bílar</Link>
           <span className="mx-2">/</span>
           <span className="text-gray-600 dark:text-slate-300">{title}</span>
         </nav>
@@ -63,15 +67,15 @@ export default function CarDetail({ car }: { car: any }) {
 
           {/* Right Sidebar */}
           <div className="flex flex-col gap-6 lg:col-start-3 lg:row-span-2 lg:row-start-1">
-            <div className="order-2 rounded-2xl border border-black/5 bg-white p-6 dark:border-white/5 dark:bg-navy-800 lg:order-1">
-              <div className="inline-block px-3 py-1 text-xs font-semibold rounded-full border mb-4 bg-emerald-500/20 text-emerald-400 border-emerald-500/30">
+            <div className="order-1 rounded-2xl border border-black/10 bg-white p-6 dark:border-white/5 dark:bg-navy-800 lg:order-1">
+              <div className="inline-block px-3 py-1 text-xs font-semibold rounded-full border mb-4 bg-emerald-50 text-emerald-800 border-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-300 dark:border-emerald-700">
                 Til sölu
               </div>
               <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">{title}</h1>
               <div className="mt-4 mb-6">
-                <p className="text-3xl font-bold text-accent">{formatPrice(car.price_isk, 'Verð óákveðið')}</p>
+                <p className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">{formatPrice(car.price_isk, 'Verð óákveðið')}</p>
                 {vatSubtitle && (
-                  <p className="text-sm text-gray-400 dark:text-slate-500 mt-1">{vatSubtitle}</p>
+                  <p className="text-sm text-gray-600 dark:text-slate-300 mt-1">{vatSubtitle}</p>
                 )}
               </div>
 
@@ -92,11 +96,14 @@ export default function CarDetail({ car }: { car: any }) {
                 )}
               </div>
 
+              <a href="#fyrirspurn" className="block w-full text-center px-5 py-3.5 bg-accent text-navy-900 font-semibold rounded-xl hover:bg-accent-light mb-3">Spyrja um þennan bíl</a>
+              <button type="button" aria-pressed={saved.includes(car.id)} onClick={() => toggle(car.id)} className="w-full text-center px-5 py-3 border border-black/15 dark:border-white/15 rounded-xl font-medium mb-4">{saved.includes(car.id) ? '♥ Bíll vistaður' : '♡ Vista þennan bíl'}</button>
+              <p className="text-sm text-gray-600 dark:text-slate-300 mb-5">Hafðu samband til að staðfesta framboð, staðsetningu og möguleika á að skoða bílinn.</p>
               <a
                 href={`https://wa.me/3546992011?text=${encodeURIComponent(`Hæ, ég hef áhuga á ${title}`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block w-full text-center px-6 py-3 border border-accent text-accent font-semibold rounded-xl hover:bg-accent/10 transition-colors mb-3"
+                className="block w-full text-center px-6 py-3 border border-accent-dark dark:border-accent text-accent-dark dark:text-accent font-semibold rounded-xl hover:bg-accent/10 transition-colors mb-3"
               >
                 WhatsApp
               </a>
@@ -117,7 +124,7 @@ export default function CarDetail({ car }: { car: any }) {
               </a>
             </div>
 
-            <div id="fyrirspurn" className="order-1 scroll-mt-28 lg:order-2">
+            <div id="fyrirspurn" className="order-2 scroll-mt-28">
               <ContactForm
                 carTitle={title}
                 carUrl={`${SITE_ORIGIN}/bilar/${car.id}`}
@@ -141,7 +148,7 @@ export default function CarDetail({ car }: { car: any }) {
               <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Tæknilegar upplýsingar</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {specs.map((spec) => (
-                  <div key={spec.label} className="flex justify-between py-3 border-b border-black/5 dark:border-white/5">
+                  <div key={spec.label} className="flex flex-col gap-1 py-3 border-b border-black/5 dark:border-white/5">
                     <span className="text-sm text-gray-500 dark:text-slate-400">{spec.label}</span>
                     <span className="text-sm font-medium text-gray-900 dark:text-white">{spec.value}</span>
                   </div>
