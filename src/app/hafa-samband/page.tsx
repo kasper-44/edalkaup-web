@@ -33,7 +33,7 @@ export default function HafaSambandPage() {
                 title: 'Netfang',
                 value: 'sigurdur@edalkaup.is',
                 href: 'mailto:sigurdur@edalkaup.is',
-                subtitle: 'Sendu okkur spurningu eða óskir um bíl',
+                subtitle: 'Spyrðu um verð, búnað eða framboð',
               },
             ].map((item) => (
               <div key={item.title} className="bg-white dark:bg-navy-800 rounded-2xl border border-black/5 dark:border-white/5 p-6">

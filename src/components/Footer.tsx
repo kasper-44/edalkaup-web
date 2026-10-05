@@ -23,7 +23,7 @@ export default function Footer() {
               <span className="text-xl font-bold text-gray-900 dark:text-white">EÐALKAUP</span>
             </div>
             <p className="text-sm text-gray-500 dark:text-slate-400 leading-relaxed">
-              Einn stærsti bílainnflytjandi Íslands í yfir 25 ár. Við finnum bílinn þinn.
+              Yfir 25 ára reynsla. EV pallbílar, Volvo, Ford Explorer, Maxus og Toyota Sequoia.
             </p>
           </div>
 
@@ -33,7 +33,7 @@ export default function Footer() {
             <ul className="space-y-3">
               {[
                 { href: '/bilar', label: 'Bílar til sölu' },
-                { href: '/bilainnflutningur', label: 'Bílainnflutningur' },
+                { href: '/bilainnflutningur', label: 'Gerðirnar okkar' },
                 { href: '/um-okkur', label: 'Um okkur' },
                 { href: '/hafa-samband', label: 'Hafa samband' },
               ].map((link) => (

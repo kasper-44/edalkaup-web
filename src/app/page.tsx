@@ -2,25 +2,26 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { pageMetadata } from '@/lib/pageSeo'
 import { getPublicCars } from '@/lib/publicInventory'
-import { INVENTORY_CATEGORIES, normalizeSearch } from '@/lib/inventory'
+import { normalizeSearch } from '@/lib/inventory'
 import HeroVideo from '@/components/HeroVideo'
 import FeaturedCars from '@/components/FeaturedCars'
 import ContactForm from '@/components/ContactForm'
 import CallLink from '@/components/CallLink'
+import { DEALER_RANGE, isDealerRangeCar } from '@/lib/dealerRange'
 import { SHOW_NEW_VOLVO } from '@/lib/features'
 import { formatIsk } from '@/lib/formatIsk'
 
 export const dynamic = 'force-dynamic'
-export const metadata = pageMetadata('Bílar til sölu og bílainnflutningur', 'Finndu næsta bíl hjá Eðalkaup. Skoðaðu bíla til sölu eða fáðu aðstoð við innflutning frá Bandaríkjunum, Kanada og Evrópu.', '/')
+export const metadata = pageMetadata('EV pallbílar og valdar gerðir til sölu', 'EV pallbílar, Volvo, Ford Explorer, Maxus og Toyota Sequoia hjá Eðalkaup. Skoðaðu bíla til sölu og hafðu samband um verð, búnað og framboð.', '/')
 
 export default async function Home() {
-  const cars = await getPublicCars()
+  const cars = (await getPublicCars()).filter(isDealerRangeCar)
   const makes = [...new Set(cars.map((car) => car.make))].sort()
   return <>
     <HeroVideo />
     <div className="border-b border-black/10 dark:border-white/10">
       <div className="dealer-container grid grid-cols-2 lg:grid-cols-4 gap-5 py-6 text-sm">
-        {['Yfir 25 ára reynsla', 'Leit, kaup og flutningur', 'Bandaríkin · Kanada · Evrópa', 'Persónuleg þjónusta'].map((text) => <p key={text} className="flex gap-3 items-center"><span className="text-accent-dark dark:text-accent" aria-hidden="true">✓</span>{text}</p>)}
+        {['Yfir 25 ára reynsla', 'EV pallbílar og valdar gerðir', 'Bandaríkin · Kanada · Evrópa', 'Persónuleg þjónusta'].map((text) => <p key={text} className="flex gap-3 items-center"><span className="text-accent-dark dark:text-accent" aria-hidden="true">✓</span>{text}</p>)}
       </div>
     </div>
     <section className="dealer-container py-10 sm:py-12" aria-labelledby="search-heading">
@@ -30,7 +31,7 @@ export default async function Home() {
         <div><label htmlFor="home-make" className="block text-xs font-semibold mb-2">Framleiðandi</label><select id="home-make" name="make" className="dealer-input"><option value="">Allir framleiðendur</option>{makes.map((make) => <option key={make}>{make}</option>)}</select></div>
         <button type="submit" className="dealer-button sm:self-end">Leita að bíl <span aria-hidden="true">→</span></button>
       </form>
-      <nav aria-label="Bílaflokkar" className="flex flex-wrap gap-2 mt-5">{INVENTORY_CATEGORIES.map((category) => <Link key={category.slug} href={`/bilar/flokkur/${category.slug}`} className="inventory-chip">{category.short}<span className="ml-3 text-gray-500 dark:text-slate-400">{cars.filter(category.matches).length}</span></Link>)}</nav>
+      <nav aria-label="Gerðirnar okkar" className="flex flex-wrap gap-2 mt-5">{DEALER_RANGE.map((range) => <Link key={range.label} href={range.href} className="inventory-chip">{range.label}</Link>)}</nav>
     </section>
     {SHOW_NEW_VOLVO && <section className="dealer-container py-8"><p className="dealer-eyebrow mb-3">Volvo</p><h2 className="dealer-heading mb-8">Pantaðu nýjan Volvo í gegnum okkur</h2><div className="grid md:grid-cols-3 gap-6">{[
       { href: '/volvo-xc90', name: 'XC90 T8 Ultra', price: formatIsk(15990000), image: '/images/xc90/crystal-white.jpg' },
@@ -44,13 +45,13 @@ export default async function Home() {
     </section>
     <section className="dealer-container py-16 sm:py-24 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
       <div className="relative aspect-[4/3] overflow-hidden rounded-xl"><Image src="/images/cars/sierra-ev-002/01.jpg" alt="GMC Sierra EV — dæmi um bílainnflutning Eðalkaupa" fill sizes="(max-width: 1023px) 100vw, 50vw" className="object-cover" /><span className="absolute bottom-5 left-5 bg-white text-navy-900 rounded-lg px-4 py-3 text-xs font-semibold">Bandaríkin · Kanada · Evrópa</span></div>
-      <div><p className="dealer-eyebrow mb-4">Bílainnflutningur</p><h2 className="dealer-heading">Rétti bíllinn þarf ekki<br className="hidden sm:block" /> að vera á lager.</h2><p className="mt-5 text-gray-600 dark:text-slate-300 leading-relaxed">Ertu með ákveðna gerð, búnað eða árgerð í huga? Við leitum fyrir þig og förum yfir möguleikana áður en þú tekur ákvörðun.</p><ol className="mt-7 space-y-5">{[
-        ['Óskirnar þínar', 'Segðu okkur hvaða bíl og búnað þú leitar að.'],
-        ['Leit og tilboð', 'Við skoðum úrvalið og förum yfir bílinn og heildarkostnað.'],
-        ['Flutningur og afhending', 'Við skipuleggjum flutning og tollafgreiðslu í samráði við þig.'],
-      ].map(([title, description], i) => <li key={title} className="flex gap-4"><span className="text-accent-dark dark:text-accent text-sm font-semibold pt-1">0{i+1}</span><div><h3 className="font-semibold">{title}</h3><p className="text-sm text-gray-600 dark:text-slate-400 mt-1 leading-relaxed">{description}</p></div></li>)}</ol><Link href="/bilainnflutningur" className="dealer-button mt-8">Kynntu þér innflutning <span aria-hidden="true">↗</span></Link></div>
+      <div><p className="dealer-eyebrow mb-4">Sérhæfing okkar</p><h2 className="dealer-heading">EV pallbílar.<br />Og gerðir sem við þekkjum.</h2><p className="mt-5 text-gray-600 dark:text-slate-300 leading-relaxed">Rafmagnspallbílar eru í aðalhlutverki. Við bjóðum einnig Volvo, Ford Explorer, Maxus og Toyota Sequoia. Hafðu samband um þær gerðir og bíla sem við auglýsum.</p><ol className="mt-7 space-y-5">{[
+        ['Veldu úr úrvalinu', 'Skoðaðu auglýsingarnar og gerðirnar sem við bjóðum.'],
+        ['Fáðu upplýsingar', 'Við förum yfir búnað, verð og framboð á þeim bíl sem þú hefur áhuga á.'],
+        ['Kaup og afhending', 'Við ræðum næstu skref og staðfestum áætlaða afhendingu.'],
+      ].map(([title, description], i) => <li key={title} className="flex gap-4"><span className="text-accent-dark dark:text-accent text-sm font-semibold pt-1">0{i+1}</span><div><h3 className="font-semibold">{title}</h3><p className="text-sm text-gray-600 dark:text-slate-400 mt-1 leading-relaxed">{description}</p></div></li>)}</ol><Link href="/bilainnflutningur" className="dealer-button mt-8">Gerðirnar okkar <span aria-hidden="true">↗</span></Link></div>
     </section>
-    <section className="bg-navy-900 text-white"><div className="dealer-container py-14 sm:py-20 grid lg:grid-cols-[1.5fr_1fr] gap-10 items-center"><div><p className="dealer-eyebrow !text-accent mb-4">Eðalkaup</p><h2 className="dealer-heading">Reynsla sem skiptir máli.</h2><p className="text-slate-300 max-w-xl mt-5 leading-relaxed">Við höfum flutt inn bíla í yfir 25 ár. Hjá okkur færðu beint samband við fólkið sem finnur bílinn og fylgir kaupunum eftir.</p><Link href="/um-okkur" className="inline-block mt-7 text-accent font-semibold underline underline-offset-4">Kynnstu okkur →</Link></div><div className="flex items-center gap-6 border-l border-white/20 pl-6 sm:pl-10"><span className="text-6xl sm:text-8xl font-semibold tracking-tighter text-accent">25+</span><p className="text-sm text-slate-300 leading-relaxed">ára reynsla af<br />bílainnflutningi</p></div></div></section>
-    <section id="fyrirspurn" className="dealer-hero scroll-mt-24"><div className="dealer-container py-16 sm:py-20 grid lg:grid-cols-2 gap-10 lg:gap-20 items-center"><div><p className="dealer-eyebrow mb-4">Tökum næsta skref</p><h2 className="dealer-heading">Hvaða bíl<br />leitarðu að?</h2><p className="mt-5 text-gray-600 dark:text-slate-300 leading-relaxed max-w-md">Sendu okkur óskirnar þínar eða spurningu um bíl. Við höfum samband og förum yfir næstu skref með þér.</p><CallLink placement="home_cta" className="inline-block text-2xl font-semibold mt-7 underline underline-offset-8">699 2011</CallLink><p className="text-sm text-gray-500 dark:text-slate-400 mt-3">Mán–Fös 09:00–17:00</p></div><ContactForm variant="compact" source="forsida" heading="Sendu okkur fyrirspurn" /></div></section>
+    <section className="bg-navy-900 text-white"><div className="dealer-container py-14 sm:py-20 grid lg:grid-cols-[1.5fr_1fr] gap-10 items-center"><div><p className="dealer-eyebrow !text-accent mb-4">Eðalkaup</p><h2 className="dealer-heading">Reynsla sem skiptir máli.</h2><p className="text-slate-300 max-w-xl mt-5 leading-relaxed">Við höfum flutt inn bíla í yfir 25 ár. Hjá okkur færðu beint samband við fólkið sem þekkir bílana og fylgir kaupunum eftir.</p><Link href="/um-okkur" className="inline-block mt-7 text-accent font-semibold underline underline-offset-4">Kynnstu okkur →</Link></div><div className="flex items-center gap-6 border-l border-white/20 pl-6 sm:pl-10"><span className="text-6xl sm:text-8xl font-semibold tracking-tighter text-accent">25+</span><p className="text-sm text-slate-300 leading-relaxed">ára reynsla af<br />bílainnflutningi</p></div></div></section>
+    <section id="fyrirspurn" className="dealer-hero scroll-mt-24"><div className="dealer-container py-16 sm:py-20 grid lg:grid-cols-2 gap-10 lg:gap-20 items-center"><div><p className="dealer-eyebrow mb-4">Tökum næsta skref</p><h2 className="dealer-heading">Spurning um<br />bíl hjá okkur?</h2><p className="mt-5 text-gray-600 dark:text-slate-300 leading-relaxed max-w-md">Spyrðu um EV pallbíl, Volvo, Ford Explorer, Maxus eða Toyota Sequoia. Við svörum spurningum um búnað, verð og framboð.</p><CallLink placement="home_cta" className="inline-block text-2xl font-semibold mt-7 underline underline-offset-8">699 2011</CallLink><p className="text-sm text-gray-500 dark:text-slate-400 mt-3">Mán–Fös 09:00–17:00</p></div><ContactForm variant="compact" source="forsida" heading="Sendu okkur fyrirspurn" /></div></section>
   </>
 }

@@ -11,7 +11,7 @@ import { goToInquiry } from '@/lib/goToInquiry'
 const navItems = [
   { href: '/', label: 'Forsíða' },
   { href: '/bilar', label: 'Bílar til sölu' },
-  { href: '/bilainnflutningur', label: 'Innflutningur' },
+  { href: '/bilainnflutningur', label: 'Gerðirnar okkar' },
   { href: '/um-okkur', label: 'Um okkur' },
   { href: '/hafa-samband', label: 'Hafa samband' },
 ]
