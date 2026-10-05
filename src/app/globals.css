@@ -110,3 +110,27 @@ nav a[aria-current="page"] {
 input::placeholder, textarea::placeholder { color: #64748b; opacity: 1; }
 .dark input::placeholder, .dark textarea::placeholder { color: #94a3b8; }
 .dark :is(input, select, textarea) { color-scheme: dark; }
+
+/* Eðalkaup: restrained gold, warm surfaces and clear editorial hierarchy. */
+.dealer-container { max-width: 80rem; margin-inline: auto; padding-inline: 1.25rem; }
+.dealer-hero { background: #f4f2ed; }
+.dark .dealer-hero { background: #111827; }
+.dealer-stock { background: #f6f7f8; border-block: 1px solid rgba(0,0,0,.06); }
+.dark .dealer-stock { background: #0e1522; border-color: rgba(255,255,255,.08); }
+.dealer-eyebrow { font-size: .7rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; color: var(--color-accent-dark); }
+.dark .dealer-eyebrow { color: var(--color-accent); }
+.dealer-heading { font-size: clamp(1.9rem, 4vw, 2.8rem); line-height: 1.12; letter-spacing: -.045em; font-weight: 600; }
+.dealer-button { display: inline-flex; justify-content: center; align-items: center; gap: 1.5rem; padding: 1rem 1.5rem; border: 1px solid transparent; border-radius: .4rem; background: var(--color-accent); color: var(--color-navy-900); font-size: .875rem; font-weight: 600; transition: background .2s, border-color .2s; }
+.dealer-button:hover { background: var(--color-accent-light); }
+.dealer-button-outline { background: transparent; border-color: #b3b4b6; color: #18202a; }
+.dealer-button-outline:hover { background: rgba(0,0,0,.04); border-color: #18202a; }
+.dark .dealer-button-outline { color: white; border-color: #64748b; }
+.dark .dealer-button-outline:hover { background: rgba(255,255,255,.08); }
+.dealer-search { background: #f4f2ed; padding: 1.25rem; border-radius: .65rem; }
+.dark .dealer-search { background: #1a2332; }
+.dealer-input { width: 100%; height: 3.25rem; padding-inline: 1rem; border: 1px solid #d3d5d8; border-radius: .35rem; background: white; color: #18202a; font-size: 1rem; }
+.dark .dealer-input { background: #111827; border-color: #475569; color: white; }
+@media (min-width: 640px) { .dealer-container { padding-inline: 2rem; } }
+
+.dealer-import { background: linear-gradient(#f4f2ed 0 30rem, #fff 30rem); }
+.dark .dealer-import { background: linear-gradient(#111827 0 30rem, #0a0f1c 30rem); }

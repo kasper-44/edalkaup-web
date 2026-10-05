@@ -21,6 +21,6 @@ export default async function BilarPage({ searchParams }: Props) {
   const cars = await getPublicCars()
   return <>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(inventoryListJsonLd(sortCars(filterCars(cars, filters), sort), '/bilar', title)) }} />
-    <Inventory cars={cars} initialFilters={{ ...EMPTY_FILTERS, ...filters }} initialSort={sort} />
+    <Inventory key={JSON.stringify({ filters, sort })} cars={cars} initialFilters={{ ...EMPTY_FILTERS, ...filters }} initialSort={sort} />
   </>
 }

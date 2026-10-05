@@ -2,6 +2,7 @@ import { DEALER_EMAIL } from '@/lib/site'
 
 const SOURCES: Record<string, string> = {
   forsida: 'forsíða',
+  innflutningur: 'bílainnflutningur',
   gluggi: 'gluggi',
   bilur: 'bílur',
   samband: 'hafa samband',

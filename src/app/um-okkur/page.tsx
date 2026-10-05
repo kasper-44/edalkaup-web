@@ -1,123 +1,19 @@
+import Image from 'next/image'
+import Link from 'next/link'
+import CallLink from '@/components/CallLink'
 import { pageMetadata } from '@/lib/pageSeo'
 
-export const metadata = pageMetadata('Um Eðalkaup — reynsla af bílainnflutningi', 'Kynntu þér Eðalkaup og þjónustu okkar við leit, kaup og innflutning bíla frá Bandaríkjunum, Kanada og Evrópu til Íslands.', '/um-okkur')
+export const metadata = pageMetadata('Um Eðalkaup — reynsla af bílainnflutningi', 'Kynntu þér Eðalkaup. Yfir 25 ára reynsla af bílainnflutningi og persónuleg þjónusta við bílakaup.', '/um-okkur')
 
 export default function UmOkkurPage() {
-  const steps = [
-    { num: '01', title: 'Veldu bíl', desc: 'Skoðaðu úrvalið okkar eða segðu okkur hvaða bíl þú leitar að. Við leitum að besta boðinu.' },
-    { num: '02', title: 'Við finnum hann', desc: 'Við notum tengslanet okkar í Bandaríkjunum, Kanada og Evrópu til að finna nákvæmlega rétta bílinn á rétta verðinu.' },
-    { num: '03', title: 'Skoðun og kaup', desc: 'Bíllinn er skoðaður vandlega. Við sjáum um öll kaup, pappíra og skipulagningu á sendingu.' },
-    { num: '04', title: 'Sending til Íslands', desc: 'Bíllinn er sendur til Íslands. Venjulegur afgreiðslutími er 4-6 vikur frá Ameríku og 2-4 vikur frá Evrópu.' },
-    { num: '05', title: 'Tollafgreiðsla og skráning', desc: 'Við sjáum um alla tollafgreiðslu og aðstoðum við skráningu bílsins á Íslandi.' },
-    { num: '06', title: 'Afhending', desc: 'Bíllinn þinn er tilbúinn! Við afhendum hann tilbúinn til notkunar á Íslandi.' },
-  ]
-
-  return (
-    <div className="pt-20 lg:pt-24">
-      {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-accent/5 to-transparent" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <div className="max-w-3xl">
-            <p className="text-accent text-sm font-semibold uppercase tracking-[0.2em] mb-3">Um okkur</p>
-            <h1 className="text-3xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-6">
-              Eðalkaup — einn stærsti bílainnflytjandi Íslands
-            </h1>
-            <p className="text-lg text-gray-600 dark:text-slate-300 leading-relaxed">
-              Eðalkaup hefur verið einn stærsti bílainnflytjandi Íslands í yfir 25 ár. Við sérhæfum okkur í innflutningi vandaðra bíla frá Bandaríkjunum, Kanada og Evrópu — ökutæki sem ekki eru fáanleg á íslenskum markaði.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Story */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Af hverju Eðalkaup?</h2>
-            <div className="space-y-4 text-gray-600 dark:text-slate-300 leading-relaxed">
-              <p>
-                Bandaríkin, Kanada og Evrópa bjóða upp á gríðarlegt úrval af bílum sem ekki eru fáanlegir á íslenskum markaði — allt frá öflugum Toyota Tundra og Sequoia jeppum til lúxus Lexus og evrópskra gerða.
-              </p>
-              <p>
-                Verðlag á notuðum bílum erlendis er mun hagstæðara en á Íslandi, jafnvel að teknu tilliti til sendingar og gjalda. Þetta þýðir að þú getur fengið meira fyrir peningana þína.
-              </p>
-              <p>
-                Við vinnum með traustu tengslaneti söluaðila víðs vegar um Bandaríkin, Kanada og Evrópu, og getum fundið nánast hvaða bíl sem er.
-              </p>
-            </div>
-          </div>
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Hvers vegna velja okkur?</h2>
-            <div className="space-y-4">
-              {[
-                { title: 'Reynsla', desc: 'Yfir 25 ára reynsla af bílainnflutningi til Íslands' },
-                { title: 'Tengslanet', desc: 'Víðtækt tengslanet í Bandaríkjunum, Kanada og Evrópu' },
-                { title: 'Heildarþjónusta', desc: 'Frá leit að bíl til afhendingar — við sjáum um allt' },
-                { title: 'Hagstætt verð', desc: 'Verð sem oftast eru ekki í boði annars staðar á Íslandi' },
-                { title: 'Áreiðanleiki', desc: 'Allir bílar skoðaðir vandlega áður en þeir eru sendir' },
-              ].map((item) => (
-                <div key={item.title} className="flex gap-4 p-4 bg-white dark:bg-navy-800 rounded-xl border border-black/5 dark:border-white/5">
-                  <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
-                    <svg className="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900 dark:text-white">{item.title}</h3>
-                    <p className="text-sm text-gray-500 dark:text-slate-400 mt-0.5">{item.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Import Process */}
-      <section className="bg-gray-50 dark:bg-navy-800/50 border-y border-black/5 dark:border-white/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <div className="text-center mb-16">
-            <p className="text-accent text-sm font-semibold uppercase tracking-[0.2em] mb-3">Ferlið</p>
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">Hvernig innflutningurinn virkar</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {steps.map((step) => (
-              <div key={step.num} className="relative p-6 bg-white dark:bg-navy-800 rounded-2xl border border-black/5 dark:border-white/5">
-                <span className="text-5xl font-black text-accent/10 absolute top-4 right-4">{step.num}</span>
-                <div className="relative">
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{step.title}</h3>
-                  <p className="text-sm text-gray-500 dark:text-slate-400 leading-relaxed">{step.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Úranus connection */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="bg-gradient-to-r from-accent/10 to-accent/5 rounded-3xl border border-accent/20 p-10 sm:p-16">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Eðalkaup</h2>
-            <p className="text-gray-600 dark:text-slate-300 leading-relaxed mb-6">
-              Úranus ehf. samstarfsaðili Eðalkaupa hefur verið einn stærsti bílainnflytjandi Íslands í yfir 25 ár. Við flytjum inn nýja og notaða bíla frá Evrópu og Ameríku og bjóðum verð sem eru oftast ekki í boði annars staðar.
-            </p>
-            <p className="text-gray-600 dark:text-slate-300 leading-relaxed mb-6">
-              Öll viðskipti eru við Úranus ehf., kt. 5010963189.
-            </p>
-            <div className="flex flex-col items-center gap-4 mt-8">
-              <div className="w-40 h-40 rounded-full overflow-hidden border-2 border-accent/30">
-                <img src="/images/siggi.jpg" alt="Sigurður Róbertsson" className="w-full h-full object-cover" />
-              </div>
-              <div className="text-center">
-                <p className="font-semibold text-gray-900 dark:text-white">Sigurður Róbertsson</p>
-                <p className="text-sm text-accent">Framkvæmdastjóri Eðalkaupa</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
-  )
+  return <div className="pt-16 lg:pt-20">
+    <section className="dealer-hero"><div className="dealer-container py-16 sm:py-24 grid lg:grid-cols-[1.4fr_1fr] gap-12 items-center"><div><p className="dealer-eyebrow mb-5">Um Eðalkaup</p><h1 className="text-4xl sm:text-6xl font-semibold tracking-[-.05em] leading-[1.08]">Bílaáhugi.<br />Reynsla.<br /><span className="text-accent-dark dark:text-accent">Persónuleg þjónusta.</span></h1><p className="text-lg text-gray-600 dark:text-slate-300 leading-relaxed max-w-xl mt-7">Í yfir 25 ár höfum við aðstoðað við innflutning bíla til Íslands. Við leggjum metnað í skýrar upplýsingar og persónulega þjónustu við bílakaup.</p></div><div className="border-l border-black/15 dark:border-white/20 pl-8"><p className="text-8xl font-semibold tracking-tighter text-accent-dark dark:text-accent">25+</p><p className="mt-4 text-gray-600 dark:text-slate-300">ára reynsla af bílainnflutningi</p></div></div></section>
+    <section className="dealer-container py-16 sm:py-24 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center"><div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-gray-100"><Image src="/images/siggi.jpg" alt="Sigurður Róbertsson, framkvæmdastjóri Eðalkaupa" fill sizes="(max-width: 1023px) 100vw, 50vw" className="object-cover object-top" /></div><div><p className="dealer-eyebrow mb-4">Fólkið á bak við bílana</p><h2 className="dealer-heading">Beint samband.<br />Frá fyrsta degi.</h2><p className="mt-5 text-gray-600 dark:text-slate-300 leading-relaxed">Sigurður Róbertsson er framkvæmdastjóri Eðalkaupa. Hafðu samband um auglýsta bíla. Við svörum spurningum um búnað, verð og framboð.</p><p className="font-semibold mt-7">Sigurður Róbertsson</p><p className="text-sm text-gray-500 dark:text-slate-400 mt-1">Framkvæmdastjóri Eðalkaupa</p><CallLink placement="about" className="dealer-button mt-7">Hringja í 699 2011 <span aria-hidden="true">↗</span></CallLink></div></section>
+    <section className="dealer-stock"><div className="dealer-container py-16"><p className="dealer-eyebrow mb-4">Þjónustan okkar</p><h2 className="dealer-heading mb-10">Við hjálpum þér að velja.</h2><div className="grid md:grid-cols-3 gap-8">{[
+      ['Upplýst val', 'Við förum yfir búnað, ástand og verð á bílnum sem þú hefur áhuga á.'],
+      ['Skýr næstu skref', 'Við förum yfir upplýsingar um bílinn, kostnaðarliði og áætlaða afhendingu áður en gengið er frá kaupum.'],
+      ['Aðstoð í gegnum ferlið', 'Við förum yfir kaupin og skipuleggjum afhendingu í samráði við þig.'],
+    ].map(([title, description], index) => <div key={title} className="border-t border-black/15 dark:border-white/20 pt-6"><p className="dealer-eyebrow mb-4">0{index + 1}</p><h3 className="text-xl font-semibold mb-3">{title}</h3><p className="text-gray-600 dark:text-slate-300 leading-relaxed">{description}</p></div>)}</div><Link href="/bilainnflutningur" className="inline-block mt-10 font-semibold underline underline-offset-4">Kaup og afhending →</Link></div></section>
+    <section className="dealer-container py-16 flex flex-col sm:flex-row justify-between gap-8"><div><h2 className="text-xl font-semibold mb-4">Viðskipti við Eðalkaup</h2><p className="text-gray-600 dark:text-slate-300">Öll viðskipti eru við Úranus ehf., kt. 5010963189.</p><p className="text-gray-600 dark:text-slate-300 mt-2">Laugavegur 44, 101 Reykjavík.</p></div><Link href="/hafa-samband" className="dealer-button self-start">Hafa samband <span aria-hidden="true">↗</span></Link></section>
+  </div>
 }

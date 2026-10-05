@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Car, formatPrice, formatMileage } from '@/data/cars'
+import { fuelLabel } from '@/lib/inventory'
 import { vehicleTitle } from '@/lib/listingSeo'
 import { vatIncludedPriceSubtitle, withVatFlag } from '@/lib/priceVat'
 
@@ -37,7 +38,7 @@ export default function CarCard({ car, priority = false, actions }: CarCardProps
       : null
 
   return (
-    <article className="h-full flex flex-col rounded-2xl overflow-hidden border border-black/10 dark:border-white/10 bg-white dark:bg-navy-800">
+    <article className="h-full flex flex-col rounded-xl overflow-hidden border border-black/10 dark:border-white/10 bg-white dark:bg-navy-800 hover:border-accent/50 transition-colors">
     <Link href={`/bilar/${car.slug}`} className="group flex flex-col flex-1" aria-label={title}>
       <div className="flex flex-col flex-1 hover:bg-accent/5 transition-colors">
         {/* Image */}
@@ -62,8 +63,8 @@ export default function CarCard({ car, priority = false, actions }: CarCardProps
         <div className="p-5 flex flex-col flex-1">
           <div className="flex items-start justify-between gap-2 mb-2">
             <div>
-              <p className="text-xs font-medium text-accent-dark dark:text-accent uppercase tracking-wider">{car.make}</p>
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white group-hover:text-accent transition-colors">
+              <p className="text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">{car.make}</p>
+              <h3 className="text-lg font-semibold leading-snug text-gray-900 dark:text-white group-hover:text-accent transition-colors">
                 {title}
               </h3>
             </div>
@@ -75,7 +76,7 @@ export default function CarCard({ car, priority = false, actions }: CarCardProps
               {car.year}
             </span>
             <span>•</span>
-            <span>{car.drivetrain}</span>
+            <span>{fuelLabel(car.fuelType)}</span>
             <span>•</span>
             <span>{formatMileage(car.mileage)}</span>
           </div>
@@ -89,7 +90,7 @@ export default function CarCard({ car, priority = false, actions }: CarCardProps
               )}
             </div>
             <span className="self-end text-accent-dark dark:text-accent text-sm font-semibold group-hover:translate-x-1 transition-transform">
-              Sjá meira →
+              Skoða bíl →
             </span>
           </div>
         </div>

@@ -1,6 +1,7 @@
 'use client'
 
 import { useId, useState } from 'react'
+import { DEALER_EMAIL, DEALER_PHONE_TEL } from '@/lib/site'
 
 interface ContactFormProps {
   carTitle?: string
@@ -8,7 +9,7 @@ interface ContactFormProps {
   carVin?: string
   /** Compact homepage/modal form: name, phone, and message. Email stays on the full form. */
   variant?: 'full' | 'compact'
-  source?: 'forsida' | 'gluggi' | 'bilur' | 'samband'
+  source?: 'forsida' | 'gluggi' | 'bilur' | 'samband' | 'innflutningur'
   heading?: string
   headingId?: string
   reserveCorner?: boolean
@@ -37,6 +38,7 @@ export default function ContactForm({
 
     const form = e.currentTarget
     const formData = new FormData(form)
+    const inquiryCar = carTitle || ''
 
     try {
       const res = await fetch('/api/contact', {
@@ -47,7 +49,7 @@ export default function ContactForm({
           email: formData.get('email') || '',
           phone: formData.get('phone') || '',
           message: formData.get('message'),
-          car: carTitle || '',
+          car: inquiryCar,
           carUrl: carUrl || '',
           carVin: carVin || '',
           source: source || '',
@@ -65,10 +67,10 @@ export default function ContactForm({
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const w = window as any
         if (typeof w.fbq === 'function') {
-          w.fbq('track', 'Lead', { content_name: carTitle || 'Almenn fyrirspurn' })
+          w.fbq('track', 'Lead', { content_name: inquiryCar || 'Almenn fyrirspurn' })
         }
         if (typeof w.gtag === 'function') {
-          w.gtag('event', 'generate_lead', { item_name: carTitle || 'Almenn fyrirspurn' })
+          w.gtag('event', 'generate_lead', { item_name: inquiryCar || 'Almenn fyrirspurn' })
         }
       } catch {
         /* ignore tracking errors */
@@ -91,7 +93,8 @@ export default function ContactForm({
           </svg>
         </div>
         <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Takk fyrir!</h3>
-        <p className="text-gray-500 dark:text-slate-400">Við verðum í sambandi fljótlega.</p>
+        <p role="status" className="text-gray-500 dark:text-slate-400">Fyrirspurnin hefur verið send. Við höfum samband á opnunartíma.</p>
+        <button type="button" onClick={() => setSubmitted(false)} className="mt-5 font-semibold underline underline-offset-4">Senda aðra fyrirspurn</button>
       </div>
     )
   }
@@ -114,13 +117,14 @@ export default function ContactForm({
       </h3>
       {compact && (
         <p className="hidden text-sm text-gray-500 dark:text-slate-400 sm:block">
-          Nafn og sími nægja. Við svörum á opnunartíma.
+          Láttu fylgja símanúmer og stutt skilaboð. Við svörum á opnunartíma.
         </p>
       )}
 
       {error && (
         <div role="alert" className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3 text-sm text-red-600 dark:text-red-400">
-          {error}
+          <p>{error}</p>
+          <p className="mt-2"><a href={DEALER_PHONE_TEL} className="font-semibold underline underline-offset-4">Hringja í 699 2011</a><span aria-hidden="true"> · </span><a href={`mailto:${DEALER_EMAIL}`} className="font-semibold underline underline-offset-4">Senda tölvupóst</a></p>
         </div>
       )}
 
@@ -191,7 +195,7 @@ export default function ContactForm({
           rows={compact ? 2 : 4}
           required
           className="w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors resize-y min-h-20"
-          placeholder={compact ? 'Hvaða bíl leitarðu að?' : 'Hvað getum við aðstoðað þig með?'}
+          placeholder={carTitle ? 'Spurning um búnað, verð eða framboð á þessum bíl?' : 'Hvaða auglýsta bíl viltu fá upplýsingar um?'}
         />
       </div>
 

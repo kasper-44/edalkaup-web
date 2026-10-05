@@ -26,6 +26,6 @@ export default async function CategoryPage({ params, searchParams }: Props) {
   return <>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(inventoryListJsonLd(sortCars(filterCars(cars, parseInventoryFilters(paramsValue)), sort), `/bilar/flokkur/${slug}`, category.title)) }} />
     <Inventory key={slug} cars={cars} title={category.title} intro={category.intro} initialFilters={parseInventoryFilters(paramsValue)} initialSort={sort} />
-    <section className="max-w-7xl mx-auto px-5 pb-16"><h2 className="text-2xl font-bold mb-4">Leitum að rétta bílnum fyrir þig</h2><p className="text-gray-600 dark:text-slate-300 max-w-3xl mb-4">Úrvalið breytist eftir því sem bílar bætast við og seljast. Ef þú finnur ekki réttu gerðina getum við skoðað innflutning frá Bandaríkjunum, Kanada eða Evrópu.</p><Link href="/bilainnflutningur" className="font-semibold underline underline-offset-4">Skoða bílainnflutning →</Link></section>
+    <section className="max-w-7xl mx-auto px-5 pb-16"><h2 className="text-2xl font-bold mb-4">Spurning um auglýstan bíl?</h2><p className="text-gray-600 dark:text-slate-300 max-w-3xl mb-4">Hafðu samband um auglýstan bíl til að fá nánari upplýsingar um búnað, verð og framboð.</p><Link href="/hafa-samband" className="font-semibold underline underline-offset-4">Hafa samband →</Link></section>
   </>
 }
