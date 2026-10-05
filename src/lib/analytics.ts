@@ -1,6 +1,6 @@
 import { track } from '@vercel/analytics'
 
-export type CallPlacement = 'header' | 'sticky_bar' | 'hero' | 'home_cta' | 'footer' | 'car_detail' | 'contact'
+export type CallPlacement = 'header' | 'sticky_bar' | 'hero' | 'home_cta' | 'footer' | 'car_detail' | 'contact' | 'about'
 
 type AnalyticsWindow = Window & {
   dataLayer?: unknown[]

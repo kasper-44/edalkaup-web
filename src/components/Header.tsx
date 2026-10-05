@@ -10,7 +10,7 @@ import { goToInquiry } from '@/lib/goToInquiry'
 
 const navItems = [
   { href: '/', label: 'Forsíða' },
-  { href: '/bilar', label: 'Bílar' },
+  { href: '/bilar', label: 'Bílar til sölu' },
   { href: '/bilainnflutningur', label: 'Innflutningur' },
   { href: '/um-okkur', label: 'Um okkur' },
   { href: '/hafa-samband', label: 'Hafa samband' },
@@ -31,7 +31,7 @@ export default function Header() {
   if (/^\/volvo-ex60\/(diesel|hofdabilar|edalkaup)$/.test(pathname)) return null
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-40 bg-white/80 dark:bg-navy-900/80 backdrop-blur-xl border-b border-black/5 dark:border-white/5 transition-colors">
+    <header className="fixed top-0 left-0 right-0 z-40 bg-white/95 dark:bg-navy-900/95 backdrop-blur-xl border-b border-black/5 dark:border-white/5 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}

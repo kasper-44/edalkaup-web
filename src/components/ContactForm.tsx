@@ -114,7 +114,7 @@ export default function ContactForm({
       </h3>
       {compact && (
         <p className="hidden text-sm text-gray-500 dark:text-slate-400 sm:block">
-          Nafn og sími nægja. Við svörum á opnunartíma.
+          Láttu fylgja símanúmer og stutt skilaboð. Við svörum á opnunartíma.
         </p>
       )}
 

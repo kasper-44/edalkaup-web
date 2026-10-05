@@ -6,12 +6,12 @@ export const metadata = pageMetadata('Hafa samband við Eðalkaup', 'Hafðu samb
 
 export default function HafaSambandPage() {
   return (
-    <div className="pt-20 lg:pt-24">
+    <div className="pt-20 lg:pt-24 dealer-hero">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div className="text-center mb-12">
+        <div className="text-left mb-12">
           <p className="text-accent text-sm font-semibold uppercase tracking-[0.2em] mb-3">Samband</p>
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">Hafa samband</h1>
-          <p className="text-gray-500 dark:text-slate-400 mt-3 max-w-xl mx-auto">
+          <h1 className="text-4xl sm:text-6xl font-semibold tracking-[-.05em] text-gray-900 dark:text-white">Hafa samband</h1>
+          <p className="text-gray-500 dark:text-slate-400 mt-4 max-w-xl">
             Ertu með spurningu eða vilt fá tilboð í bíl? Ekki hika við að hafa samband.
           </p>
         </div>
@@ -33,18 +33,18 @@ export default function HafaSambandPage() {
                 title: 'Netfang',
                 value: 'sigurdur@edalkaup.is',
                 href: 'mailto:sigurdur@edalkaup.is',
-                subtitle: 'Við svörum innan sólarhrings',
+                subtitle: 'Sendu okkur spurningu eða óskir um bíl',
               },
             ].map((item) => (
               <div key={item.title} className="bg-white dark:bg-navy-800 rounded-2xl border border-black/5 dark:border-white/5 p-6">
                 <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center text-accent mb-3">{item.icon}</div>
                 <h3 className="font-semibold text-gray-900 dark:text-white">{item.title}</h3>
                 {'phone' in item && item.phone ? (
-                  <CallLink placement="contact" className="text-accent hover:text-accent-light transition-colors font-medium">
+                  <CallLink placement="contact" className="text-accent-dark dark:text-accent hover:underline transition-colors font-medium">
                     {item.value}
                   </CallLink>
                 ) : (
-                  <a href={item.href} className="text-accent hover:text-accent-light transition-colors font-medium">
+                  <a href={item.href} className="text-accent-dark dark:text-accent hover:underline transition-colors font-medium">
                     {item.value}
                   </a>
                 )}

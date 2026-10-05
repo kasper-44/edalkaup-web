@@ -49,7 +49,7 @@ export default function Inventory({ cars, initialFilters = EMPTY_FILTERS, initia
 
   return <div className="pt-20 lg:pt-24 bg-gray-50 dark:bg-navy-900">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 pb-32">
-      <div className="mb-8"><p className="text-accent-dark dark:text-accent text-xs font-semibold uppercase tracking-[0.2em] mb-3">Úrvalið okkar</p><h1 className="text-3xl sm:text-4xl font-bold">{title}</h1><p className="text-gray-600 dark:text-slate-300 mt-3 max-w-3xl leading-relaxed">{intro}</p></div>
+      <div className="mb-8"><p className="text-accent-dark dark:text-accent text-xs font-semibold uppercase tracking-[0.2em] mb-3">Eðalkaup · Bílar til sölu</p><h1 className="text-4xl sm:text-5xl font-semibold tracking-[-.045em]">{title}</h1><p className="text-gray-600 dark:text-slate-300 mt-3 max-w-3xl leading-relaxed">{intro}</p></div>
       <nav aria-label="Bílaflokkar" className="flex flex-wrap gap-2 mb-7">
         <Link href="/bilar" className="inventory-chip">Allir bílar</Link>
         {INVENTORY_CATEGORIES.map((category) => <Link key={category.slug} href={`/bilar/flokkur/${category.slug}`} className="inventory-chip">{category.short}</Link>)}

@@ -79,7 +79,7 @@ export default function CarDetail({ car }: { car: any }) {
                 )}
               </div>
 
-              <div className="grid grid-cols-3 gap-3 mb-6 pb-6 border-b border-black/5 dark:border-white/5">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3 mb-6 pb-6 border-b border-black/5 dark:border-white/5">
                 <div className="rounded-xl bg-gray-50 dark:bg-navy-700/60 p-3"><span className="block text-xs text-gray-500 dark:text-slate-400">Árgerð</span><span className="block mt-1 font-semibold">{car.year}</span></div>
                 <div className="rounded-xl bg-gray-50 dark:bg-navy-700/60 p-3"><span className="block text-xs text-gray-500 dark:text-slate-400">Akstur</span><span className="block mt-1 font-semibold">{formatMileage(car.mileage_km)}</span></div>
                 <div className="rounded-xl bg-gray-50 dark:bg-navy-700/60 p-3"><span className="block text-xs text-gray-500 dark:text-slate-400">Drif</span><span className="block mt-1 font-semibold">{car.drivetrain || '—'}</span></div>

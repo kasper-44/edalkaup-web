@@ -24,7 +24,7 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Pages
 
-- `/` — Home with hero video, featured cars, about section
+- `/` — Home with vehicle photography, inventory search, featured cars and import enquiry
 - `/bilar` — Car inventory with filters (reads `status='live'` from Supabase)
 - `/bilar/[slug]` — Individual car page with gallery, specs, sharing
 - `/afhent` — Delivered cars gallery (social proof)
