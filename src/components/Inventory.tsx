@@ -14,6 +14,7 @@ import { vehicleTitle } from '@/lib/listingSeo'
 export default function Inventory({ cars, initialFilters = EMPTY_FILTERS, initialSort = 'newest', title = 'Bílar til sölu', intro = 'Skoðaðu úrvalið okkar og finndu bíl sem hentar þér.' }: { cars: Car[]; initialFilters?: InventoryFilters; initialSort?: InventorySort; title?: string; intro?: string }) {
   const pathname = usePathname()
   const [filters, setFilters] = useState(initialFilters)
+  const [urlReady, setUrlReady] = useState(false)
   const [sort, setSort] = useState<InventorySort>(initialSort)
   const [showFilters, setShowFilters] = useState(false)
   const [savedOnly, setSavedOnly] = useState(false)
@@ -31,6 +32,7 @@ export default function Inventory({ cars, initialFilters = EMPTY_FILTERS, initia
   const reset = () => { setFilters({ ...EMPTY_FILTERS }); setSavedOnly(false); setSort('newest') }
 
   useEffect(() => {
+    if (!urlReady) return
     const timer = window.setTimeout(() => {
       const params = new URLSearchParams()
       for (const [key, value] of Object.entries(filters)) if (value) params.set(key, value)
@@ -39,13 +41,17 @@ export default function Inventory({ cars, initialFilters = EMPTY_FILTERS, initia
       window.history.replaceState(window.history.state, '', `${window.location.pathname}${query ? `?${query}` : ''}${window.location.hash}`)
     }, 250)
     return () => window.clearTimeout(timer)
-  }, [filters, sort])
+  }, [filters, sort, urlReady])
   useEffect(() => {
     const onBack = () => {
       const params = Object.fromEntries(new URLSearchParams(window.location.search))
       setFilters(parseInventoryFilters(params))
       setSort(SORTS.includes(params.sort as InventorySort) ? params.sort as InventorySort : 'newest')
     }
+    // A cached page may mount with older server props after browser Back.
+    // Restore its current URL before any filter effect can overwrite it.
+    onBack()
+    setUrlReady(true)
     window.addEventListener('popstate', onBack)
     return () => window.removeEventListener('popstate', onBack)
   }, [])
