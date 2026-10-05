@@ -33,12 +33,16 @@ export default function HeroVideo() {
             Vandaðir bílar frá Bandaríkjunum, Kanada og Evrópu. Við aðstoðum þig frá leit og kaupum til afhendingar á Íslandi.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 mt-8">
-            <Link href="/bilar" className="inline-flex justify-center items-center gap-8 px-6 py-4 bg-accent text-navy-900 rounded-xl font-semibold hover:bg-accent-light transition-colors">Skoða bíla til sölu <span aria-hidden="true">↗</span></Link>
-            <CallLink placement="hero" className="inline-flex justify-center items-center px-6 py-4 border border-white/25 rounded-xl font-semibold text-white hover:bg-white/10 transition-colors">Hringja 699 2011</CallLink>
+            <Link href="/bilar" className="inline-flex justify-center items-center gap-3 px-6 py-4 bg-accent text-navy-900 rounded-xl font-semibold hover:bg-accent-light transition-colors">Skoða bíla til sölu <span aria-hidden="true">→</span></Link>
+            <Link href="/bilainnflutningur" className="inline-flex justify-center items-center px-6 py-4 border border-white/25 rounded-xl font-semibold text-white hover:bg-white/10 transition-colors">Finna bíl fyrir mig</Link>
           </div>
-          <div className="mt-10 pt-6 border-t border-white/15 grid grid-cols-2 gap-6 text-sm">
-            <div><p className="font-semibold text-white">Frá leit til afhendingar</p><p className="text-slate-400 mt-1">Kaup, flutningur og tollafgreiðsla</p></div>
-            <div><p className="font-semibold text-white">Þjónusta um allt land</p><p className="text-slate-400 mt-1">Beint samband við okkur</p></div>
+          <p className="mt-5 text-sm text-slate-400">
+            Viltu ræða málið beint? <CallLink placement="hero" className="font-semibold text-white underline decoration-white/30 underline-offset-4 hover:text-accent">Hringdu í 699 2011</CallLink>
+          </p>
+          <div className="mt-9 pt-6 border-t border-white/15 grid grid-cols-3 gap-4 sm:gap-6">
+            <div><p className="text-2xl sm:text-3xl font-bold text-white">25+</p><p className="text-xs sm:text-sm text-slate-400 mt-1">ára reynsla</p></div>
+            <div><p className="text-2xl sm:text-3xl font-bold text-white">500+</p><p className="text-xs sm:text-sm text-slate-400 mt-1">bílar afhentir</p></div>
+            <div><p className="text-sm sm:text-base font-semibold text-white leading-tight">Frá leit til afhendingar</p><p className="text-xs sm:text-sm text-slate-400 mt-1">Við sjáum um ferlið</p></div>
           </div>
         </div>
         <div className="relative min-w-0 min-h-72 sm:min-h-96 lg:min-h-full overflow-hidden bg-navy-800">
