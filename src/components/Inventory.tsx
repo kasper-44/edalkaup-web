@@ -1,16 +1,18 @@
 'use client'
 import { useState, useMemo, useEffect } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import type { Car } from '@/data/cars'
 import CarCard from '@/components/CarCard'
 import FilterSidebar from '@/components/FilterSidebar'
 import ComparisonDialog from '@/components/ComparisonDialog'
 import { useSavedCars } from '@/components/useSavedCars'
-import { EMPTY_FILTERS, filterCars, sortCars, fuelLabel, parseInventoryFilters, SORTS, INVENTORY_CATEGORIES } from '@/lib/inventory'
+import { EMPTY_FILTERS, filterCars, sortCars, fuelLabel, parseInventoryFilters, SORTS, INVENTORY_CATEGORIES, activeInventoryFilters } from '@/lib/inventory'
 import type { InventoryFilters, InventorySort } from '@/lib/inventory'
 import { vehicleTitle } from '@/lib/listingSeo'
 
 export default function Inventory({ cars, initialFilters = EMPTY_FILTERS, initialSort = 'newest', title = 'Bílar til sölu', intro = 'Skoðaðu úrvalið okkar og finndu bíl sem hentar þér.' }: { cars: Car[]; initialFilters?: InventoryFilters; initialSort?: InventorySort; title?: string; intro?: string }) {
+  const pathname = usePathname()
   const [filters, setFilters] = useState(initialFilters)
   const [sort, setSort] = useState<InventorySort>(initialSort)
   const [showFilters, setShowFilters] = useState(false)
@@ -25,6 +27,7 @@ export default function Inventory({ cars, initialFilters = EMPTY_FILTERS, initia
   const comparedCars = cars.filter((car) => selected.includes(car.id))
   const savedCount = cars.filter((car) => saved.includes(car.id)).length
   const change = (key: keyof InventoryFilters, value: string) => setFilters((prev) => ({ ...prev, [key]: value }))
+  const activeFilters = activeInventoryFilters(filters)
   const reset = () => { setFilters({ ...EMPTY_FILTERS }); setSavedOnly(false); setSort('newest') }
 
   useEffect(() => {
@@ -33,7 +36,7 @@ export default function Inventory({ cars, initialFilters = EMPTY_FILTERS, initia
       for (const [key, value] of Object.entries(filters)) if (value) params.set(key, value)
       if (sort !== 'newest') params.set('sort', sort)
       const query = params.toString()
-      window.history.replaceState(window.history.state, '', `${window.location.pathname}${query ? `?${query}` : ''}`)
+      window.history.replaceState(window.history.state, '', `${window.location.pathname}${query ? `?${query}` : ''}${window.location.hash}`)
     }, 250)
     return () => window.clearTimeout(timer)
   }, [filters, sort])
@@ -51,14 +54,18 @@ export default function Inventory({ cars, initialFilters = EMPTY_FILTERS, initia
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 pb-32">
       <div className="mb-8"><p className="text-accent-dark dark:text-accent text-xs font-semibold uppercase tracking-[0.2em] mb-3">Eðalkaup · Bílar til sölu</p><h1 className="text-4xl sm:text-5xl font-semibold tracking-[-.045em]">{title}</h1><p className="text-gray-600 dark:text-slate-300 mt-3 max-w-3xl leading-relaxed">{intro}</p></div>
       <nav aria-label="Bílaflokkar" className="flex flex-wrap gap-2 mb-7">
-        <Link href="/bilar" className="inventory-chip">Allir bílar</Link>
-        {INVENTORY_CATEGORIES.map((category) => <Link key={category.slug} href={`/bilar/flokkur/${category.slug}`} className="inventory-chip">{category.short}</Link>)}
+        <Link href="/bilar" onClick={reset} aria-current={pathname === '/bilar' ? 'page' : undefined} className="inventory-chip aria-[current=page]:border-accent-dark aria-[current=page]:bg-accent/10">Allir bílar</Link>
+        {INVENTORY_CATEGORIES.map((category) => <Link key={category.slug} href={`/bilar/flokkur/${category.slug}`} onClick={reset} aria-current={pathname === `/bilar/flokkur/${category.slug}` ? 'page' : undefined} className="inventory-chip aria-[current=page]:border-accent-dark aria-[current=page]:bg-accent/10">{category.short}</Link>)}
       </nav>
       <div className="flex flex-col sm:flex-row gap-3 mb-7">
         <div className="flex-1"><label htmlFor="inventory-search" className="sr-only">Leita að bíl</label><input id="inventory-search" maxLength={100} type="search" value={filters.q} onChange={(e) => change('q', e.target.value)} placeholder="Leita eftir framleiðanda, gerð eða árgerð…" className="w-full bg-white dark:bg-navy-800 border border-black/15 dark:border-white/15 rounded-xl px-4 py-3.5 text-base" /></div>
         <button aria-pressed={savedOnly} onClick={() => setSavedOnly(!savedOnly)} className="px-5 py-3 rounded-xl border border-black/15 dark:border-white/15 bg-white dark:bg-navy-800 font-medium">{savedOnly ? 'Sýna alla bíla' : `Vistaðir bílar (${ready ? savedCount : 0})`}</button>
         <button aria-expanded={showFilters} aria-controls="inventory-filters" onClick={() => setShowFilters(!showFilters)} className="lg:hidden px-5 py-3 rounded-xl border border-black/15 dark:border-white/15 bg-white dark:bg-navy-800 font-medium">{showFilters ? 'Fela síur' : 'Sýna síur'}</button>
       </div>
+      {activeFilters.length > 0 && <div aria-label="Virkar síur" className="flex flex-wrap items-center gap-2 mb-6">
+        {activeFilters.map(({ key, label }) => <button key={key} type="button" onClick={() => change(key, '')} aria-label={`Fjarlægja síu: ${label}`} className="inline-flex items-center gap-2 rounded-full border border-accent-dark/30 dark:border-accent/40 bg-accent/10 px-3 py-2 text-sm">{label}<span aria-hidden="true">×</span></button>)}
+        <button type="button" onClick={reset} className="px-3 py-2 text-sm font-semibold underline underline-offset-4">Hreinsa síur</button>
+      </div>}
       <div className="flex flex-col lg:flex-row gap-8">
         <div id="inventory-filters" className={`lg:w-64 shrink-0 ${showFilters ? 'block' : 'hidden lg:block'}`}><FilterSidebar filters={filters} onFilterChange={change} onReset={reset} makes={makes} bodyTypes={bodyTypes} fuels={fuels} /></div>
         <div className="flex-1 min-w-0">
@@ -69,7 +76,7 @@ export default function Inventory({ cars, initialFilters = EMPTY_FILTERS, initia
           {results.length ? <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">{results.map((car, index) => <CarCard key={car.id} car={car} priority={index < 3} actions={<>
             <button aria-pressed={saved.includes(car.id)} aria-label={`${saved.includes(car.id) ? 'Fjarlægja úr vistuðum' : 'Vista'}: ${vehicleTitle(car)}`} onClick={() => toggle(car.id)} className="flex-1 text-sm px-3 py-3 hover:bg-accent/10">{saved.includes(car.id) ? '♥ Vistaður' : '♡ Vista'}</button>
             <button aria-pressed={selected.includes(car.id)} disabled={!selected.includes(car.id) && selected.length >= 3} aria-label={`Bera saman: ${vehicleTitle(car)}`} onClick={() => setSelected((prev) => prev.includes(car.id) ? prev.filter((id) => id !== car.id) : [...prev, car.id].slice(0, 3))} className="flex-1 text-sm px-3 py-3 border-l border-black/10 dark:border-white/10 hover:bg-accent/10 disabled:opacity-40">{selected.includes(car.id) ? '✓ Valinn' : 'Bera saman'}</button>
-          </>} />)}</div> : <div className="rounded-2xl border border-black/10 dark:border-white/10 bg-white dark:bg-navy-800 p-8 sm:p-12 text-center"><h2 className="text-xl font-bold mb-3">{savedOnly ? 'Engir vistaðir bílar fundust' : 'Engir bílar passa við leitina'}</h2><p className="text-gray-600 dark:text-slate-300 mb-6">Prófaðu færri síur eða hafðu samband um framboð á gerðunum okkar.</p><div className="flex flex-wrap justify-center gap-3"><button onClick={reset} className="px-5 py-3 rounded-xl bg-accent text-navy-900 font-semibold">Hreinsa síur</button><Link href="/hafa-samband" className="px-5 py-3 border border-black/15 dark:border-white/15 rounded-xl">Spyrja um framboð</Link></div></div>}
+          </>} />)}</div> : <div className="rounded-2xl border border-black/10 dark:border-white/10 bg-white dark:bg-navy-800 p-8 sm:p-12 text-center"><h2 className="text-xl font-bold mb-3">{savedOnly ? 'Engir vistaðir bílar fundust' : 'Engir bílar passa við leitina'}</h2><p className="text-gray-600 dark:text-slate-300 mb-6">{savedOnly ? 'Vistaðu bíla með hjartatákninu. Ef þú hefur þegar vistað bíla, prófaðu að hreinsa síurnar.' : 'Prófaðu að fjarlægja síur eða breyta leitarorðinu. Hér birtast aðeins bílar sem við auglýsum núna.'}</p><div className="flex flex-wrap justify-center gap-3"><button onClick={reset} className="px-5 py-3 rounded-xl bg-accent text-navy-900 font-semibold">Hreinsa síur</button><Link href="/hafa-samband" className="px-5 py-3 border border-black/15 dark:border-white/15 rounded-xl">Spyrja um framboð</Link></div></div>}
           <div className="mt-10 rounded-2xl border border-black/10 dark:border-white/10 p-6"><h2 className="font-bold text-lg">Spurning um framboð?</h2><p className="text-gray-600 dark:text-slate-300 mt-2 mb-4">Hafðu samband um auglýstan bíl til að staðfesta framboð og bóka skoðun.</p><Link href="/hafa-samband" className="text-accent-dark dark:text-accent font-semibold underline underline-offset-4">Hafa samband →</Link></div>
         </div>
       </div>

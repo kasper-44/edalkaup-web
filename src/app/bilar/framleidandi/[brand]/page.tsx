@@ -21,5 +21,5 @@ export default async function BrandPage({ params, searchParams }: Props) {
   const title = `${cars[0].make} bílar til sölu`
   const query = await searchParams
   const sort = typeof query.sort === 'string' && SORTS.includes(query.sort as InventorySort) ? query.sort as InventorySort : 'newest'
-  return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(inventoryListJsonLd(sortCars(filterCars(cars, parseInventoryFilters(query)), sort), `/bilar/framleidandi/${brand}`, title)) }} /><Inventory key={brand} cars={cars} title={title} intro={`Skoðaðu ${cars[0].make} bíla hjá Eðalkaup. Opnaðu auglýsingu til að sjá myndir, búnað og tæknilegar upplýsingar.`} initialFilters={parseInventoryFilters(query)} initialSort={sort} /></>
+  return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(inventoryListJsonLd(sortCars(filterCars(cars, parseInventoryFilters(query)), sort), `/bilar/framleidandi/${brand}`, title)) }} /><Inventory key={JSON.stringify({ brand, filters: parseInventoryFilters(query), sort })} cars={cars} title={title} intro={`Skoðaðu ${cars[0].make} bíla hjá Eðalkaup. Opnaðu auglýsingu til að sjá myndir, búnað og tæknilegar upplýsingar.`} initialFilters={parseInventoryFilters(query)} initialSort={sort} /></>
 }

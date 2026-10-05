@@ -1,4 +1,5 @@
 import type { Car } from '@/data/cars'
+import { formatIskNumber } from '@/lib/formatIsk'
 
 export const EMPTY_FILTERS = {
   q: '', make: '', bodyType: '', fuel: '', minPrice: '', maxPrice: '',
@@ -68,3 +69,21 @@ export const INVENTORY_CATEGORIES = [
   { slug: 'pallbilar', title: 'Pallbílar til sölu á Íslandi', short: 'Pallbílar', description: 'Skoðaðu pallbíla til sölu hjá Eðalkaup. Berðu saman árgerð, verð og akstur og skoðaðu upplýsingar um dráttargetu og búnað.', intro: 'Finndu pallbíl fyrir vinnu eða ferðalög. Skoðaðu dráttargetu, drif og búnað í auglýsingunni og hafðu samband til að staðfesta að bíllinn henti verkefninu.', matches: (car: Car) => /pick.?up|pall/i.test(car.bodyType) },
   { slug: 'sendibilar', title: 'Sendibílar til sölu', short: 'Sendibílar', description: 'Sendibílar til sölu hjá Eðalkaup. Skoðaðu verð, akstur, árgerð og gerðir fyrir reksturinn þinn.', intro: 'Skoðaðu sendibíla fyrir reksturinn. Berðu saman gerðir, akstur og eldsneyti og athugaðu sérstaklega hvort verð sé með eða án virðisaukaskatts.', matches: (car: Car) => /van|sendibil|sendibíl/i.test(car.bodyType) },
 ]
+
+/** Removable filters use the same values as the result list and shared URL. */
+export function activeInventoryFilters(filters: InventoryFilters): { key: keyof InventoryFilters; label: string }[] {
+  const labels: Record<keyof InventoryFilters, (value: string) => string> = {
+    q: (value) => `Leit: ${value}`,
+    make: (value) => `Framleiðandi: ${value}`,
+    bodyType: (value) => `Tegund: ${value}`,
+    fuel: (value) => `Eldsneyti: ${value}`,
+    minPrice: (value) => `Verð frá ${formatIskNumber(Number(value))} kr.`,
+    maxPrice: (value) => `Verð til ${formatIskNumber(Number(value))} kr.`,
+    minYear: (value) => `Árgerð frá ${value}`,
+    maxYear: (value) => `Árgerð til ${value}`,
+    maxMileage: (value) => `Akstur til ${formatIskNumber(Number(value))} km`,
+  }
+  return (Object.keys(filters) as (keyof InventoryFilters)[])
+    .filter((key) => filters[key] !== '')
+    .map((key) => ({ key, label: labels[key](filters[key]) }))
+}

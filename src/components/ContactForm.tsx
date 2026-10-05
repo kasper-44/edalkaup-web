@@ -138,7 +138,7 @@ export default function ContactForm({
             required
             autoComplete="name"
             maxLength={120}
-            className={`w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors ${compact ? 'py-2.5' : 'px-4 py-3'}`}
+            className={`w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-3 text-base sm:text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors ${compact ? 'py-2.5' : 'px-4 py-3'}`}
             placeholder="Fullt nafn"
           />
         </div>
@@ -151,7 +151,7 @@ export default function ContactForm({
             required={compact}
             autoComplete="tel"
             maxLength={40}
-            className={`w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors ${compact ? 'py-2.5' : 'px-4 py-3'}`}
+            className={`w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-3 text-base sm:text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors ${compact ? 'py-2.5' : 'px-4 py-3'}`}
             placeholder="000 0000"
           />
         </div>
@@ -167,7 +167,7 @@ export default function ContactForm({
             required
             autoComplete="email"
             maxLength={200}
-            className="w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors"
+            className="w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-4 py-3 text-base sm:text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors"
             placeholder="netfang@dæmi.is"
           />
         </div>
@@ -194,7 +194,7 @@ export default function ContactForm({
           maxLength={4000}
           rows={compact ? 2 : 4}
           required
-          className="w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors resize-y min-h-20"
+          className="w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-4 py-3 text-base sm:text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors resize-y min-h-20"
           placeholder={carTitle ? 'Spurning um búnað, verð eða framboð á þessum bíl?' : 'Hvaða auglýsta bíl viltu fá upplýsingar um?'}
         />
       </div>

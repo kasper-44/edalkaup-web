@@ -9,7 +9,7 @@ interface Props {
   bodyTypes: string[]
   fuels: string[]
 }
-const control = 'w-full min-w-0 bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/15 rounded-lg px-3 py-2.5 text-sm text-gray-900 dark:text-white'
+const control = 'w-full min-w-0 bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/15 rounded-lg px-3 py-2.5 text-base sm:text-sm text-gray-900 dark:text-white'
 export default function FilterSidebar({ filters, onFilterChange, onReset, makes, bodyTypes, fuels }: Props) {
   const options = [{ key: 'make', label: 'Framleiðandi', values: makes }, { key: 'bodyType', label: 'Tegund', values: bodyTypes }, { key: 'fuel', label: 'Eldsneyti', values: fuels }] as const
   const ranges = [{ label: 'Árgerð', min: 'minYear', max: 'maxYear' }, { label: 'Verð (kr.)', min: 'minPrice', max: 'maxPrice' }] as const
