@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { EMPTY_FILTERS, filterCars, sortCars, parseInventoryFilters, fuelLabel } from './inventory'
+import { EMPTY_FILTERS, filterCars, sortCars, parseInventoryFilters, fuelLabel, activeInventoryFilters } from './inventory'
 import { adaptCar } from './adaptPublicCar'
 import { carJsonLd, listingMetaDescription } from './listingSeo'
 import { listingCopy } from './listingCopy'
@@ -29,3 +29,11 @@ assert.equal(listingMetaDescription({ make: 'Ford', model: 'Explorer', year: 202
 assert.equal('itemCondition' in carJsonLd({ make: 'Ford', model: 'Explorer', year: 2022, mileage_km: null }, 'id'), false)
 assert.equal(listingCopy('Lýsing á bíl\nVIN: PRIVATE\nOriginal price: $100'), 'Lýsing á bíl')
 console.log('Inventory filters, unknown data, sorting and listing copy passed')
+
+assert.deepEqual(activeInventoryFilters(EMPTY_FILTERS), [])
+const active = activeInventoryFilters(parseInventoryFilters({ q: 'BMW', maxPrice: '5000000', maxMileage: '0', minYear: '-1' }))
+assert.deepEqual(active.map(item => item.key), ['q', 'maxPrice', 'maxMileage'])
+assert.equal(active.find(item => item.key === 'maxPrice')?.label, 'Verð til 5.000.000 kr.')
+assert.equal(active.find(item => item.key === 'maxMileage')?.label, 'Akstur til 0 km')
+const withoutPrice = { ...EMPTY_FILTERS, q: 'BMW', maxPrice: '' }
+assert.deepEqual(activeInventoryFilters(withoutPrice).map(item => item.key), ['q'])
