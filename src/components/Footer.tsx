@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import CallLink from '@/components/CallLink'
-import { INVENTORY_CATEGORIES } from '@/lib/inventory'
+import { DEALER_RANGE } from '@/lib/dealerRange'
 import { KLAKI_EMAIL } from '@/lib/site'
 
 export default function Footer() {
@@ -46,7 +46,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          <div><h3 className="text-sm font-semibold uppercase tracking-wider mb-4">Finndu bíl</h3><ul className="space-y-3">{INVENTORY_CATEGORIES.map((category) => <li key={category.slug}><Link href={`/bilar/flokkur/${category.slug}`} className="text-sm text-gray-600 dark:text-slate-300 hover:underline">{category.short}</Link></li>)}</ul></div>
+          <div><h3 className="text-sm font-semibold uppercase tracking-wider mb-4">Gerðirnar okkar</h3><ul className="space-y-3">{DEALER_RANGE.map((range) => <li key={range.label}><Link href={range.href} className="text-sm text-gray-600 dark:text-slate-300 hover:underline">{range.label}</Link></li>)}</ul></div>
           {/* Contact */}
           <div>
             <h3 className="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-4">Samband</h3>
