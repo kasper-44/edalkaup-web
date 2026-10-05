@@ -26,6 +26,6 @@ export default async function CategoryPage({ params, searchParams }: Props) {
   return <>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(inventoryListJsonLd(sortCars(filterCars(cars, parseInventoryFilters(paramsValue)), sort), `/bilar/flokkur/${slug}`, category.title)) }} />
     <Inventory key={slug} cars={cars} title={category.title} intro={category.intro} initialFilters={parseInventoryFilters(paramsValue)} initialSort={sort} />
-    <section className="max-w-7xl mx-auto px-5 pb-16"><h2 className="text-2xl font-bold mb-4">Spurningar um gerðirnar okkar?</h2><p className="text-gray-600 dark:text-slate-300 max-w-3xl mb-4">Við leggjum áherslu á EV pallbíla, Volvo, Ford Explorer, Maxus og Toyota Sequoia. Hafðu samband um búnað, verð og framboð á þessum gerðum.</p><Link href="/bilainnflutningur" className="font-semibold underline underline-offset-4">Skoða gerðirnar okkar →</Link></section>
+    <section className="max-w-7xl mx-auto px-5 pb-16"><h2 className="text-2xl font-bold mb-4">Spurning um auglýstan bíl?</h2><p className="text-gray-600 dark:text-slate-300 max-w-3xl mb-4">Hafðu samband um auglýstan bíl til að fá nánari upplýsingar um búnað, verð og framboð.</p><Link href="/hafa-samband" className="font-semibold underline underline-offset-4">Hafa samband →</Link></section>
   </>
 }

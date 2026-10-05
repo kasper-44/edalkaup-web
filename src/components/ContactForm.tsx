@@ -1,7 +1,6 @@
 'use client'
 
 import { useId, useState } from 'react'
-import { DEALER_RANGE } from '@/lib/dealerRange'
 import { DEALER_EMAIL, DEALER_PHONE_TEL } from '@/lib/site'
 
 interface ContactFormProps {
@@ -39,8 +38,7 @@ export default function ContactForm({
 
     const form = e.currentTarget
     const formData = new FormData(form)
-    const selectedRange = formData.get('range')
-    const inquiryCar = carTitle || (DEALER_RANGE.some((range) => range.label === selectedRange) ? String(selectedRange) : '')
+    const inquiryCar = carTitle || ''
 
     try {
       const res = await fetch('/api/contact', {
@@ -188,7 +186,6 @@ export default function ContactForm({
         </div>
       )}
 
-      {!carTitle && <div><label htmlFor={`${formId}-range`} className="block text-sm font-medium text-gray-500 dark:text-slate-400 mb-1.5">Gerð</label><select id={`${formId}-range`} name="range" className="dealer-input"><option value="">Veldu gerð (valfrjálst)</option>{DEALER_RANGE.map((range) => <option key={range.label} value={range.label}>{range.label}</option>)}</select></div>}
       <div>
         <label htmlFor={`${formId}-message`} className="block text-sm font-medium text-gray-500 dark:text-slate-400 mb-1.5">Skilaboð</label>
         <textarea
@@ -198,7 +195,7 @@ export default function ContactForm({
           rows={compact ? 2 : 4}
           required
           className="w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors resize-y min-h-20"
-          placeholder={carTitle ? 'Spurning um búnað, verð eða framboð á þessum bíl?' : 'Spurning um gerðirnar okkar, búnað, verð eða framboð?'}
+          placeholder={carTitle ? 'Spurning um búnað, verð eða framboð á þessum bíl?' : 'Hvaða auglýsta bíl viltu fá upplýsingar um?'}
         />
       </div>
 

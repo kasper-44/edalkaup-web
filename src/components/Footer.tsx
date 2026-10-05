@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import CallLink from '@/components/CallLink'
-import { DEALER_RANGE } from '@/lib/dealerRange'
+import { INVENTORY_CATEGORIES } from '@/lib/inventory'
 import { KLAKI_EMAIL } from '@/lib/site'
 
 export default function Footer() {
@@ -23,7 +23,7 @@ export default function Footer() {
               <span className="text-xl font-bold text-gray-900 dark:text-white">EÐALKAUP</span>
             </div>
             <p className="text-sm text-gray-500 dark:text-slate-400 leading-relaxed">
-              Yfir 25 ára reynsla. EV pallbílar, Volvo, Ford Explorer, Maxus og Toyota Sequoia.
+              Bílar til sölu og persónuleg þjónusta. Yfir 25 ára reynsla af bílainnflutningi.
             </p>
           </div>
 
@@ -33,7 +33,7 @@ export default function Footer() {
             <ul className="space-y-3">
               {[
                 { href: '/bilar', label: 'Bílar til sölu' },
-                { href: '/bilainnflutningur', label: 'Gerðirnar okkar' },
+                { href: '/bilainnflutningur', label: 'Kaup og afhending' },
                 { href: '/um-okkur', label: 'Um okkur' },
                 { href: '/hafa-samband', label: 'Hafa samband' },
               ].map((link) => (
@@ -46,7 +46,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          <div><h3 className="text-sm font-semibold uppercase tracking-wider mb-4">Gerðirnar okkar</h3><ul className="space-y-3">{DEALER_RANGE.map((range) => <li key={range.label}><Link href={range.href} className="text-sm text-gray-600 dark:text-slate-300 hover:underline">{range.label}</Link></li>)}</ul></div>
+          <div><h3 className="text-sm font-semibold uppercase tracking-wider mb-4">Skoða bíla</h3><ul className="space-y-3">{INVENTORY_CATEGORIES.filter((category) => category.slug !== 'rafmagnspallbilar').map((category) => <li key={category.slug}><Link href={`/bilar/flokkur/${category.slug}`} className="text-sm text-gray-600 dark:text-slate-300 hover:underline">{category.short}</Link></li>)}</ul></div>
           {/* Contact */}
           <div>
             <h3 className="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-4">Samband</h3>

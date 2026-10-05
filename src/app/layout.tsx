@@ -18,17 +18,17 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_ORIGIN),
   title: {
-    default: 'Eðalkaup — EV pallbílar og valdar gerðir',
+    default: 'Eðalkaup — Bílar til sölu',
     template: '%s | Eðalkaup',
   },
-  description: 'EV pallbílar, Volvo, Ford Explorer, Maxus og Toyota Sequoia hjá Eðalkaup. Skoðaðu úrvalið og hafðu samband um búnað, verð og framboð.',
+  description: 'Bílar til sölu hjá Eðalkaup. Skoðaðu myndir, verð og búnað og hafðu samband um auglýsta bíla. Yfir 25 ára reynsla og persónuleg þjónusta.',
   openGraph: {
     type: 'website',
     locale: 'is_IS',
     url: SITE_ORIGIN,
     siteName: 'Eðalkaup',
-    title: 'Eðalkaup — EV pallbílar og valdar gerðir',
-    description: 'EV pallbílar, Volvo, Ford Explorer, Maxus og Toyota Sequoia hjá Eðalkaup. Skoðaðu úrvalið og hafðu samband um búnað, verð og framboð.',
+    title: 'Eðalkaup — Bílar til sölu',
+    description: 'Bílar til sölu hjá Eðalkaup. Skoðaðu myndir, verð og búnað og hafðu samband um auglýsta bíla. Yfir 25 ára reynsla og persónuleg þjónusta.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large' } },
   icons: { icon: { url: '/logo.svg', type: 'image/svg+xml' } },
