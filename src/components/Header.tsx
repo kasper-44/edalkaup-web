@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { useTheme } from './ThemeProvider'
 import { SHOW_NEW_VOLVO } from '@/lib/features'
@@ -27,6 +27,19 @@ export default function Header() {
   const [volvoOpen, setVolvoOpen] = useState(false)
   const { theme, toggle } = useTheme()
   const pathname = usePathname()
+  const menuButton = useRef<HTMLButtonElement>(null)
+  useEffect(() => { setIsOpen(false); setVolvoOpen(false) }, [pathname])
+  useEffect(() => {
+    if (!isOpen && !volvoOpen) return
+    const close = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return
+      setIsOpen(false)
+      setVolvoOpen(false)
+      if (isOpen) menuButton.current?.focus()
+    }
+    window.addEventListener('keydown', close)
+    return () => window.removeEventListener('keydown', close)
+  }, [isOpen, volvoOpen])
 
   if (/^\/volvo-ex60\/(diesel|hofdabilar|edalkaup)$/.test(pathname)) return null
 
@@ -50,7 +63,7 @@ export default function Header() {
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden xl:flex items-center gap-1">
+          <nav aria-label="Aðalvalmynd" className="hidden xl:flex items-center gap-1">
             {navItems.slice(0, 2).map((item) => (
               <Link
                 key={item.href}
@@ -161,6 +174,7 @@ export default function Header() {
               )}
             </button>
             <button
+              ref={menuButton}
               onClick={() => setIsOpen(!isOpen)}
               className="p-2 text-gray-600 dark:text-slate-300 hover:text-gray-900 dark:hover:text-white"
               aria-label={isOpen ? 'Loka valmynd' : 'Opna valmynd'}
@@ -180,7 +194,7 @@ export default function Header() {
 
         {/* Mobile Nav */}
         {isOpen && (
-          <nav id="mobile-navigation" aria-label="Aðalvalmynd" className="xl:hidden pb-4 border-t border-black/5 dark:border-white/5 pt-4 space-y-1">
+          <nav id="mobile-navigation" aria-label="Aðalvalmynd" className="xl:hidden max-h-[calc(100svh-8rem)] overflow-y-auto pb-4 border-t border-black/5 dark:border-white/5 pt-4 space-y-1">
             {navItems.slice(0, 2).map((item) => (
               <Link
                 key={item.href}

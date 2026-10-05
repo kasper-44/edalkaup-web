@@ -1,6 +1,7 @@
 'use client'
 
 import { useId, useState } from 'react'
+import { DEALER_EMAIL, DEALER_PHONE_TEL } from '@/lib/site'
 
 interface ContactFormProps {
   carTitle?: string
@@ -8,7 +9,7 @@ interface ContactFormProps {
   carVin?: string
   /** Compact homepage/modal form: name, phone, and message. Email stays on the full form. */
   variant?: 'full' | 'compact'
-  source?: 'forsida' | 'gluggi' | 'bilur' | 'samband'
+  source?: 'forsida' | 'gluggi' | 'bilur' | 'samband' | 'innflutningur'
   heading?: string
   headingId?: string
   reserveCorner?: boolean
@@ -91,7 +92,8 @@ export default function ContactForm({
           </svg>
         </div>
         <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Takk fyrir!</h3>
-        <p className="text-gray-500 dark:text-slate-400">Við verðum í sambandi fljótlega.</p>
+        <p role="status" className="text-gray-500 dark:text-slate-400">Fyrirspurnin hefur verið send. Við höfum samband á opnunartíma.</p>
+        <button type="button" onClick={() => setSubmitted(false)} className="mt-5 font-semibold underline underline-offset-4">Senda aðra fyrirspurn</button>
       </div>
     )
   }
@@ -120,7 +122,8 @@ export default function ContactForm({
 
       {error && (
         <div role="alert" className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3 text-sm text-red-600 dark:text-red-400">
-          {error}
+          <p>{error}</p>
+          <p className="mt-2"><a href={DEALER_PHONE_TEL} className="font-semibold underline underline-offset-4">Hringja í 699 2011</a><span aria-hidden="true"> · </span><a href={`mailto:${DEALER_EMAIL}`} className="font-semibold underline underline-offset-4">Senda tölvupóst</a></p>
         </div>
       )}
 

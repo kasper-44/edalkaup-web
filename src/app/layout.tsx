@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     description: 'Bílar til sölu og bílainnflutningur hjá Eðalkaup. Skoðaðu úrvalið eða láttu okkur finna bíl frá Bandaríkjunum, Kanada og Evrópu fyrir þig.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large' } },
-  icons: { icon: '/favicon.ico' },
+  icons: { icon: { url: '/logo.svg', type: 'image/svg+xml' } },
 }
 
 const themeScript = `

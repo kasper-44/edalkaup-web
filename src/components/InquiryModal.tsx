@@ -38,7 +38,7 @@ export default function InquiryModal() {
     <dialog
       ref={dialogRef}
       aria-labelledby={titleId}
-      className="m-auto w-[95vw] max-w-lg rounded-2xl border-0 bg-transparent p-0 text-inherit backdrop:bg-black/60"
+      className="m-auto w-[95vw] max-w-lg rounded-2xl border-0 max-h-[calc(100svh-2rem)] overflow-y-auto bg-transparent p-0 text-inherit backdrop:bg-black/60"
       onClose={() => setOpen(false)}
       onClick={(event) => {
         const dialog = dialogRef.current
