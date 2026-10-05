@@ -79,15 +79,17 @@ export default function CarDetail({ car }: { car: any }) {
                 )}
               </div>
 
+              <div className="grid grid-cols-3 gap-3 mb-6 pb-6 border-b border-black/5 dark:border-white/5">
+                <div className="rounded-xl bg-gray-50 dark:bg-navy-700/60 p-3"><span className="block text-xs text-gray-500 dark:text-slate-400">Árgerð</span><span className="block mt-1 font-semibold">{car.year}</span></div>
+                <div className="rounded-xl bg-gray-50 dark:bg-navy-700/60 p-3"><span className="block text-xs text-gray-500 dark:text-slate-400">Akstur</span><span className="block mt-1 font-semibold">{formatMileage(car.mileage_km)}</span></div>
+                <div className="rounded-xl bg-gray-50 dark:bg-navy-700/60 p-3"><span className="block text-xs text-gray-500 dark:text-slate-400">Drif</span><span className="block mt-1 font-semibold">{car.drivetrain || '—'}</span></div>
+              </div>
               <div className="space-y-3 mb-6 pb-6 border-b border-black/5 dark:border-white/5">
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-500 dark:text-slate-400">Akstur</span>
                   <span className="font-medium text-gray-900 dark:text-white">{formatMileage(car.mileage_km)}</span>
                 </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-500 dark:text-slate-400">Árgerð</span>
-                  <span className="font-medium text-gray-900 dark:text-white">{car.year}</span>
-                </div>
+
                 {displayExteriorColour(car) !== 'Ótilgreint' && (
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-500 dark:text-slate-400">Litur</span>
@@ -96,9 +98,10 @@ export default function CarDetail({ car }: { car: any }) {
                 )}
               </div>
 
-              <a href="#fyrirspurn" className="block w-full text-center px-5 py-3.5 bg-accent text-navy-900 font-semibold rounded-xl hover:bg-accent-light mb-3">Spyrja um þennan bíl</a>
+              <a href="#fyrirspurn" className="block w-full text-center px-5 py-3.5 bg-accent text-navy-900 font-semibold rounded-xl hover:bg-accent-light mb-3">Fá nánari upplýsingar</a>
+              <CallLink placement="car_detail" className="block w-full text-center px-5 py-3.5 border border-black/15 dark:border-white/20 font-semibold rounded-xl hover:border-accent hover:text-accent transition-colors mb-3">Hringja í 699 2011</CallLink>
               <button type="button" aria-pressed={saved.includes(car.id)} onClick={() => toggle(car.id)} className="w-full text-center px-5 py-3 border border-black/15 dark:border-white/15 rounded-xl font-medium mb-4">{saved.includes(car.id) ? '♥ Bíll vistaður' : '♡ Vista þennan bíl'}</button>
-              <p className="text-sm text-gray-600 dark:text-slate-300 mb-5">Hafðu samband til að staðfesta framboð, staðsetningu og möguleika á að skoða bílinn.</p>
+              <p className="text-sm text-gray-600 dark:text-slate-300 mb-5">Hafðu samband til að staðfesta framboð, staðsetningu og möguleika á að skoða bílinn. Við aðstoðum með ferlið frá fyrstu fyrirspurn til afhendingar.</p>
               <a
                 href={`https://wa.me/3546992011?text=${encodeURIComponent(`Hæ, ég hef áhuga á ${title}`)}`}
                 target="_blank"
@@ -107,12 +110,6 @@ export default function CarDetail({ car }: { car: any }) {
               >
                 WhatsApp
               </a>
-              <CallLink
-                placement="car_detail"
-                className="block w-full text-center px-6 py-3 bg-accent text-navy-900 font-semibold rounded-xl hover:bg-accent-light transition-colors mb-3"
-              >
-                Hringja 699 2011
-              </CallLink>
               <a
                 href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${SITE_ORIGIN}/bilar/${car.id}`)}`}
                 target="_blank"
