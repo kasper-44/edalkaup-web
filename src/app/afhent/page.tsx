@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import Image from 'next/image'
 import { deliveredCars, getCarTitle, formatPrice, formatMileage } from '@/data/cars'
+import { CheckIcon } from '@/components/Icons'
 
 export const metadata: Metadata = {
   title: 'Afhentir bílar',
@@ -33,8 +34,8 @@ export default function AfhentPage() {
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 dark:from-navy-900/60 to-transparent" />
-                <div className="absolute top-3 right-3 px-3 py-1 text-xs font-semibold rounded-full border bg-emerald-500/20 text-emerald-400 border-emerald-500/30">
-                  Afhent ✓
+                <div className="absolute top-3 right-3 inline-flex items-center gap-1 px-3 py-1 text-xs font-semibold rounded-full border bg-emerald-500/20 text-emerald-400 border-emerald-500/30">
+                  Afhent <CheckIcon className="w-3.5 h-3.5" />
                 </div>
               </div>
               <div className="p-5">
