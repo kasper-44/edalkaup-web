@@ -15,6 +15,7 @@ import { formatIskNumber, formatPrice } from '@/lib/formatIsk'
 import { SITE_ORIGIN } from '@/lib/site'
 import { expectedArrivalLabel } from '@/lib/transit'
 import ShareButtons from '@/components/ShareButtons'
+import ListingDescription from '@/components/ListingDescription'
 
 function formatMileage(km: number | null) {
   if (km == null) return 'Ótilgreint'
@@ -133,14 +134,7 @@ export default function CarDetail({ car }: { car: any }) {
           </div>
 
           <div className="space-y-8 lg:col-span-2 lg:col-start-1 lg:row-start-2">
-            {description && (
-              <div className="bg-white dark:bg-navy-800 rounded-2xl border border-black/5 dark:border-white/5 p-6 sm:p-8">
-                <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Lýsing</h2>
-                <div className="text-gray-700 dark:text-slate-300 leading-relaxed whitespace-pre-wrap">
-                  {description}
-                </div>
-              </div>
-            )}
+            {description && <ListingDescription text={description} />}
 
             <div className="bg-white dark:bg-navy-800 rounded-2xl border border-black/5 dark:border-white/5 p-6 sm:p-8">
               <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Tæknilegar upplýsingar</h2>

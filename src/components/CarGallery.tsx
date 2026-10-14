@@ -32,7 +32,7 @@ export default function CarGallery({ images, alt }: { images: string[]; alt: str
   return <div onKeyDown={key}>
     <div className="relative aspect-[16/10] rounded-2xl overflow-hidden bg-gray-100 dark:bg-navy-800" onTouchStart={touchStart} onTouchEnd={touchEnd}>
       <button onClick={() => setOpen(true)} className="absolute inset-0 w-full h-full" aria-label={`Stækka mynd ${selected + 1} af ${images.length}: ${alt}`}>
-        <Image src={images[selected]} alt={`${alt} — mynd ${selected + 1}`} fill sizes="(max-width: 1024px) 100vw, 66vw" priority className="object-contain" />
+        <Image src={images[selected]} alt={`${alt} — mynd ${selected + 1}`} fill sizes="(max-width: 1024px) 100vw, 66vw" priority className="object-cover object-center" />
       </button>
       {images.length > 1 && <><button aria-label="Fyrri mynd" onClick={() => next(-1)} className={`${arrowClass} left-3`}>‹</button><button aria-label="Næsta mynd" onClick={() => next(1)} className={`${arrowClass} right-3`}>›</button></>}
       <span className="absolute bottom-3 right-3 bg-navy-900/80 text-white text-xs px-3 py-2 rounded-full pointer-events-none" aria-live="polite">{selected + 1} / {images.length}</span>

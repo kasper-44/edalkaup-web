@@ -9,15 +9,18 @@ import ContactForm from '@/components/ContactForm'
 import CallLink from '@/components/CallLink'
 import { SHOW_NEW_VOLVO } from '@/lib/features'
 import { formatIsk } from '@/lib/formatIsk'
+import { getCarTitle } from '@/data/cars'
 
 export const dynamic = 'force-dynamic'
 export const metadata = pageMetadata('Bílar til sölu', 'Skoðaðu bíla til sölu hjá Eðalkaup. Verð, myndir og upplýsingar um búnað. Yfir 25 ára reynsla og persónuleg þjónusta.', '/')
 
 export default async function Home() {
   const cars = await getPublicCars()
+  const featured = cars[0] ?? null
+  const story = cars[1] ?? featured
   const makes = [...new Set(cars.map((car) => car.make))].sort()
   return <>
-    <HeroVideo />
+    <HeroVideo car={featured} />
     <div className="border-b border-black/10 dark:border-white/10">
       <div className="dealer-container grid grid-cols-2 lg:grid-cols-4 gap-5 py-6 text-sm">
         {['Yfir 25 ára reynsla', 'Skýrar upplýsingar um bílana', 'Bandaríkin · Kanada · Evrópa', 'Persónuleg þjónusta'].map((text) => <p key={text} className="flex gap-3 items-center"><span className="text-accent-dark dark:text-accent" aria-hidden="true">✓</span>{text}</p>)}
@@ -43,7 +46,7 @@ export default async function Home() {
       </div>
     </section>
     <section className="dealer-container py-16 sm:py-24 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-      <div className="relative aspect-[4/3] overflow-hidden rounded-xl"><Image src="/images/cars/sierra-ev-002/01.jpg" alt="GMC Sierra EV — dæmi um bílainnflutning Eðalkaupa" fill sizes="(max-width: 1023px) 100vw, 50vw" className="object-cover" /><span className="absolute bottom-5 left-5 bg-white text-navy-900 rounded-lg px-4 py-3 text-xs font-semibold">Bandaríkin · Kanada · Evrópa</span></div>
+      {story?.images[0] && <Link href={`/bilar/${story.slug}`} className="relative aspect-[4/3] overflow-hidden rounded-xl bg-navy-800"><Image src={story.images[0]} alt={getCarTitle(story)} fill sizes="(max-width: 1023px) 100vw, 50vw" className="object-cover object-center" /><span className="absolute bottom-5 left-5 max-w-[calc(100%-2.5rem)] rounded-lg bg-white px-4 py-3 text-xs font-semibold leading-snug text-navy-900 line-clamp-2">{getCarTitle(story)}</span></Link>}
       <div><p className="dealer-eyebrow mb-4">Kaup hjá Eðalkaup</p><h2 className="dealer-heading">Frá fyrsta samtali.<br />Til afhendingar.</h2><p className="mt-5 text-gray-600 dark:text-slate-300 leading-relaxed">Kynntu þér bílana sem eru auglýstir hjá okkur. Við förum yfir upplýsingar um bílinn, kaup og afhendingu og hjálpum þér að taka upplýsta ákvörðun.</p><ol className="mt-7 space-y-5">{[
         ['Veldu úr úrvalinu', 'Skoðaðu myndir, verð og upplýsingar í auglýsingunum.'],
         ['Fáðu upplýsingar', 'Við förum yfir búnað, verð og framboð á þeim bíl sem þú hefur áhuga á.'],
