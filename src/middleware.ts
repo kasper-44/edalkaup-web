@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { publicCarSlug } from '@/lib/carPath'
+import { getPublicCar } from '@/lib/publicInventory'
 
 const HOST_TO_DEALER: Record<string, string> = {
   'volvo-ex60-diesel.vercel.app': 'diesel',
@@ -17,12 +19,30 @@ function isAsset(pathname: string) {
   )
 }
 
-export function middleware(req: NextRequest) {
+export async function middleware(req: NextRequest) {
   const host = req.headers.get('host')?.split(':')[0]?.toLowerCase() || ''
   const dealer = HOST_TO_DEALER[host]
   const { pathname } = req.nextUrl
 
   if (isAsset(pathname)) return NextResponse.next()
+
+  const carMatch = pathname.match(/^\/bilar\/([^/]+)\/?$/)
+  if (carMatch) {
+    const requested = decodeURIComponent(carMatch[1])
+    try {
+      const car = await getPublicCar(requested)
+      if (car) {
+        const canonical = publicCarSlug(car)
+        if (requested !== canonical) {
+          const url = req.nextUrl.clone()
+          url.pathname = `/bilar/${canonical}`
+          return NextResponse.redirect(url, 301)
+        }
+      }
+    } catch {
+      // The page reports the inventory error. A failed lookup must not 500 the redirect.
+    }
+  }
 
   const hideChrome = Boolean(dealer) || DEALER_PATH.test(pathname)
   const requestHeaders = new Headers(req.headers)

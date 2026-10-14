@@ -5,6 +5,7 @@ import { Car, formatPrice, formatMileage } from '@/data/cars'
 import { fuelLabel } from '@/lib/inventory'
 import { vehicleTitle } from '@/lib/listingSeo'
 import { vatIncludedPriceSubtitle, withVatFlag } from '@/lib/priceVat'
+import { expectedArrivalLabel } from '@/lib/transit'
 
 interface CarCardProps {
   car: Car
@@ -15,7 +16,7 @@ interface CarCardProps {
 export default function CarCard({ car, priority = false, actions }: CarCardProps) {
   const statusColors = {
     available: 'bg-white text-emerald-800 border-white/80',
-    'in-transit': 'bg-white text-blue-800 border-white/80',
+    'in-transit': 'bg-amber-400 text-amber-950 border-amber-300',
     sold: 'bg-white text-red-800 border-white/80',
   }
 
@@ -26,6 +27,7 @@ export default function CarCard({ car, priority = false, actions }: CarCardProps
   }
 
   const title = vehicleTitle(car)
+  const arrival = car.status === 'in-transit' ? expectedArrivalLabel(car.expectedArrival) : null
   const vatSubtitle =
     car.price > 0
       ? vatIncludedPriceSubtitle(
@@ -67,6 +69,9 @@ export default function CarCard({ car, priority = false, actions }: CarCardProps
               <h3 className="text-lg font-semibold leading-snug text-gray-900 dark:text-white group-hover:text-accent transition-colors">
                 {title}
               </h3>
+              {arrival && (
+                <p className="mt-1 text-sm font-medium text-amber-800 dark:text-amber-300">{arrival}</p>
+              )}
             </div>
           </div>
 

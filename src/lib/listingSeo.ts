@@ -52,6 +52,7 @@ const PLAIN_COLOUR_WORDS = new Set([
 ])
 
 export type ListingCar = {
+  id?: string | null
   year: number
   make: string
   model: string
@@ -66,12 +67,32 @@ export type ListingCar = {
   price_isk?: number | null
   fuel_type?: string | null
   body_type?: string | null
+  transmission?: string | null
+  engine?: string | null
+  doors?: number | null
+  /** Live cars on the way to Iceland. Offer availability becomes PreOrder. */
+  in_transit?: boolean | null
   images?: string[] | null
   description_is?: string | null
 }
 
 function collapseSpace(value: string): string {
   return value.replace(/\s+/g, ' ').trim()
+}
+
+/** Schema fields are omitted when the row has no real value. */
+function presentText(value: unknown): string | null {
+  if (typeof value !== 'string') return null
+  const text = collapseSpace(value)
+  if (!text || text === 'Ótilgreint' || text === 'Ótilgreind' || text === 'Ótilgreindur') return null
+  return text
+}
+
+function presentCount(value: unknown): number | null {
+  if (value == null || value === '') return null
+  const n = typeof value === 'number' ? value : Number(value)
+  if (!Number.isInteger(n) || n <= 0) return null
+  return n
 }
 
 /**
@@ -238,7 +259,7 @@ export function carJsonLd(car: ListingCar, slug: string) {
     '@context': 'https://schema.org',
     '@type': ['Product', 'Car'],
     '@id': `${url}#vehicle`,
-    sku: slug,
+    sku: presentText(car.id) || slug,
     name: vehicleTitle(car),
     url,
     brand: { '@type': 'Brand', name: car.make },
@@ -248,14 +269,29 @@ export function carJsonLd(car: ListingCar, slug: string) {
 
   if (km != null && km > 0) jsonLd.itemCondition = 'https://schema.org/UsedCondition'
   if (colour) jsonLd.color = colour
-  // VIN stays off the public page (not in the spec list). Do not emit it here.
+  // VIN stays off the visible spec list. Emit it in structured data only when the row has one.
+  const vin = presentText(car.vin)
+  if (vin) jsonLd.vehicleIdentificationNumber = vin
   if (km != null && km > 0) {
     jsonLd.mileageFromOdometer = { '@type': 'QuantitativeValue', value: km, unitCode: 'KMT' }
   }
   const description = listingCopy(car.description_is)
   if (description) jsonLd.description = withoutEmbeddedVin(description, car.vin).slice(0, 1000)
-  if (car.fuel_type) jsonLd.fuelType = car.fuel_type
-  if (car.body_type) jsonLd.bodyType = car.body_type
+  const fuel = presentText(car.fuel_type)
+  const engine = presentText(car.engine)
+  const body = presentText(car.body_type)
+  const transmission = presentText(car.transmission)
+  const doors = presentCount(car.doors)
+  if (fuel) jsonLd.fuelType = fuel
+  if (body) jsonLd.bodyType = body
+  if (transmission) jsonLd.vehicleTransmission = transmission
+  if (doors != null) jsonLd.numberOfDoors = doors
+  if (engine || fuel) {
+    const vehicleEngine: Record<string, unknown> = { '@type': 'EngineSpecification' }
+    if (engine) vehicleEngine.name = engine
+    if (fuel) vehicleEngine.fuelType = fuel
+    jsonLd.vehicleEngine = vehicleEngine
+  }
   if (car.images && car.images.length > 0) jsonLd.image = car.images
 
   if (car.price_isk != null && car.price_isk > 0) {
@@ -264,7 +300,9 @@ export function carJsonLd(car: ListingCar, slug: string) {
       url,
       price: car.price_isk,
       priceCurrency: 'ISK',
-      availability: 'https://schema.org/LimitedAvailability',
+      availability: car.in_transit
+        ? 'https://schema.org/PreOrder'
+        : 'https://schema.org/LimitedAvailability',
       seller: listingSeller(),
     }
   }

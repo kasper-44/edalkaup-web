@@ -35,6 +35,8 @@ export interface Car {
   features: string[]
   createdAt: string
   availability?: string
+  /** Free-text arrival phrase, e.g. «nóv 2026». Shown only for in-transit cars. */
+  expectedArrival?: string
 }
 
 // @ts-ignore

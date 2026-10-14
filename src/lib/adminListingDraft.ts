@@ -34,6 +34,8 @@ export interface Car {
   location_country: string | null
   price_verified: boolean
   specs_verified: boolean
+  in_transit?: boolean | null
+  expected_arrival?: string | null
 }
 
 export type VatChoice = '' | 'true' | 'false'
@@ -63,6 +65,8 @@ export interface ListingDraft {
   towing_kg: string
   vin: string
   status: string
+  in_transit: boolean
+  expected_arrival: string
 }
 
 export type ListingTextKey = {
@@ -124,6 +128,8 @@ export function draftFromCar(car: Car): ListingDraft {
     towing_kg: num(car.towing_kg),
     vin: text(car.vin),
     status: car.status,
+    in_transit: car.in_transit === true,
+    expected_arrival: text(car.expected_arrival),
   }
 }
 
@@ -215,6 +221,13 @@ export function listingChanges(
       return { error: 'Ógild staða', payload: {} }
     }
     payload.status = draft.status
+  }
+
+  if (draft.in_transit !== Boolean(car.in_transit)) payload.in_transit = draft.in_transit
+  if (changed('expected_arrival')) {
+    const arrival = draft.expected_arrival.trim()
+    if (arrival.length > 80) return { error: 'Væntanleg komu er of löng', payload: {} }
+    payload.expected_arrival = arrival || null
   }
 
   return { payload }

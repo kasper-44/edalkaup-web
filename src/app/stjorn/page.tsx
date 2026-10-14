@@ -10,8 +10,10 @@ import {
   type ListingDraft,
   type VatChoice,
 } from '@/lib/adminListingDraft'
+import { publicCarSlug } from '@/lib/carPath'
 import { formatIsk, formatIskNumber } from '@/lib/formatIsk'
 import { vehicleTitle } from '@/lib/listingSeo'
+import { SITE_ORIGIN } from '@/lib/site'
 
 const fmt = formatIskNumber
 
@@ -44,7 +46,7 @@ function buildPostText(car: Car): string {
   lines.push('Innfluttur frá Norður-Ameríku af Eðalkaup — yfir 25 ára reynsla.')
   lines.push('Hafðu samband fyrir nánari upplýsingar.')
   lines.push('')
-  lines.push(`https://edalkaup.is/bilar/${car.id}`)
+  lines.push(`${SITE_ORIGIN}/bilar/${publicCarSlug(car)}`)
   return lines.join('\n')
 }
 
@@ -525,7 +527,7 @@ export default function AdminPage() {
               <div className="flex items-center gap-2">
                 {preview.status === 'live' && (
                   <a
-                    href={`/bilar/${preview.id}`}
+                    href={`/bilar/${publicCarSlug(preview)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="px-3 py-1 rounded-lg bg-slate-700 text-sm hover:bg-slate-600"
@@ -690,6 +692,40 @@ export default function AdminPage() {
                         )}
                       </Fragment>
                     ))}
+                    <label className="sm:col-span-2 flex items-start gap-2 text-sm">
+                      <input
+                        type="checkbox"
+                        className="mt-1"
+                        checked={listingDraft.in_transit}
+                        onChange={(e) =>
+                          setListingDraft((current) =>
+                            current ? { ...current, in_transit: e.target.checked } : current,
+                          )
+                        }
+                      />
+                      <span>
+                        <span className="text-slate-700 font-medium">Á leiðinni</span>
+                        <span className="block text-xs text-slate-400">
+                          Bíllinn er á leið til Íslands. Á vefnum birtist gulmerki í stað «Til sölu».
+                        </span>
+                      </span>
+                    </label>
+                    <label className="block text-sm sm:col-span-2">
+                      <span className="text-slate-500">Væntanleg komu</span>
+                      <input
+                        value={listingDraft.expected_arrival}
+                        placeholder="nóv 2026"
+                        onChange={(e) =>
+                          setListingDraft((current) =>
+                            current ? { ...current, expected_arrival: e.target.value } : current,
+                          )
+                        }
+                        className="mt-1 w-full px-3 py-2 rounded-lg bg-slate-50 text-slate-900 border border-black/10 outline-none focus:border-amber-500"
+                      />
+                      <span className="block text-xs text-slate-400 mt-1">
+                        Valfrjálst. Birtist sem «Væntanlegur: nóv 2026» þegar bíllinn er á leiðinni.
+                      </span>
+                    </label>
                     <label className="block text-sm">
                       <span className="text-slate-500">Staða</span>
                       <select

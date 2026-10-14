@@ -8,10 +8,13 @@ import ContactForm from '@/components/ContactForm'
 import CallLink from '@/components/CallLink'
 import { displayExteriorColour } from '@/lib/exteriorColour'
 import { listingCopy } from '@/lib/listingCopy'
+import { publicCarSlug } from '@/lib/carPath'
 import { vehicleTitle } from '@/lib/listingSeo'
 import { vatIncludedPriceSubtitle } from '@/lib/priceVat'
 import { formatIskNumber, formatPrice } from '@/lib/formatIsk'
 import { SITE_ORIGIN } from '@/lib/site'
+import { expectedArrivalLabel } from '@/lib/transit'
+import ShareButtons from '@/components/ShareButtons'
 
 function formatMileage(km: number | null) {
   if (km == null) return 'Ótilgreint'
@@ -22,6 +25,9 @@ function formatMileage(km: number | null) {
 export default function CarDetail({ car }: { car: any }) {
   const { saved, toggle } = useSavedCars()
   const title = vehicleTitle(car)
+  const inTransit = car.in_transit === true
+  const arrival = inTransit ? expectedArrivalLabel(car.expected_arrival) : null
+  const listingUrl = `${SITE_ORIGIN}/bilar/${publicCarSlug(car)}`
   const vatSubtitle = car.price_isk > 0 ? vatIncludedPriceSubtitle(car) : null
   const description = listingCopy(car.description_is)
 
@@ -68,9 +74,12 @@ export default function CarDetail({ car }: { car: any }) {
           {/* Right Sidebar */}
           <div className="flex flex-col gap-6 lg:col-start-3 lg:row-span-2 lg:row-start-1">
             <div className="order-1 rounded-2xl border border-black/10 bg-white p-6 dark:border-white/5 dark:bg-navy-800 lg:order-1">
-              <div className="inline-block px-3 py-1 text-xs font-semibold rounded-full border mb-4 bg-emerald-50 text-emerald-800 border-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-300 dark:border-emerald-700">
-                Til sölu
+              <div className={`inline-block px-3 py-1 text-xs font-semibold rounded-full border mb-4 ${inTransit ? 'bg-amber-100 text-amber-950 border-amber-400 dark:bg-amber-400/15 dark:text-amber-200 dark:border-amber-300' : 'bg-emerald-50 text-emerald-800 border-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-300 dark:border-emerald-700'}`}>
+                {inTransit ? 'Á leiðinni' : 'Til sölu'}
               </div>
+              {arrival && (
+                <p className="text-sm font-medium text-amber-800 dark:text-amber-300 -mt-2 mb-4">{arrival}</p>
+              )}
               <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">{title}</h1>
               <div className="mt-4 mb-6">
                 <p className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">{formatPrice(car.price_isk, 'Verð óákveðið')}</p>
@@ -110,21 +119,13 @@ export default function CarDetail({ car }: { car: any }) {
               >
                 WhatsApp
               </a>
-              <a
-                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${SITE_ORIGIN}/bilar/${car.id}`)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 w-full text-center px-6 py-3 bg-[#1877F2] text-white font-semibold rounded-xl hover:bg-[#1466d4] transition-colors"
-              >
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07c0 6 4.39 10.97 10.13 11.87v-8.4H7.08v-3.47h3.05V9.41c0-3.02 1.79-4.7 4.53-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.26h3.33l-.53 3.47h-2.8v8.4C19.61 23.04 24 18.07 24 12.07z"/></svg>
-                Deila á Facebook
-              </a>
+              <ShareButtons url={listingUrl} title={title} />
             </div>
 
             <div id="fyrirspurn" className="order-2 scroll-mt-28">
               <ContactForm
                 carTitle={title}
-                carUrl={`${SITE_ORIGIN}/bilar/${car.id}`}
+                carUrl={listingUrl}
                 carVin={car.vin || undefined}
                 source="bilur"
               />
