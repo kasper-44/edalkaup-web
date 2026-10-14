@@ -19,8 +19,8 @@ export default function HeroVideo({ car }: { car: Car | null }) {
       <div className="max-w-7xl mx-auto grid lg:grid-cols-2">
         <div className="px-5 sm:px-8 py-12 sm:py-16 lg:py-20 lg:pr-12">
           <p className="dealer-eyebrow mb-6">Eðalkaup · Yfir 25 ára reynsla</p>
-          <h1 className="text-4xl sm:text-5xl xl:text-6xl font-semibold tracking-[-.055em] leading-[1.05]">Sérvaldir bílar, fluttir inn fyrir þig.</h1>
-          <p className="mt-6 text-base sm:text-lg text-gray-600 dark:text-slate-300 leading-relaxed max-w-md">Úrval sem við flytjum inn, með skýrum upplýsingum um hvern bíl.</p>
+          <h1 className="text-4xl sm:text-5xl xl:text-6xl font-semibold tracking-[-.055em] leading-[1.05]">Vandaðir bílar, tilbúnir til afhendingar.</h1>
+          <p className="mt-6 text-base sm:text-lg text-gray-600 dark:text-slate-300 leading-relaxed max-w-md">Eigin úrval, með skýrum upplýsingum um búnað, verð og framboð.</p>
           <div className="flex flex-col sm:flex-row gap-3 mt-8">
             <Link href="/bilar" className="dealer-button">Skoða bíla til sölu <span aria-hidden="true">↗</span></Link>
             <Link href="/hafa-samband" className="dealer-button dealer-button-outline">Hafa samband</Link>
