@@ -126,13 +126,46 @@ const poisoned = {
 }
 const carLd = carJsonLd(poisoned, slug)
 const serialized = jsonLdScript(carLd)
-assert.equal(serialized.includes('SHOULDNOTAPPEARVIN123'), false)
-assert.equal(serialized.includes('vehicleIdentificationNumber'), false)
+assert.equal(carLd.name, '2023 Ineos Grenadier')
+assert.equal(serialized.includes('SHOULDNOTAPPEARVIN123'), true)
+assert.equal(carLd.vehicleIdentificationNumber, 'SHOULDNOTAPPEARVIN123')
 assert.equal(carLd.url, 'https://www.edalkaup.is/bilar/' + slug)
 assert.equal(carLd.itemCondition, 'https://schema.org/UsedCondition')
-assert.equal(carLd.color, 'Ljósbrúnn')
-const offer = carLd.offers as { price: number; seller: Record<string, string> }
+const offer = carLd.offers as { price: number; availability: string; seller: Record<string, string> }
 assert.equal(offer.price, 14990000)
+assert.equal(offer.availability, 'https://schema.org/LimitedAvailability')
+assert.equal(carLd.color, 'Ljósbrúnn')
+assert.equal(carLd.bodyType, 'Jeppi')
+assert.equal(carLd.fuelType, 'Dísel')
+assert.deepEqual(carLd.vehicleEngine, { '@type': 'EngineSpecification', fuelType: 'Dísel' })
+assert.equal('vehicleTransmission' in carLd, false)
+assert.equal('numberOfDoors' in carLd, false)
+
+const rich = carJsonLd(
+  {
+    ...grenadier,
+    transmission: 'Sjálfskipting',
+    engine: '3.0 dísel',
+    doors: 5,
+    vin: 'SALLAAA146A123456',
+    in_transit: true,
+  },
+  slug,
+)
+assert.equal(rich.vehicleTransmission, 'Sjálfskipting')
+assert.equal(rich.numberOfDoors, 5)
+assert.equal(rich.vehicleIdentificationNumber, 'SALLAAA146A123456')
+assert.deepEqual(rich.vehicleEngine, { '@type': 'EngineSpecification', name: '3.0 dísel', fuelType: 'Dísel' })
+assert.equal((rich.offers as { availability: string }).availability, 'https://schema.org/PreOrder')
+
+const unspecified = carJsonLd(
+  { ...sierraWhite, transmission: 'Ótilgreint', doors: 0, engine: '  ', vin: '' },
+  slug,
+)
+assert.equal('vehicleTransmission' in unspecified, false)
+assert.equal('numberOfDoors' in unspecified, false)
+assert.equal('vehicleEngine' in unspecified, false)
+assert.equal('vehicleIdentificationNumber' in unspecified, false)
 assert.equal(offer.seller.name, 'Eðalkaup')
 assert.equal(offer.seller.legalName, 'Úranus ehf.')
 assert.equal(offer.seller.telephone, '+354 699 2011')

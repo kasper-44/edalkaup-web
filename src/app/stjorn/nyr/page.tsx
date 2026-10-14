@@ -25,6 +25,8 @@ const empty = {
   range_km: '',
   towing_kg: '',
   description_is: '',
+  expected_arrival: '',
+  in_transit: false,
   goLive: true,
 }
 
@@ -78,8 +80,9 @@ export default function NewCarPage() {
         }
       }
 
+      const { in_transit, expected_arrival, goLive, ...fields } = form
       const payload = {
-        ...form,
+        ...fields,
         year: Number(form.year),
         price_isk: Number(form.price_isk) || 0,
         mileage_km: form.mileage_km === '' ? null : Number(form.mileage_km),
@@ -90,9 +93,11 @@ export default function NewCarPage() {
         range_km: form.range_km === '' ? null : Number(form.range_km),
         towing_kg: form.towing_kg === '' ? null : Number(form.towing_kg),
         images,
+        ...(in_transit ? { in_transit: true } : {}),
+        ...(expected_arrival.trim() ? { expected_arrival: expected_arrival.trim() } : {}),
         price_verified: true,
         specs_verified: true,
-        status: form.goLive ? 'live' : 'draft',
+        status: goLive ? 'live' : 'draft',
       }
 
       const res = await fetch('/api/admin/cars', {
@@ -196,6 +201,30 @@ export default function NewCarPage() {
           {files.length > 0 && (
             <p className="text-slate-500 text-xs mt-1">{files.length} myndir valdar</p>
           )}
+        </label>
+
+        <label className="flex items-start gap-2 mb-4 text-sm">
+          <input
+            type="checkbox"
+            className="mt-1"
+            checked={form.in_transit}
+            onChange={(e) => set('in_transit', e.target.checked)}
+          />
+          <span>
+            Á leiðinni
+            <span className="block text-xs text-slate-400">Bíllinn er á leið til Íslands og fær gulmerki í stað «Til sölu».</span>
+          </span>
+        </label>
+
+        <label className="block text-sm mb-4">
+          <span className="text-slate-400">Væntanleg komu</span>
+          <input
+            value={form.expected_arrival}
+            placeholder="nóv 2026"
+            onChange={(e) => set('expected_arrival', e.target.value)}
+            className="mt-1 w-full px-3 py-2 rounded-lg bg-slate-800 text-white border border-white/10"
+          />
+          <span className="block text-xs text-slate-500 mt-1">Valfrjálst. Birtist sem «Væntanlegur: nóv 2026».</span>
         </label>
 
         <label className="flex items-center gap-2 mb-4 text-sm">

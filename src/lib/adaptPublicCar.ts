@@ -1,3 +1,4 @@
+import { publicCarSlug } from '@/lib/carPath'
 import { withVatFlag } from '@/lib/priceVat'
 
 export function adaptCar(row: any) {
@@ -5,7 +6,7 @@ export function adaptCar(row: any) {
   const vinMatch = car.description_is?.match(/VIN: (.+)/)?.[1]?.split('\n')[0] || ''
   return {
     id: car.id,
-    slug: car.id,
+    slug: publicCarSlug(car),
     title: car.title || '',
     make: car.make,
     model: car.model,
@@ -31,7 +32,8 @@ export function adaptCar(row: any) {
     doors: car.doors || 0,
     seats: car.seats || 0,
     vin: car.vin || vinMatch,
-    status: 'available' as const,
+    status: car.in_transit === true ? ('in-transit' as const) : ('available' as const),
+    expectedArrival: typeof car.expected_arrival === 'string' ? car.expected_arrival : '',
     featured: false,
     images: car.images || [],
     description: car.description_is || '',

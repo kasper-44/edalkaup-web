@@ -31,6 +31,20 @@ export async function GET(req: Request) {
   return NextResponse.json({ cars: data })
 }
 
+function parseInTransit(value: unknown): { ok: true; value: boolean } | { ok: false } {
+  if (typeof value === 'boolean') return { ok: true, value }
+  return { ok: false }
+}
+
+function parseExpectedArrival(value: unknown): { ok: true; value: string | null } | { ok: false } {
+  if (value === null || value === '') return { ok: true, value: null }
+  if (typeof value !== 'string') return { ok: false }
+  const text = value.trim()
+  if (!text) return { ok: true, value: null }
+  if (text.length > 80) return { ok: false }
+  return { ok: true, value: text }
+}
+
 function parseOptionalNumber(
   value: unknown,
 ): { ok: true; value: number | null } | { ok: false } {
@@ -44,7 +58,8 @@ function parseOptionalNumber(
 // body: { id, price_isk?, price_includes_vat?, specs_verified?, status?, images?, title?, make?, model?, trim?,
 //         description_is?, seats?, doors?, colour?, exterior_colour?, interior_colour?,
 //         year?, range_km?, mileage_km?, battery_kwh?, horsepower_hp?, towing_kg?,
-//         drivetrain?, transmission?, fuel_type?, body_type?, engine?, vin? }
+//         drivetrain?, transmission?, fuel_type?, body_type?, engine?, vin?,
+//         in_transit?, expected_arrival? }
 export async function PATCH(req: Request) {
   if (!isAuthorized(req)) {
     return NextResponse.json({ error: 'Óheimilt' }, { status: 401 })
@@ -79,6 +94,8 @@ export async function PATCH(req: Request) {
     body_type,
     engine,
     vin,
+    in_transit,
+    expected_arrival,
   } = body
   if (!id) {
     return NextResponse.json({ error: 'Vantar id' }, { status: 400 })
@@ -129,6 +146,16 @@ export async function PATCH(req: Request) {
     update.towing_kg = parsed.value
   }
   if (vin !== undefined) update.vin = vin === null || vin === '' ? null : String(vin).trim()
+  if (in_transit !== undefined) {
+    const parsed = parseInTransit(in_transit)
+    if (!parsed.ok) return NextResponse.json({ error: 'Ógild staða á leiðinni' }, { status: 400 })
+    update.in_transit = parsed.value
+  }
+  if (expected_arrival !== undefined) {
+    const parsed = parseExpectedArrival(expected_arrival)
+    if (!parsed.ok) return NextResponse.json({ error: 'Væntanleg komu er of löng' }, { status: 400 })
+    update.expected_arrival = parsed.value
+  }
 
   if (price_isk !== undefined) {
     update.price_isk = Number(price_isk) || 0
@@ -329,6 +356,16 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Ógilt price_includes_vat' }, { status: 400 })
     }
     row.price_includes_vat = parsed.value
+  }
+  if ('in_transit' in body) {
+    const parsed = parseInTransit(body.in_transit)
+    if (!parsed.ok) return NextResponse.json({ error: 'Ógild staða á leiðinni' }, { status: 400 })
+    row.in_transit = parsed.value
+  }
+  if ('expected_arrival' in body) {
+    const parsed = parseExpectedArrival(body.expected_arrival)
+    if (!parsed.ok) return NextResponse.json({ error: 'Væntanleg komu er of löng' }, { status: 400 })
+    row.expected_arrival = parsed.value
   }
 
   const { data, error } = await supabaseAdmin.from('cars').insert(row).select()
