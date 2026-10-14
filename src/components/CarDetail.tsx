@@ -15,6 +15,7 @@ import { formatIskNumber, formatPrice } from '@/lib/formatIsk'
 import { SITE_ORIGIN } from '@/lib/site'
 import { expectedArrivalLabel } from '@/lib/transit'
 import ShareButtons from '@/components/ShareButtons'
+import { HeartIcon } from '@/components/Icons'
 import ListingDescription from '@/components/ListingDescription'
 
 function formatMileage(km: number | null) {
@@ -110,7 +111,7 @@ export default function CarDetail({ car }: { car: any }) {
 
               <a href="#fyrirspurn" className="block w-full text-center px-5 py-3.5 bg-accent text-navy-900 font-semibold rounded-xl hover:bg-accent-light mb-3">Fá nánari upplýsingar</a>
               <CallLink placement="car_detail" className="block w-full text-center px-5 py-3.5 border border-black/15 dark:border-white/20 font-semibold rounded-xl hover:border-accent hover:text-accent transition-colors mb-3">Hringja í 699 2011</CallLink>
-              <button type="button" aria-pressed={saved.includes(car.id)} onClick={() => toggle(car.id)} className="w-full text-center px-5 py-3 border border-black/15 dark:border-white/15 rounded-xl font-medium mb-4">{saved.includes(car.id) ? '♥ Bíll vistaður' : '♡ Vista þennan bíl'}</button>
+              <button type="button" aria-pressed={saved.includes(car.id)} onClick={() => toggle(car.id)} className="w-full inline-flex items-center justify-center gap-2 text-center px-5 py-3 border border-black/15 dark:border-white/15 rounded-xl font-medium mb-4">{saved.includes(car.id) ? <><HeartIcon filled /> Bíll vistaður</> : <><HeartIcon /> Vista þennan bíl</>}</button>
               <p className="text-sm text-gray-600 dark:text-slate-300 mb-5">Hafðu samband til að staðfesta framboð, staðsetningu og möguleika á að skoða bílinn. Við aðstoðum með ferlið frá fyrstu fyrirspurn til afhendingar.</p>
               <a
                 href={`https://wa.me/3546992011?text=${encodeURIComponent(`Hæ, ég hef áhuga á ${title}`)}`}

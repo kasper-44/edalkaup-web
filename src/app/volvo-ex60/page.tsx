@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ex60Cars, formatEX60Price, colorHex } from '@/data/ex60'
 import type { Metadata } from 'next'
+import { ArrowRightIcon } from '@/components/Icons'
 
 export const metadata: Metadata = {
   title: 'Volvo EX60 P12 Long Range | Eðalkaup',
@@ -123,7 +124,7 @@ export default function VolvoEX60Page() {
                 <div className="pt-3 border-t border-black/5 dark:border-white/5 flex items-end justify-between">
                   <p className="text-xl font-bold text-gray-900 dark:text-white">{formatEX60Price(car.price)}</p>
                   {car.status !== 'sold' && (
-                    <Link href="/hafa-samband" className="text-accent text-sm font-medium hover:text-accent-light transition-colors">Skoða nánar →</Link>
+                    <Link href="/hafa-samband" className="inline-flex items-center gap-1 text-accent text-sm font-medium hover:text-accent-light transition-colors">Skoða nánar <ArrowRightIcon className="w-3.5 h-3.5" /></Link>
                   )}
                 </div>
               </div>

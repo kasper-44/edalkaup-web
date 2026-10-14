@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { xc90Cars, formatXC90Price, colorHex } from '@/data/xc90'
 import type { Metadata } from 'next'
+import { ArrowRightIcon } from '@/components/Icons'
 
 export const metadata: Metadata = {
   title: 'Volvo XC90 T8 Ultra | Eðalkaup',
@@ -192,9 +193,9 @@ export default function VolvoXC90Page() {
                   {car.status !== 'sold' && (
                     <Link
                       href="/hafa-samband"
-                      className="text-accent text-sm font-medium hover:text-accent-light transition-colors"
+                      className="inline-flex items-center gap-1 text-accent text-sm font-medium hover:text-accent-light transition-colors"
                     >
-                      Skoða nánar →
+                      Skoða nánar <ArrowRightIcon className="w-3.5 h-3.5" />
                     </Link>
                   )}
                 </div>

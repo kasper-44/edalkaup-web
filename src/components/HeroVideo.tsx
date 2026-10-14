@@ -4,6 +4,7 @@ import CallLink from '@/components/CallLink'
 import type { Car } from '@/data/cars'
 import { getCarTitle } from '@/data/cars'
 import { formatPrice } from '@/lib/formatIsk'
+import { ArrowUpRightIcon } from '@/components/Icons'
 
 /**
  * Homepage hero. The stored hero film is a GMC Sierra EV, which is not for sale,
@@ -22,7 +23,7 @@ export default function HeroVideo({ car }: { car: Car | null }) {
           <h1 className="text-4xl sm:text-5xl xl:text-6xl font-semibold tracking-[-.055em] leading-[1.05]">Vandaðir bílar, tilbúnir til afhendingar.</h1>
           <p className="mt-6 text-base sm:text-lg text-gray-600 dark:text-slate-300 leading-relaxed max-w-md">Eigin úrval, með skýrum upplýsingum um búnað, verð og framboð.</p>
           <div className="flex flex-col sm:flex-row gap-3 mt-8">
-            <Link href="/bilar" className="dealer-button">Skoða bíla til sölu <span aria-hidden="true">↗</span></Link>
+            <Link href="/bilar" className="dealer-button">Skoða bíla til sölu <ArrowUpRightIcon className="w-4 h-4" /></Link>
             <Link href="/hafa-samband" className="dealer-button dealer-button-outline">Hafa samband</Link>
           </div>
           <p className="mt-7 text-sm text-gray-600 dark:text-slate-300">Persónuleg aðstoð í síma <CallLink placement="hero" className="font-semibold text-gray-900 dark:text-white underline underline-offset-4">699 2011</CallLink></p>
@@ -40,7 +41,7 @@ export default function HeroVideo({ car }: { car: Car | null }) {
                 <p className="text-xl font-semibold leading-snug line-clamp-3">{title}</p>
                 <p className="mt-1 text-sm text-white/85">{formatPrice(car.price)}</p>
               </div>
-              <span aria-hidden="true" className="rounded-full border border-white/50 w-12 h-12 shrink-0 flex items-center justify-center text-xl">↗</span>
+              <span aria-hidden="true" className="rounded-full border border-white/50 w-12 h-12 shrink-0 flex items-center justify-center"><ArrowUpRightIcon className="w-5 h-5" /></span>
             </div>
           </Link>
         )}

@@ -1,5 +1,6 @@
 'use client'
 import Image from 'next/image'
+import { ArrowLeftIcon, ArrowRightIcon } from '@/components/Icons'
 import { useState, useRef, useEffect, useCallback } from 'react'
 
 export default function CarGallery({ images, alt }: { images: string[]; alt: string }) {
@@ -34,7 +35,7 @@ export default function CarGallery({ images, alt }: { images: string[]; alt: str
       <button onClick={() => setOpen(true)} className="absolute inset-0 w-full h-full" aria-label={`Stækka mynd ${selected + 1} af ${images.length}: ${alt}`}>
         <Image src={images[selected]} alt={`${alt} — mynd ${selected + 1}`} fill sizes="(max-width: 1024px) 100vw, 66vw" priority className="object-cover object-center" />
       </button>
-      {images.length > 1 && <><button aria-label="Fyrri mynd" onClick={() => next(-1)} className={`${arrowClass} left-3`}>‹</button><button aria-label="Næsta mynd" onClick={() => next(1)} className={`${arrowClass} right-3`}>›</button></>}
+      {images.length > 1 && <><button aria-label="Fyrri mynd" onClick={() => next(-1)} className={`${arrowClass} left-3`}><ArrowLeftIcon className="w-5 h-5" /></button><button aria-label="Næsta mynd" onClick={() => next(1)} className={`${arrowClass} right-3`}><ArrowRightIcon className="w-5 h-5" /></button></>}
       <span className="absolute bottom-3 right-3 bg-navy-900/80 text-white text-xs px-3 py-2 rounded-full pointer-events-none" aria-live="polite">{selected + 1} / {images.length}</span>
     </div>
     {images.length > 1 && <div className="flex gap-2 mt-3 overflow-x-auto py-2" aria-label="Velja mynd">{images.map((image, index) => <button key={`${image}-${index}`} aria-label={`Sýna mynd ${index + 1}`} aria-pressed={index === selected} onClick={() => setSelected(index)} className={`relative w-20 h-14 sm:w-24 sm:h-16 shrink-0 rounded-lg overflow-hidden border-2 ${index === selected ? 'border-accent-dark dark:border-accent' : 'border-transparent'}`}><Image src={image} alt="" fill sizes="96px" className="object-cover" /></button>)}</div>}
@@ -42,7 +43,7 @@ export default function CarGallery({ images, alt }: { images: string[]; alt: str
       <div className="relative w-full h-full">
         <div className="absolute top-4 left-5 right-4 z-10 flex justify-between items-center gap-3"><p className="text-sm">Mynd {selected + 1} / {images.length}</p><button autoFocus onClick={() => setOpen(false)} className="rounded-lg bg-navy-800 px-4 py-3 font-semibold">Loka</button></div>
         <Image src={images[selected]} alt={`${alt} — mynd ${selected + 1}`} fill sizes="95vw" className="object-contain px-12 py-20" />
-        {images.length > 1 && <><button aria-label="Fyrri mynd í stækkuðum glugga" onClick={() => next(-1)} className={`${arrowClass} left-2`}>‹</button><button aria-label="Næsta mynd í stækkuðum glugga" onClick={() => next(1)} className={`${arrowClass} right-2`}>›</button></>}
+        {images.length > 1 && <><button aria-label="Fyrri mynd í stækkuðum glugga" onClick={() => next(-1)} className={`${arrowClass} left-2`}><ArrowLeftIcon className="w-5 h-5" /></button><button aria-label="Næsta mynd í stækkuðum glugga" onClick={() => next(1)} className={`${arrowClass} right-2`}><ArrowRightIcon className="w-5 h-5" /></button></>}
       </div>
     </dialog>
   </div>
