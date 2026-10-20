@@ -7,12 +7,21 @@ interface ContactFormProps {
   carTitle?: string
   carUrl?: string
   carVin?: string
-  /** Compact homepage/modal form: name, phone, and message. Email stays on the full form. */
+  /** Compact homepage/modal form: name, phone, email and message. Email is always required. */
   variant?: 'full' | 'compact'
   source?: 'forsida' | 'gluggi' | 'bilur' | 'samband' | 'innflutningur'
   heading?: string
   headingId?: string
   reserveCorner?: boolean
+}
+
+function applyEmailValidity(input: HTMLInputElement) {
+  input.setCustomValidity('')
+  if (input.validity.valueMissing) {
+    input.setCustomValidity('Vinsamlegast sláðu inn netfang.')
+  } else if (input.validity.typeMismatch || input.validity.patternMismatch) {
+    input.setCustomValidity('Netfang er ekki gilt.')
+  }
 }
 
 export default function ContactForm({
@@ -117,7 +126,7 @@ export default function ContactForm({
       </h3>
       {compact && (
         <p className="hidden text-sm text-gray-500 dark:text-slate-400 sm:block">
-          Láttu fylgja símanúmer og stutt skilaboð. Við svörum á opnunartíma.
+          Láttu fylgja netfang og stutt skilaboð. Við svörum á opnunartíma.
         </p>
       )}
 
@@ -148,7 +157,6 @@ export default function ContactForm({
             id={`${formId}-phone`}
             name="phone"
             type="tel"
-            required={compact}
             autoComplete="tel"
             maxLength={40}
             className={`w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-3 text-base sm:text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors ${compact ? 'py-2.5' : 'px-4 py-3'}`}
@@ -157,21 +165,23 @@ export default function ContactForm({
         </div>
       </div>
 
-      {!compact && (
-        <div>
-          <label htmlFor={`${formId}-email`} className="block text-sm font-medium text-gray-500 dark:text-slate-400 mb-1.5">Netfang</label>
-          <input
-            id={`${formId}-email`}
-            name="email"
-            type="email"
-            required
-            autoComplete="email"
-            maxLength={200}
-            className="w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-4 py-3 text-base sm:text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors"
-            placeholder="netfang@dæmi.is"
-          />
-        </div>
-      )}
+      <div>
+        <label htmlFor={`${formId}-email`} className="block text-sm font-medium text-gray-500 dark:text-slate-400 mb-1.5">Netfang</label>
+        <input
+          id={`${formId}-email`}
+          name="email"
+          type="email"
+          required
+          autoComplete="email"
+          inputMode="email"
+          maxLength={200}
+          pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
+          className={`w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-3 text-base sm:text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors ${compact ? 'py-2.5' : 'px-4 py-3'}`}
+          placeholder="netfang@dæmi.is"
+          onInvalid={(event) => applyEmailValidity(event.currentTarget)}
+          onInput={(event) => applyEmailValidity(event.currentTarget)}
+        />
+      </div>
 
       {carTitle && (
         <div>

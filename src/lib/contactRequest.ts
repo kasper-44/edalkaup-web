@@ -19,6 +19,8 @@ export type ContactPayload = {
   sourceLabel: string
 }
 
+export const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
 function text(value: unknown, max: number): string {
   if (typeof value !== 'string') return ''
   return value.trim().slice(0, max)
@@ -50,11 +52,11 @@ export function parseContactPayload(
   if (!name || !message) {
     return { ok: false, error: 'Vantar nafn eða skilaboð' }
   }
-  if (!email && !phone) {
-    return { ok: false, error: 'Vantar netfang eða símanúmer' }
+  if (!email) {
+    return { ok: false, error: 'Vantar netfang. Sláðu inn netfangið þitt svo við getum svarað þér.' }
   }
-  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return { ok: false, error: 'Netfang er ekki gilt' }
+  if (!EMAIL_RE.test(email)) {
+    return { ok: false, error: 'Netfang er ekki gilt. Athugaðu að það sé t.d. nafn@dæmi.is' }
   }
 
   return {

@@ -123,7 +123,7 @@ verified via DKIM/SPF DNS records at Domeneshop/hyp.net).
 | `generate_lead` | `gtag`, when the Google tag is loaded | Existing form-success event in `ContactForm`. |
 | `Lead` | Meta Pixel, when the pixel is loaded | Existing form-success event. |
 
-Homepage and car pages post to `POST /api/contact`. A compact form may send name, phone, and message without email. The full contact form still sends email.
+Homepage and car pages post to `POST /api/contact`. Every inquiry form requires a valid email, which is used as the reply-to address. Phone is optional.
 
 ## Deployment
 
