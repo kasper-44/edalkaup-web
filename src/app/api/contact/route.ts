@@ -30,12 +30,12 @@ export async function POST(req: Request) {
     const delivery = await resend.emails.send({
       from: 'Eðalkaup Vefur <fyrirspurn@edalkaup.is>',
       to: contactInbox(),
-      ...(email ? { replyTo: email } : {}),
+      replyTo: email,
       subject,
       html: `
         <h2>${escapeHtml(subject)}</h2>
         <p><strong>Nafn:</strong> ${escapeHtml(name)}</p>
-        ${email ? `<p><strong>Netfang:</strong> ${escapeHtml(email)}</p>` : ''}
+        <p><strong>Netfang:</strong> ${escapeHtml(email)}</p>
         ${phone ? `<p><strong>Sími:</strong> ${escapeHtml(phone)}</p>` : ''}
         ${car ? `<p><strong>Bíll:</strong> ${escapeHtml(car)}${carVin ? ` (VIN: ${escapeHtml(carVin)})` : ''}${safeUrl ? ` — <a href="${escapeHtml(safeUrl)}">Skoða auglýsingu</a>` : ''}</p>` : ''}
         <hr/>
