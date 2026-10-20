@@ -95,7 +95,7 @@ export default function ContactForm({
 
   if (submitted) {
     return (
-      <div className="bg-white dark:bg-navy-800 rounded-2xl border border-accent/20 p-8 text-center">
+      <div className="border border-accent/30 bg-white p-8 text-center dark:bg-navy-800">
         <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-accent/10 flex items-center justify-center">
           <svg className="w-8 h-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -114,13 +114,13 @@ export default function ContactForm({
     <form
       onSubmit={handleSubmit}
       aria-busy={sending}
-      className={`bg-white dark:bg-navy-800 rounded-2xl border border-black/5 dark:border-white/5 shadow-xl shadow-black/10 ${
-        compact ? 'p-4 sm:p-5 space-y-3' : 'p-6 sm:p-8 space-y-5'
+      className={`border border-black/10 bg-white dark:border-white/10 dark:bg-navy-800 ${
+        compact ? 'space-y-3 p-5 sm:p-6' : 'space-y-5 p-6 sm:p-8'
       }`}
     >
       <h3
         id={headingId}
-        className={`font-bold text-gray-900 dark:text-white ${compact ? 'text-lg' : 'text-xl'} ${reserveCorner ? 'pr-10' : ''}`}
+        className={`text-navy-900 dark:text-white ${compact ? 'text-2xl' : 'text-3xl'} ${reserveCorner ? 'pr-10' : ''}`}
       >
         {title}
       </h3>
@@ -147,7 +147,7 @@ export default function ContactForm({
             required
             autoComplete="name"
             maxLength={120}
-            className={`w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-3 text-base sm:text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors ${compact ? 'py-2.5' : 'px-4 py-3'}`}
+            className={`w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-3 text-base sm:text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:border-accent transition-colors ${compact ? 'py-2.5' : 'px-4 py-3'}`}
             placeholder="Fullt nafn"
           />
         </div>
@@ -159,7 +159,7 @@ export default function ContactForm({
             type="tel"
             autoComplete="tel"
             maxLength={40}
-            className={`w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-3 text-base sm:text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors ${compact ? 'py-2.5' : 'px-4 py-3'}`}
+            className={`w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-3 text-base sm:text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:border-accent transition-colors ${compact ? 'py-2.5' : 'px-4 py-3'}`}
             placeholder="000 0000"
           />
         </div>
@@ -176,7 +176,7 @@ export default function ContactForm({
           inputMode="email"
           maxLength={200}
           pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
-          className={`w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-3 text-base sm:text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors ${compact ? 'py-2.5' : 'px-4 py-3'}`}
+          className={`w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-3 text-base sm:text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:border-accent transition-colors ${compact ? 'py-2.5' : 'px-4 py-3'}`}
           placeholder="netfang@dæmi.is"
           onInvalid={(event) => applyEmailValidity(event.currentTarget)}
           onInput={(event) => applyEmailValidity(event.currentTarget)}
@@ -204,7 +204,7 @@ export default function ContactForm({
           maxLength={4000}
           rows={compact ? 2 : 4}
           required
-          className="w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-4 py-3 text-base sm:text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors resize-y min-h-20"
+          className="w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-4 py-3 text-base sm:text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:border-accent transition-colors resize-y min-h-20"
           placeholder={carTitle ? 'Spurning um búnað, verð eða framboð á þessum bíl?' : 'Hvaða auglýsta bíl viltu fá upplýsingar um?'}
         />
       </div>

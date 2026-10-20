@@ -11,16 +11,16 @@ export default function Footer() {
   if (/^\/volvo-ex60\/(diesel|hofdabilar|edalkaup)$/.test(pathname)) return null
 
   return (
-    <footer className="bg-gray-50 dark:bg-navy-800 border-t border-black/5 dark:border-white/5 transition-colors">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-28 lg:pb-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+    <footer className="border-t border-accent/30 bg-[#efece4] transition-colors dark:border-white/10 dark:bg-navy-800">
+      <div className="dealer-container pt-16 pb-28 lg:pb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand */}
           <div>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-accent to-accent-dark flex items-center justify-center text-navy-900 font-bold text-xl">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="flex h-10 w-10 items-center justify-center border border-accent bg-navy-900 font-serif text-2xl leading-none text-accent">
                 E
               </div>
-              <span className="text-xl font-bold text-gray-900 dark:text-white">EÐALKAUP</span>
+              <span className="text-sm font-semibold tracking-[0.22em] text-navy-900 dark:text-white">EÐALKAUP</span>
             </div>
             <p className="text-sm text-gray-500 dark:text-slate-400 leading-relaxed">
               Bílar til sölu og persónuleg þjónusta. Yfir 25 ára reynsla af bílainnflutningi.

@@ -86,9 +86,9 @@ export default async function CarPage({
         dangerouslySetInnerHTML={{ __html: jsonLdScript(breadcrumbJsonLd(car, path)) }}
       />
       <CarDetail car={car} />
-      {related.length > 0 && <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Skoðaðu líka</h2>
-        <div className="grid md:grid-cols-3 gap-6">{related.map((candidate) => <CarCard key={candidate.id} car={candidate} />)}</div>
+      {related.length > 0 && <section className="dealer-container pb-20">
+        <h2 className="dealer-heading mb-8 text-4xl">Skoðaðu líka</h2>
+        <div className="grid gap-8 md:grid-cols-3">{related.map((candidate) => <CarCard key={candidate.id} car={candidate} />)}</div>
       </section>}
     </>
   )

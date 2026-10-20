@@ -4,6 +4,7 @@ const nextConfig = {
     root: __dirname,
   },
   images: {
+    qualities: [75, 80, 85],
     remotePatterns: [
       { protocol: 'https', hostname: 'auto.dev' },
       { protocol: 'https', hostname: '**.auto.dev' },
