@@ -15,6 +15,15 @@ interface ContactFormProps {
   reserveCorner?: boolean
 }
 
+function applyEmailValidity(input: HTMLInputElement) {
+  input.setCustomValidity('')
+  if (input.validity.valueMissing) {
+    input.setCustomValidity('Vinsamlegast sláðu inn netfang.')
+  } else if (input.validity.typeMismatch || input.validity.patternMismatch) {
+    input.setCustomValidity('Netfang er ekki gilt.')
+  }
+}
+
 export default function ContactForm({
   carTitle,
   carUrl,
@@ -169,11 +178,8 @@ export default function ContactForm({
           pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
           className={`w-full bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/10 rounded-lg px-3 text-base sm:text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-accent transition-colors ${compact ? 'py-2.5' : 'px-4 py-3'}`}
           placeholder="netfang@dæmi.is"
-          onInvalid={(event) => {
-            const input = event.currentTarget
-            input.setCustomValidity(input.validity.valueMissing ? 'Vinsamlegast sláðu inn netfang.' : 'Netfang er ekki gilt.')
-          }}
-          onInput={(event) => event.currentTarget.setCustomValidity('')}
+          onInvalid={(event) => applyEmailValidity(event.currentTarget)}
+          onInput={(event) => applyEmailValidity(event.currentTarget)}
         />
       </div>
 
