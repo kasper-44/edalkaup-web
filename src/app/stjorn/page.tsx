@@ -14,6 +14,7 @@ import { publicCarSlug } from '@/lib/carPath'
 import { formatIsk, formatIskNumber } from '@/lib/formatIsk'
 import { vehicleTitle } from '@/lib/listingSeo'
 import { SITE_ORIGIN } from '@/lib/site'
+import { ArrowUpRightIcon, CheckIcon, CloseIcon, WarningIcon } from '@/components/Icons'
 
 const fmt = formatIskNumber
 
@@ -356,22 +357,22 @@ export default function AdminPage() {
                         </p>
                         <div className="flex flex-wrap gap-1 mt-1">
                           {!car.images_original && (
-                            <span className="inline-block px-2 py-0.5 text-[11px] rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30">
-                              ⚠ Myndir ósíaðar — skoðaðu í forskoðun fyrst
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[11px] rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30">
+                              <WarningIcon className="w-3 h-3" /> Myndir ósíaðar — skoðaðu í forskoðun fyrst
                             </span>
                           )}
                           {car.specs_verified ? (
-                            <span className="inline-block px-2 py-0.5 text-[11px] rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-                              ✓ Tæknilegar upplýsingar staðfestar
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[11px] rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                              <CheckIcon className="w-3 h-3" /> Tæknilegar upplýsingar staðfestar
                             </span>
                           ) : (
-                            <span className="inline-block px-2 py-0.5 text-[11px] rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30">
-                              ⚠ Tæknilegar upplýsingar óstaðfestar — opnaðu forskoðun til að staðfesta
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[11px] rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30">
+                              <WarningIcon className="w-3 h-3" /> Tæknilegar upplýsingar óstaðfestar — opnaðu forskoðun til að staðfesta
                             </span>
                           )}
                           {!car.price_verified && (
-                            <span className="inline-block px-2 py-0.5 text-[11px] rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30">
-                              ⚠ Verð ekki staðfest{car.price_isk > 0 ? '' : ' (og ekki sett)'}
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[11px] rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30">
+                              <WarningIcon className="w-3 h-3" /> Verð ekki staðfest{car.price_isk > 0 ? '' : ' (og ekki sett)'}
                             </span>
                           )}
                         </div>
@@ -382,9 +383,9 @@ export default function AdminPage() {
                           target="_blank"
                           rel="noopener noreferrer"
                           title="Leita að VIN á Google til að finna upprunalegu auglýsinguna"
-                          className="text-amber-400 text-xs hover:underline whitespace-nowrap"
+                          className="inline-flex items-center gap-1 text-amber-400 text-xs hover:underline whitespace-nowrap"
                         >
-                          Leita að VIN ↗
+                          Leita að VIN <ArrowUpRightIcon className="w-3 h-3" />
                         </a>
                       )}
                     </div>
@@ -537,9 +538,9 @@ export default function AdminPage() {
                 )}
                 <button
                   onClick={closePreview}
-                  className="px-3 py-1 rounded-lg bg-slate-700 text-sm hover:bg-slate-600"
+                  className="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-slate-700 text-sm hover:bg-slate-600"
                 >
-                  Loka ✕
+                  Loka <CloseIcon className="w-3.5 h-3.5" />
                 </button>
               </div>
             </div>
@@ -601,7 +602,7 @@ export default function AdminPage() {
                           title="Eyða þessari mynd"
                           className="absolute top-1.5 right-1.5 w-7 h-7 rounded-full bg-red-600 text-white text-sm font-bold flex items-center justify-center shadow hover:bg-red-500"
                         >
-                          ✕
+                          <CloseIcon className="w-4 h-4" />
                         </button>
                       )}
                     </div>
@@ -764,13 +765,13 @@ export default function AdminPage() {
                   check them against the real vehicle before confirming. */}
               <div className="mt-5 px-3 py-3 rounded-lg bg-slate-100 border border-black/5">
                 {preview.specs_verified ? (
-                  <p className="text-emerald-700 text-sm font-medium">
-                    ✓ Tæknilegar upplýsingar staðfestar
+                  <p className="inline-flex items-center gap-1.5 text-emerald-700 text-sm font-medium">
+                    <CheckIcon className="w-4 h-4" /> Tæknilegar upplýsingar staðfestar
                   </p>
                 ) : (
                   <>
-                    <p className="text-amber-800 text-sm mb-2">
-                      ⚠ Upplýsingarnar hér að ofan (vél, eldsneyti, drifkerfi o.fl.) eru
+                    <p className="flex items-start gap-1.5 text-amber-800 text-sm mb-2">
+                      <WarningIcon className="w-4 h-4 mt-0.5" /> Upplýsingarnar hér að ofan (vél, eldsneyti, drifkerfi o.fl.) eru
                       sjálfvirkt útfylltar sjálfgefin gildi fyrir gerðina — EKKI staðfest
                       fyrir þennan tiltekna bíl. Farðu yfir þær áður en þú staðfestir.
                     </p>
@@ -789,8 +790,8 @@ export default function AdminPage() {
               </div>
 
               {!preview.images_original && (
-                <p className="mt-5 px-3 py-2 rounded-lg bg-amber-100 text-amber-800 text-sm">
-                  ⚠ Myndir hafa ekki verið síaðar sjálfvirkt enn — gakktu úr skugga
+                <p className="mt-5 px-3 py-2 rounded-lg bg-amber-100 text-amber-800 text-sm flex items-start gap-1.5">
+                  <WarningIcon className="w-4 h-4 mt-0.5 shrink-0" /> Myndir hafa ekki verið síaðar sjálfvirkt enn — gakktu úr skugga
                   um að engin mynd hér að ofan sýni upprunalega söluaðilann áður en þú birtir.
                 </p>
               )}

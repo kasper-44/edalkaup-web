@@ -1,14 +1,23 @@
 import mcData from './data.json'
+import { CheckIcon, CircleIcon } from '@/components/Icons'
 
 export const metadata = { title: 'Yfirlit', robots: { index: false, follow: false } }
 
-const statusEmoji: Record<string, string> = {
-  'live': '🟢',
-  'in-progress': '🟡',
-  'blocked': '🔴',
-  'done': '✅',
-  'ready': '⚪',
-  'active': '🟢',
+const statusColor: Record<string, string> = {
+  live: '#4ade80',
+  'in-progress': '#facc15',
+  blocked: '#f87171',
+  done: '#a1a1aa',
+  ready: '#e4e4e7',
+  active: '#4ade80',
+}
+
+function StatusMark({ status }: { status: string }) {
+  return (
+    <svg viewBox="0 0 8 8" aria-hidden="true" className="inline-block w-2 h-2 shrink-0 align-middle">
+      <circle cx="4" cy="4" r="3" fill={statusColor[status] ?? '#a1a1aa'} />
+    </svg>
+  )
 }
 
 const statusLabel: Record<string, string> = {
@@ -30,7 +39,7 @@ export default function MissionControl() {
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold tracking-tight">
-              🚀 Mission Control
+              Mission Control
             </h1>
             <p className="text-zinc-500 text-sm">Eðalkaup Operations Dashboard</p>
           </div>
@@ -56,14 +65,14 @@ export default function MissionControl() {
 
         {/* Active Missions */}
         <section>
-          <h2 className="text-lg font-semibold mb-4 text-zinc-300">🎯 Active Missions</h2>
+          <h2 className="text-lg font-semibold mb-4 text-zinc-300">Active Missions</h2>
           <div className="space-y-3">
             {data.missions.map((m) => (
               <div key={m.id} className="bg-zinc-900 border border-zinc-800 rounded-lg p-4">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="font-medium">{m.name}</h3>
                   <span className="text-xs px-2 py-0.5 rounded-full bg-zinc-800 text-zinc-300">
-                    {statusEmoji[m.status]} {statusLabel[m.status]}
+                    <StatusMark status={m.status} /> {statusLabel[m.status]}
                   </span>
                 </div>
                 <p className="text-sm text-zinc-500 mb-3">{m.notes}</p>
@@ -71,13 +80,13 @@ export default function MissionControl() {
                   {m.steps.map((s, i) => (
                     <span
                       key={i}
-                      className={`text-xs px-2 py-1 rounded ${
+                      className={`inline-flex items-center gap-1 text-xs px-2 py-1 rounded ${
                         s.done
                           ? 'bg-green-900/30 text-green-400 line-through'
                           : 'bg-zinc-800 text-zinc-400'
                       }`}
                     >
-                      {s.done ? '✓' : '○'} {s.label}
+                      {s.done ? <CheckIcon className="w-3 h-3" /> : <CircleIcon className="w-3 h-3" />} {s.label}
                     </span>
                   ))}
                 </div>
@@ -90,7 +99,7 @@ export default function MissionControl() {
         <div className="grid md:grid-cols-2 gap-8">
           {/* Tools */}
           <section>
-            <h2 className="text-lg font-semibold mb-4 text-zinc-300">🔧 Tools</h2>
+            <h2 className="text-lg font-semibold mb-4 text-zinc-300">Tools</h2>
             <div className="bg-zinc-900 border border-zinc-800 rounded-lg divide-y divide-zinc-800">
               {Object.values(data.tools).map((t) => (
                 <div key={t.name} className="px-4 py-3 flex items-center justify-between">
@@ -107,7 +116,7 @@ export default function MissionControl() {
                     )}
                   </div>
                   <span className="text-xs">
-                    {statusEmoji[t.status]} {statusLabel[t.status]}
+                    <StatusMark status={t.status} /> {statusLabel[t.status]}
                     {'credits' in t && (
                       <span className="ml-2 text-zinc-500">
                         {t.credits}/{t.limit}
@@ -121,7 +130,7 @@ export default function MissionControl() {
 
           {/* Agents */}
           <section>
-            <h2 className="text-lg font-semibold mb-4 text-zinc-300">🤖 Agent Team</h2>
+            <h2 className="text-lg font-semibold mb-4 text-zinc-300">Agent Team</h2>
             <div className="bg-zinc-900 border border-zinc-800 rounded-lg divide-y divide-zinc-800">
               {data.agents.map((a) => (
                 <div key={a.name} className="px-4 py-3 flex items-center justify-between">
@@ -130,7 +139,7 @@ export default function MissionControl() {
                     <div className="text-xs text-zinc-500">{a.role}</div>
                   </div>
                   <span className="text-xs">
-                    {statusEmoji[a.status]} {statusLabel[a.status]}
+                    <StatusMark status={a.status} /> {statusLabel[a.status]}
                   </span>
                 </div>
               ))}
@@ -140,7 +149,7 @@ export default function MissionControl() {
 
         {/* Recent Activity */}
         <section>
-          <h2 className="text-lg font-semibold mb-4 text-zinc-300">📝 Recent Activity</h2>
+          <h2 className="text-lg font-semibold mb-4 text-zinc-300">Recent Activity</h2>
           <div className="bg-zinc-900 border border-zinc-800 rounded-lg divide-y divide-zinc-800">
             {data.recentActivity.map((a, i) => (
               <div key={i} className="px-4 py-3 flex items-start gap-3">
@@ -155,7 +164,7 @@ export default function MissionControl() {
       </main>
 
       <footer className="border-t border-zinc-800 px-6 py-4 text-center text-xs text-zinc-600">
-        Eðalkaup Mission Control — Powered by Kasper 🐾
+        Eðalkaup Mission Control — Powered by Kasper
       </footer>
     </div>
   )

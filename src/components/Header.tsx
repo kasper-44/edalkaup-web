@@ -7,6 +7,7 @@ import { useTheme } from './ThemeProvider'
 import { SHOW_NEW_VOLVO } from '@/lib/features'
 import CallLink from '@/components/CallLink'
 import { goToInquiry } from '@/lib/goToInquiry'
+import Wordmark from '@/components/Wordmark'
 
 const navItems = [
   { href: '/', label: 'Forsíða' },
@@ -48,18 +49,9 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 sm:gap-3 group">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-gradient-to-br from-accent to-accent-dark flex items-center justify-center text-navy-900 font-bold text-xl">
-              E
-            </div>
-            <div>
-              <span className="text-base sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white group-hover:text-accent transition-colors">
-                EÐALKAUP
-              </span>
-              <span className="hidden sm:block text-[10px] uppercase tracking-[0.3em] text-gray-500 dark:text-slate-400">
-                Bílainnflutningur
-              </span>
-            </div>
+          <Link href="/" aria-label="Eðalkaup, forsíða" className="shrink-0 py-1">
+            <Wordmark subtitle className="hidden sm:block" />
+            <Wordmark subtitle={false} className="sm:hidden" />
           </Link>
 
           {/* Desktop Nav */}

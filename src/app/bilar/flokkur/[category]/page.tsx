@@ -7,6 +7,7 @@ import type { InventorySort } from '@/lib/inventory'
 import { pageMetadata, inventoryListJsonLd } from '@/lib/pageSeo'
 import { jsonLdScript } from '@/lib/listingSeo'
 import Link from 'next/link'
+import { ArrowRightIcon } from '@/components/Icons'
 export const dynamic = 'force-dynamic'
 type Props = { params: Promise<{ category: string }>; searchParams: Promise<Record<string, string | string[] | undefined>> }
 export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
@@ -26,6 +27,6 @@ export default async function CategoryPage({ params, searchParams }: Props) {
   return <>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(inventoryListJsonLd(sortCars(filterCars(cars, parseInventoryFilters(paramsValue)), sort), `/bilar/flokkur/${slug}`, category.title)) }} />
     <Inventory key={JSON.stringify({ slug, filters: parseInventoryFilters(paramsValue), sort })} cars={cars} title={category.title} intro={category.intro} initialFilters={parseInventoryFilters(paramsValue)} initialSort={sort} />
-    <section className="max-w-7xl mx-auto px-5 pb-16"><h2 className="text-2xl font-bold mb-4">Spurning um auglýstan bíl?</h2><p className="text-gray-600 dark:text-slate-300 max-w-3xl mb-4">Hafðu samband um auglýstan bíl til að fá nánari upplýsingar um búnað, verð og framboð.</p><Link href="/hafa-samband" className="font-semibold underline underline-offset-4">Hafa samband →</Link></section>
+    <section className="max-w-7xl mx-auto px-5 pb-16"><h2 className="text-2xl font-bold mb-4">Spurning um auglýstan bíl?</h2><p className="text-gray-600 dark:text-slate-300 max-w-3xl mb-4">Hafðu samband um auglýstan bíl til að fá nánari upplýsingar um búnað, verð og framboð.</p><Link href="/hafa-samband" className="inline-flex items-center gap-1.5 font-semibold"><span className="underline underline-offset-4">Hafa samband</span><ArrowRightIcon className="w-3.5 h-3.5" /></Link></section>
   </>
 }

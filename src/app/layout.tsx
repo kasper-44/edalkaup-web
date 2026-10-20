@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Cormorant_Garamond, Inter } from 'next/font/google'
 import { headers } from 'next/headers'
 import './globals.css'
 import Header from '@/components/Header'
@@ -13,7 +13,13 @@ import MarketingTags from '@/components/MarketingTags'
 import { jsonLdScript, siteDealerJsonLd } from '@/lib/listingSeo'
 import { SITE_ORIGIN } from '@/lib/site'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['latin', 'latin-ext'] })
+const wordmark = Cormorant_Garamond({
+  subsets: ['latin', 'latin-ext'],
+  weight: ['500', '600'],
+  variable: '--font-wordmark',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_ORIGIN),
@@ -57,7 +63,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           />
         )}
       </head>
-      <body className={`${inter.className} antialiased`}>
+      <body className={`${inter.className} ${wordmark.variable} antialiased`}>
         <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:bg-white focus:text-navy-900 focus:p-3 focus:rounded-lg">Fara í efni síðunnar</a>
         <MarketingTags />
         <ThemeProvider>

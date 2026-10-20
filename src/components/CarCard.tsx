@@ -6,6 +6,7 @@ import { fuelLabel } from '@/lib/inventory'
 import { vehicleTitle } from '@/lib/listingSeo'
 import { vatIncludedPriceSubtitle, withVatFlag } from '@/lib/priceVat'
 import { expectedArrivalLabel } from '@/lib/transit'
+import { ArrowRightIcon } from '@/components/Icons'
 
 interface CarCardProps {
   car: Car
@@ -94,8 +95,8 @@ export default function CarCard({ car, priority = false, actions }: CarCardProps
                 <p className="text-sm text-gray-600 dark:text-slate-400 mt-1">{vatSubtitle}</p>
               )}
             </div>
-            <span className="self-end text-accent-dark dark:text-accent text-sm font-semibold group-hover:translate-x-1 transition-transform">
-              Skoða bíl →
+            <span className="self-end inline-flex items-center gap-1 text-accent-dark dark:text-accent text-sm font-semibold group-hover:translate-x-1 transition-transform">
+              Skoða bíl <ArrowRightIcon className="w-3.5 h-3.5" />
             </span>
           </div>
         </div>
