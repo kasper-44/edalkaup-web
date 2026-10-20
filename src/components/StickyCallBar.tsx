@@ -11,7 +11,7 @@ export default function StickyCallBar() {
   if (HIDE_CHROME.test(pathname) || pathname.startsWith('/stjorn')) return null
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-black/10 bg-white/95 backdrop-blur-xl pb-[env(safe-area-inset-bottom)] dark:border-white/10 dark:bg-navy-900/95 lg:hidden">
+    <div className="fixed inset-x-0 bottom-0 z-40 w-full max-w-[100vw] border-t border-accent/30 bg-[#f6f4ef]/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl dark:border-white/10 dark:bg-navy-900/95 lg:hidden">
       <div className="flex gap-2 px-3 py-2.5">
         <CallLink
           placement="sticky_bar"

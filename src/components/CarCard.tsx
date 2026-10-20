@@ -6,6 +6,7 @@ import { fuelLabel } from '@/lib/inventory'
 import { vehicleTitle } from '@/lib/listingSeo'
 import { vatIncludedPriceSubtitle, withVatFlag } from '@/lib/priceVat'
 import { expectedArrivalLabel } from '@/lib/transit'
+import { IconArrowRight } from '@/components/Icons'
 
 interface CarCardProps {
   car: Car
@@ -15,9 +16,9 @@ interface CarCardProps {
 
 export default function CarCard({ car, priority = false, actions }: CarCardProps) {
   const statusColors = {
-    available: 'bg-white text-emerald-800 border-white/80',
+    available: 'bg-white/95 text-navy-900 border-white',
     'in-transit': 'bg-amber-400 text-amber-950 border-amber-300',
-    sold: 'bg-white text-red-800 border-white/80',
+    sold: 'bg-white/95 text-red-900 border-white',
   }
 
   const statusLabels = {
@@ -40,62 +41,49 @@ export default function CarCard({ car, priority = false, actions }: CarCardProps
       : null
 
   return (
-    <article className="h-full flex flex-col rounded-xl overflow-hidden border border-black/10 dark:border-white/10 bg-white dark:bg-navy-800 hover:border-accent/50 transition-colors">
-    <Link href={`/bilar/${car.slug}`} className="group flex flex-col flex-1" aria-label={title}>
-      <div className="flex flex-col flex-1 hover:bg-accent/5 transition-colors">
-        {/* Image */}
-        <div className="relative aspect-[16/10] overflow-hidden">
+    <article className="dealer-card group flex h-full flex-col overflow-hidden">
+    <Link href={`/bilar/${car.slug}`} className="flex flex-1 flex-col" aria-label={title}>
+      <div className="flex flex-1 flex-col">
+        <div className="relative aspect-[4/3] overflow-hidden bg-[#14120e]">
           {car.images[0] ? <Image
             src={car.images[0]}
             alt={title}
             fill
-            className="object-cover group-hover:scale-105 transition-transform duration-500"
+            quality={80}
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.035]"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             priority={priority}
-          /> : <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-navy-700 text-gray-500 dark:text-slate-300">Mynd væntanleg</div>}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 dark:from-navy-900/60 to-transparent" />
+          /> : <div className="absolute inset-0 flex items-center justify-center bg-[#ece7de] text-[#5c564c] dark:bg-navy-700 dark:text-slate-300">Mynd væntanleg</div>}
 
-          {/* Status badge */}
-          <div className={`absolute top-3 right-3 px-3 py-1 text-xs font-semibold rounded-full border ${statusColors[car.status]}`}>
+          <div className={`absolute top-4 left-4 border px-3 py-1 text-xs font-semibold tracking-wide ${statusColors[car.status]}`}>
             {statusLabels[car.status]}
           </div>
         </div>
 
-        {/* Content */}
-        <div className="p-5 flex flex-col flex-1">
-          <div className="flex items-start justify-between gap-2 mb-2">
-            <div>
-              <p className="text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">{car.make}</p>
-              <h3 className="text-lg font-semibold leading-snug text-gray-900 dark:text-white group-hover:text-accent transition-colors">
-                {title}
-              </h3>
-              {arrival && (
-                <p className="mt-1 text-sm font-medium text-amber-800 dark:text-amber-300">{arrival}</p>
-              )}
-            </div>
-          </div>
+        <div className="flex flex-1 flex-col p-5 sm:p-6">
+          <p className="dealer-eyebrow">{car.make}</p>
+          <h3 className="mt-2 text-[1.65rem] leading-snug text-navy-900 transition-colors group-hover:text-accent-dark dark:text-white dark:group-hover:text-accent">
+            {title}
+          </h3>
+          {arrival && (
+            <p className="mt-2 text-sm font-medium text-amber-800 dark:text-amber-300">{arrival}</p>
+          )}
 
-          {/* Quick specs */}
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-2 mt-3 mb-4 text-sm text-gray-500 dark:text-slate-400">
-            <span className="flex items-center gap-1">
-              {car.year}
-            </span>
-            <span>•</span>
-            <span>{fuelLabel(car.fuelType)}</span>
-            <span>•</span>
-            <span>{formatMileage(car.mileage)}</span>
-          </div>
+          <dl className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-[#5c564c] dark:text-slate-300">
+            <div><dt className="sr-only">Árgerð</dt><dd>{car.year}</dd></div>
+            <span aria-hidden="true">·</span>
+            <div><dt className="sr-only">Eldsneyti</dt><dd>{fuelLabel(car.fuelType)}</dd></div>
+            <span aria-hidden="true">·</span>
+            <div><dt className="sr-only">Akstur</dt><dd>{formatMileage(car.mileage)}</dd></div>
+          </dl>
 
-          {/* Price */}
-          <div className="mt-auto pt-4 border-t border-black/5 dark:border-white/5 flex flex-col items-start gap-3">
-            <div>
-              <p className="text-xl font-bold text-gray-900 dark:text-white whitespace-nowrap">{formatPrice(car.price)}</p>
-              {vatSubtitle && (
-                <p className="text-sm text-gray-600 dark:text-slate-400 mt-1">{vatSubtitle}</p>
-              )}
-            </div>
-            <span className="self-end text-accent-dark dark:text-accent text-sm font-semibold group-hover:translate-x-1 transition-transform">
-              Skoða bíl →
+          <div className="mt-auto border-t border-black/10 pt-5 dark:border-white/10">
+            <p className="dealer-price text-[1.85rem]">{formatPrice(car.price)}</p>
+            {vatSubtitle && (
+              <p className="mt-1.5 text-sm text-[#5c564c] dark:text-slate-300">{vatSubtitle}</p>
+            )}
+            <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-accent-dark transition-colors group-hover:text-navy-900 dark:text-accent dark:group-hover:text-accent-light">
+              Skoða bíl <IconArrowRight className="transition-transform duration-300 group-hover:translate-x-0.5" />
             </span>
           </div>
         </div>

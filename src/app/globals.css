@@ -11,28 +11,47 @@
   --color-accent-light: #e0c36a;
   --color-accent-dark: #806418;
 
-  /* Semantic light-mode defaults */
-  --color-surface: #ffffff;
-  --color-surface-alt: #f8f9fb;
-  --color-surface-card: #ffffff;
-  --color-on-surface: #1a1a2e;
-  --color-on-surface-muted: #64748b;
-  --color-on-surface-faint: #94a3b8;
-  --color-border: rgba(0,0,0,0.08);
-  --color-border-hover: rgba(0,0,0,0.15);
+  /* Warm paper in light mode; ink stays near-black for contrast. */
+  --color-surface: #f6f4ef;
+  --color-surface-alt: #efece4;
+  --color-surface-card: #fffcf8;
+  --color-on-surface: #16140f;
+  --color-on-surface-muted: #5c564c;
+  --color-on-surface-faint: #6f675c;
+  --color-border: rgba(22, 20, 15, 0.1);
+  --color-border-hover: rgba(22, 20, 15, 0.22);
+}
+
+@theme inline {
+  --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-display), Georgia, "Times New Roman", serif;
 }
 
 /* ─── Light mode body ─── */
 body {
   background-color: var(--color-surface);
   color: var(--color-on-surface);
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
   transition: background-color 0.2s, color 0.2s;
+}
+
+h1, h2, h3, .dealer-heading, .dealer-price, .dealer-display {
+  font-family: var(--font-display), Georgia, "Times New Roman", serif;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+::selection {
+  background: rgba(201, 168, 76, 0.38);
+  color: #0a0f1c;
 }
 
 /* ─── Dark mode overrides via .dark on <html> ─── */
 .dark body {
   background-color: var(--color-navy-900);
-  color: #f1f5f9;
+  color: #f4efe6;
 }
 
 /* Smooth scrolling */
@@ -59,7 +78,7 @@ html {
   background: var(--color-navy-900);
 }
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #cfc6b6;
   border-radius: 4px;
 }
 .dark ::-webkit-scrollbar-thumb {
@@ -80,14 +99,19 @@ html {
   justify-content: center;
 }
 
-/* Keep keyboard navigation visible across menus, cards and forms. */
-:where(a, button, input, select, textarea):focus-visible {
-  outline: 3px solid var(--color-accent-dark);
-  outline-offset: 4px;
+/* Keyboard focus stays visible on gold, paper and near-black. */
+:where(a, button, input, select, textarea, summary):focus-visible {
+  outline: 2px solid #5c4310;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px rgba(201, 168, 76, 0.45);
+}
+.dark :where(a, button, input, select, textarea, summary):focus-visible {
+  outline-color: #e0c36a;
+  box-shadow: 0 0 0 5px rgba(201, 168, 76, 0.3);
 }
 nav a[aria-current="page"] {
   color: var(--color-on-surface);
-  background: rgba(201, 168, 76, 0.12);
+  background: rgba(201, 168, 76, 0.16);
 }
 .dark nav a[aria-current="page"] { color: white; }
 @media (prefers-reduced-motion: reduce) {
@@ -100,37 +124,107 @@ nav a[aria-current="page"] {
 }
 
 .inventory-chip {
-  display: inline-flex; align-items: center; padding: .65rem 1rem;
-  border: 1px solid rgba(0,0,0,.12); border-radius: 999px;
-  background: white; font-size: .875rem; font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0.55rem 1.05rem;
+  border: 1px solid rgba(22, 20, 15, 0.12);
+  border-radius: 999px;
+  background: white;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
 }
-.inventory-chip:hover { border-color: var(--color-accent-dark); }
-.dark .inventory-chip { background: var(--color-navy-800); border-color: rgba(255,255,255,.2); }
+.inventory-chip:hover { border-color: var(--color-accent-dark); background: rgba(201, 168, 76, 0.1); }
+.dark .inventory-chip { background: var(--color-navy-800); border-color: rgba(255,255,255,.2); color: #f4efe6; }
 
-input::placeholder, textarea::placeholder { color: #64748b; opacity: 1; }
-.dark input::placeholder, .dark textarea::placeholder { color: #94a3b8; }
+input::placeholder, textarea::placeholder { color: #5c564c; opacity: 1; }
+.dark input::placeholder, .dark textarea::placeholder { color: #c8c0b4; }
 .dark :is(input, select, textarea) { color-scheme: dark; }
 
 /* Eðalkaup: restrained gold, warm surfaces and clear editorial hierarchy. */
-.dealer-container { max-width: 80rem; margin-inline: auto; padding-inline: 1.25rem; }
-.dealer-hero { background: #f4f2ed; }
-.dark .dealer-hero { background: #111827; }
-.dealer-stock { background: #f6f7f8; border-block: 1px solid rgba(0,0,0,.06); }
+.dealer-container { max-width: 76rem; margin-inline: auto; padding-inline: 1.25rem; }
+.dealer-hero { background: transparent; }
+.dark .dealer-hero { background: transparent; }
+.dealer-stock { background: #efece4; border-block: 1px solid rgba(22, 20, 15, 0.06); }
 .dark .dealer-stock { background: #0e1522; border-color: rgba(255,255,255,.08); }
-.dealer-eyebrow { font-size: .7rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; color: var(--color-accent-dark); }
+.dealer-eyebrow { font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; font-weight: 600; color: var(--color-accent-dark); font-family: var(--font-outfit), ui-sans-serif, system-ui, sans-serif; }
 .dark .dealer-eyebrow { color: var(--color-accent); }
-.dealer-heading { font-size: clamp(1.9rem, 4vw, 2.8rem); line-height: 1.12; letter-spacing: -.045em; font-weight: 600; }
-.dealer-button { display: inline-flex; justify-content: center; align-items: center; gap: 1.5rem; padding: 1rem 1.5rem; border: 1px solid transparent; border-radius: .4rem; background: var(--color-accent); color: var(--color-navy-900); font-size: .875rem; font-weight: 600; transition: background .2s, border-color .2s; }
-.dealer-button:hover { background: var(--color-accent-light); }
-.dealer-button-outline { background: transparent; border-color: #b3b4b6; color: #18202a; }
-.dealer-button-outline:hover { background: rgba(0,0,0,.04); border-color: #18202a; }
+.dealer-heading { font-size: clamp(2.15rem, 4.4vw, 3.4rem); line-height: 1.08; }
+.dealer-display { font-size: clamp(2.7rem, 5.6vw, 4.6rem); line-height: 1.02; }
+.dealer-price { line-height: 1; color: var(--color-navy-900); }
+.dark .dealer-price { color: #f7f3ea; }
+.dealer-button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.65rem;
+  min-height: 3.15rem;
+  padding: 0.85rem 1.35rem;
+  border: 1px solid transparent;
+  border-radius: 0.35rem;
+  background: var(--color-accent);
+  color: var(--color-navy-900);
+  font-family: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  font-size: .875rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  transition: background-color .2s ease, border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+.dealer-button:hover { background: var(--color-accent-light); box-shadow: 0 12px 28px -18px rgba(128, 100, 24, 0.95); }
+.dealer-button-outline { background: transparent; border-color: #b3b4b6; color: #18202a; box-shadow: none; }
+.dealer-button-outline:hover { background: rgba(22, 20, 15, .04); border-color: #18202a; box-shadow: none; }
 .dark .dealer-button-outline { color: white; border-color: #64748b; }
 .dark .dealer-button-outline:hover { background: rgba(255,255,255,.08); }
-.dealer-search { background: #f4f2ed; padding: 1.25rem; border-radius: .65rem; }
-.dark .dealer-search { background: #1a2332; }
-.dealer-input { width: 100%; height: 3.25rem; padding-inline: 1rem; border: 1px solid #d3d5d8; border-radius: .35rem; background: white; color: #18202a; font-size: 1rem; }
+.dealer-search {
+  background: #fffcf8;
+  padding: 1.25rem;
+  border-radius: 0.85rem;
+  border: 1px solid rgba(22, 20, 15, 0.08);
+  box-shadow: 0 18px 40px -32px rgba(22, 20, 15, 0.55);
+}
+.dark .dealer-search { background: #1a2332; border-color: rgba(255,255,255,.08); box-shadow: none; }
+.dealer-input {
+  width: 100%;
+  height: 3.25rem;
+  padding-inline: 1rem;
+  border: 1px solid #d3d5d8;
+  border-radius: .4rem;
+  background: white;
+  color: #18202a;
+  font-size: 1rem;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+.dealer-input:hover { border-color: #a9a297; }
 .dark .dealer-input { background: #111827; border-color: #475569; color: white; }
+.dealer-card {
+  background: var(--color-surface-card);
+  border: 1px solid rgba(22, 20, 15, 0.08);
+  border-radius: 1.15rem;
+  box-shadow: 0 16px 36px -30px rgba(22, 20, 15, 0.7);
+  transition: transform .45s ease, box-shadow .45s ease, border-color .45s ease;
+}
+.dealer-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(201, 168, 76, 0.7);
+  box-shadow: 0 26px 48px -28px rgba(10, 15, 28, 0.45);
+}
+.dark .dealer-card {
+  background: var(--color-navy-800);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: none;
+}
+.dark .dealer-card:hover { border-color: rgba(201, 168, 76, 0.7); }
+.dealer-stage {
+  background: #14120e;
+}
+@keyframes dealer-fade {
+  from { opacity: 0.55; }
+  to { opacity: 1; }
+}
+.dealer-fade { animation: dealer-fade .4s ease; }
 @media (min-width: 640px) { .dealer-container { padding-inline: 2rem; } }
+@media (min-width: 1024px) { .dealer-container { padding-inline: 2.5rem; } }
 
-.dealer-import { background: linear-gradient(#f4f2ed 0 30rem, #fff 30rem); }
+.dealer-import { background: linear-gradient(#f6f4ef 0 30rem, #fffcf8 30rem); }
 .dark .dealer-import { background: linear-gradient(#111827 0 30rem, #0a0f1c 30rem); }

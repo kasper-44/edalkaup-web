@@ -15,6 +15,7 @@ import { formatIskNumber, formatPrice } from '@/lib/formatIsk'
 import { SITE_ORIGIN } from '@/lib/site'
 import { expectedArrivalLabel } from '@/lib/transit'
 import ShareButtons from '@/components/ShareButtons'
+import { IconHeart } from '@/components/Icons'
 
 function formatMileage(km: number | null) {
   if (km == null) return 'Ótilgreint'
@@ -30,6 +31,8 @@ export default function CarDetail({ car }: { car: any }) {
   const listingUrl = `${SITE_ORIGIN}/bilar/${publicCarSlug(car)}`
   const vatSubtitle = car.price_isk > 0 ? vatIncludedPriceSubtitle(car) : null
   const description = listingCopy(car.description_is)
+  const isSaved = saved.includes(car.id)
+  const colour = displayExteriorColour(car)
 
   const specs = [
     { label: 'Árgerð', value: car.year?.toString() || '' },
@@ -37,7 +40,7 @@ export default function CarDetail({ car }: { car: any }) {
     { label: 'Gerð', value: car.model || '' },
     { label: 'Útgáfa', value: car.trim || '' },
     { label: 'Akstur', value: formatMileage(car.mileage_km) },
-    { label: 'Ytri litur', value: displayExteriorColour(car) },
+    { label: 'Ytri litur', value: colour },
     { label: 'Innri litur', value: car.interior_colour || 'Ótilgreint' },
     { label: 'Drifkerfi', value: car.drivetrain || 'Ótilgreint' },
     { label: 'Vél', value: car.engine || '' },
@@ -50,108 +53,110 @@ export default function CarDetail({ car }: { car: any }) {
     { label: 'Tegund', value: car.body_type || 'Ótilgreint' },
   ].filter((s) => s.value)
 
+  const highlights = [
+    { label: 'Árgerð', value: car.year },
+    { label: 'Akstur', value: formatMileage(car.mileage_km) },
+    { label: 'Drif', value: car.drivetrain || '—' },
+    { label: 'Eldsneyti', value: fuelLabel(car.fuel_type || '') },
+  ]
+
   return (
-    <div className="pt-20 lg:pt-24 bg-gray-50 dark:bg-navy-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        {/* Breadcrumb */}
-        <nav aria-label="Slóð" className="text-sm text-gray-600 dark:text-slate-300 mb-6">
-          <Link href="/bilar" className="hover:text-accent transition-colors">Bílar</Link>
-          <span className="mx-2">/</span>
-          <span className="text-gray-600 dark:text-slate-300">{title}</span>
+    <div className="pt-16 lg:pt-20">
+      <div className="dealer-container py-8 sm:py-14">
+        <nav aria-label="Slóð" className="mb-8 text-sm text-[#5c564c] dark:text-slate-300">
+          <Link href="/bilar" className="underline decoration-transparent underline-offset-4 transition-colors hover:text-accent-dark hover:decoration-accent dark:hover:text-accent">Bílar</Link>
+          <span className="mx-2" aria-hidden="true">/</span>
+          <span className="text-navy-900 dark:text-white">{title}</span>
         </nav>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-10">
-          <div className="lg:col-span-2 lg:col-start-1 lg:row-start-1">
-            {car.images && car.images.length > 0 ? (
-              <CarGallery images={car.images} alt={title} />
-            ) : (
-              <div className="aspect-video bg-gray-100 dark:bg-navy-800 rounded-2xl flex items-center justify-center">
-                <p className="text-gray-400">Engar myndir</p>
-              </div>
-            )}
-          </div>
-
-          {/* Right Sidebar */}
-          <div className="flex flex-col gap-6 lg:col-start-3 lg:row-span-2 lg:row-start-1">
-            <div className="order-1 rounded-2xl border border-black/10 bg-white p-6 dark:border-white/5 dark:bg-navy-800 lg:order-1">
-              <div className={`inline-block px-3 py-1 text-xs font-semibold rounded-full border mb-4 ${inTransit ? 'bg-amber-100 text-amber-950 border-amber-400 dark:bg-amber-400/15 dark:text-amber-200 dark:border-amber-300' : 'bg-emerald-50 text-emerald-800 border-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-300 dark:border-emerald-700'}`}>
+        <div className="flex flex-col gap-8 lg:grid lg:grid-cols-[minmax(0,1.4fr)_minmax(19.5rem,0.72fr)] lg:items-start lg:gap-x-14">
+          <div className="contents lg:col-start-2 lg:row-start-1 lg:block lg:space-y-8">
+            <header className="order-1 lg:order-none">
+              <div className={`mb-4 inline-block border px-3 py-1 text-xs font-semibold tracking-wide ${inTransit ? 'border-amber-400 bg-amber-100 text-amber-950 dark:border-amber-300 dark:bg-amber-400/15 dark:text-amber-200' : 'border-emerald-700/20 bg-emerald-50 text-emerald-900 dark:border-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300'}`}>
                 {inTransit ? 'Á leiðinni' : 'Til sölu'}
               </div>
               {arrival && (
-                <p className="text-sm font-medium text-amber-800 dark:text-amber-300 -mt-2 mb-4">{arrival}</p>
+                <p className="mb-3 text-sm font-medium text-amber-800 dark:text-amber-300">{arrival}</p>
               )}
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">{title}</h1>
-              <div className="mt-4 mb-6">
-                <p className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">{formatPrice(car.price_isk, 'Verð óákveðið')}</p>
-                {vatSubtitle && (
-                  <p className="text-sm text-gray-600 dark:text-slate-300 mt-1">{vatSubtitle}</p>
-                )}
-              </div>
-
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3 mb-6 pb-6 border-b border-black/5 dark:border-white/5">
-                <div className="rounded-xl bg-gray-50 dark:bg-navy-700/60 p-3"><span className="block text-xs text-gray-500 dark:text-slate-400">Árgerð</span><span className="block mt-1 font-semibold">{car.year}</span></div>
-                <div className="rounded-xl bg-gray-50 dark:bg-navy-700/60 p-3"><span className="block text-xs text-gray-500 dark:text-slate-400">Akstur</span><span className="block mt-1 font-semibold">{formatMileage(car.mileage_km)}</span></div>
-                <div className="rounded-xl bg-gray-50 dark:bg-navy-700/60 p-3"><span className="block text-xs text-gray-500 dark:text-slate-400">Drif</span><span className="block mt-1 font-semibold">{car.drivetrain || '—'}</span></div>
-              </div>
-              <div className="space-y-3 mb-6 pb-6 border-b border-black/5 dark:border-white/5">
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-500 dark:text-slate-400">Akstur</span>
-                  <span className="font-medium text-gray-900 dark:text-white">{formatMileage(car.mileage_km)}</span>
-                </div>
-
-                {displayExteriorColour(car) !== 'Ótilgreint' && (
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-500 dark:text-slate-400">Litur</span>
-                    <span className="font-medium text-gray-900 dark:text-white">{displayExteriorColour(car)}</span>
+              <h1 className="text-4xl leading-tight sm:text-5xl">{title}</h1>
+              <p className="dealer-price mt-5 text-4xl sm:text-5xl">{formatPrice(car.price_isk, 'Verð óákveðið')}</p>
+              {vatSubtitle && (
+                <p className="mt-2 text-base text-[#5c564c] dark:text-slate-300">{vatSubtitle}</p>
+              )}
+              <dl className="mt-6 grid grid-cols-2 gap-3">
+                {highlights.map((item) => (
+                  <div key={item.label} className="border border-black/10 bg-white px-4 py-3 dark:border-white/10 dark:bg-navy-800">
+                    <dt className="text-xs tracking-wide text-[#5c564c] uppercase dark:text-slate-400">{item.label}</dt>
+                    <dd className="mt-1 text-lg text-navy-900 dark:text-white">{item.value}</dd>
                   </div>
+                ))}
+              </dl>
+            </header>
+
+            <aside className="order-3 flex flex-col gap-6 lg:order-none">
+              <div className="border border-black/10 bg-white p-6 sm:p-7 dark:border-white/10 dark:bg-navy-800">
+                <a href="#fyrirspurn" className="dealer-button mb-3 w-full">Fá nánari upplýsingar</a>
+                <CallLink placement="car_detail" className="mb-3 block w-full border border-black/15 px-5 py-3.5 text-center font-semibold transition-colors hover:border-accent hover:text-accent-dark dark:border-white/20 dark:hover:text-accent">Hringja í 699 2011</CallLink>
+                <button type="button" aria-pressed={isSaved} onClick={() => toggle(car.id)} className="mb-5 inline-flex w-full items-center justify-center gap-2 border border-black/15 px-5 py-3 font-medium transition-colors hover:border-accent-dark dark:border-white/15">
+                  <IconHeart filled={isSaved} />
+                  {isSaved ? 'Bíll vistaður' : 'Vista þennan bíl'}
+                </button>
+                {colour !== 'Ótilgreint' && (
+                  <p className="mb-4 flex justify-between gap-4 border-t border-black/10 pt-4 text-sm dark:border-white/10">
+                    <span className="text-[#5c564c] dark:text-slate-400">Litur</span>
+                    <span className="font-medium text-navy-900 dark:text-white">{colour}</span>
+                  </p>
                 )}
+                <p className="mb-5 text-sm leading-relaxed text-[#5c564c] dark:text-slate-300">Hafðu samband til að staðfesta framboð, staðsetningu og möguleika á að skoða bílinn. Við aðstoðum með ferlið frá fyrstu fyrirspurn til afhendingar.</p>
+                <a
+                  href={`https://wa.me/3546992011?text=${encodeURIComponent(`Hæ, ég hef áhuga á ${title}`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mb-3 block w-full border border-accent-dark px-6 py-3 text-center font-semibold text-accent-dark transition-colors hover:bg-accent/10 dark:border-accent dark:text-accent"
+                >
+                  WhatsApp
+                </a>
+                <ShareButtons url={listingUrl} title={title} />
               </div>
-
-              <a href="#fyrirspurn" className="block w-full text-center px-5 py-3.5 bg-accent text-navy-900 font-semibold rounded-xl hover:bg-accent-light mb-3">Fá nánari upplýsingar</a>
-              <CallLink placement="car_detail" className="block w-full text-center px-5 py-3.5 border border-black/15 dark:border-white/20 font-semibold rounded-xl hover:border-accent hover:text-accent transition-colors mb-3">Hringja í 699 2011</CallLink>
-              <button type="button" aria-pressed={saved.includes(car.id)} onClick={() => toggle(car.id)} className="w-full text-center px-5 py-3 border border-black/15 dark:border-white/15 rounded-xl font-medium mb-4">{saved.includes(car.id) ? '♥ Bíll vistaður' : '♡ Vista þennan bíl'}</button>
-              <p className="text-sm text-gray-600 dark:text-slate-300 mb-5">Hafðu samband til að staðfesta framboð, staðsetningu og möguleika á að skoða bílinn. Við aðstoðum með ferlið frá fyrstu fyrirspurn til afhendingar.</p>
-              <a
-                href={`https://wa.me/3546992011?text=${encodeURIComponent(`Hæ, ég hef áhuga á ${title}`)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block w-full text-center px-6 py-3 border border-accent-dark dark:border-accent text-accent-dark dark:text-accent font-semibold rounded-xl hover:bg-accent/10 transition-colors mb-3"
-              >
-                WhatsApp
-              </a>
-              <ShareButtons url={listingUrl} title={title} />
-            </div>
-
-            <div id="fyrirspurn" className="order-2 scroll-mt-28">
-              <ContactForm
-                carTitle={title}
-                carUrl={listingUrl}
-                carVin={car.vin || undefined}
-                source="bilur"
-              />
-            </div>
+              <div id="fyrirspurn" className="scroll-mt-28">
+                <ContactForm
+                  carTitle={title}
+                  carUrl={listingUrl}
+                  carVin={car.vin || undefined}
+                  source="bilur"
+                />
+              </div>
+            </aside>
           </div>
 
-          <div className="space-y-8 lg:col-span-2 lg:col-start-1 lg:row-start-2">
+          <div className="contents lg:col-start-1 lg:row-start-1 lg:block lg:space-y-10">
+            <div className="order-2 lg:order-none">
+              {car.images && car.images.length > 0 ? (
+                <CarGallery images={car.images} alt={title} />
+              ) : (
+                <div className="flex aspect-[4/3] items-center justify-center bg-[#ece7de] dark:bg-navy-800">
+                  <p className="text-[#5c564c]">Engar myndir</p>
+                </div>
+              )}
+            </div>
             {description && (
-              <div className="bg-white dark:bg-navy-800 rounded-2xl border border-black/5 dark:border-white/5 p-6 sm:p-8">
-                <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Lýsing</h2>
-                <div className="text-gray-700 dark:text-slate-300 leading-relaxed whitespace-pre-wrap">
+              <div className="order-4 border border-black/10 bg-white p-6 sm:p-8 lg:order-none dark:border-white/10 dark:bg-navy-800">
+                <h2 className="mb-4 text-3xl text-navy-900 dark:text-white">Lýsing</h2>
+                <div className="leading-relaxed whitespace-pre-wrap text-[#3f3a33] dark:text-slate-300">
                   {description}
                 </div>
               </div>
             )}
-
-            <div className="bg-white dark:bg-navy-800 rounded-2xl border border-black/5 dark:border-white/5 p-6 sm:p-8">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Tæknilegar upplýsingar</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="order-5 border border-black/10 bg-white p-6 sm:p-8 lg:order-none dark:border-white/10 dark:bg-navy-800">
+              <h2 className="mb-6 text-3xl text-navy-900 dark:text-white">Tæknilegar upplýsingar</h2>
+              <dl className="grid grid-cols-1 gap-x-10 sm:grid-cols-2">
                 {specs.map((spec) => (
-                  <div key={spec.label} className="flex flex-col gap-1 py-3 border-b border-black/5 dark:border-white/5">
-                    <span className="text-sm text-gray-500 dark:text-slate-400">{spec.label}</span>
-                    <span className="text-sm font-medium text-gray-900 dark:text-white">{spec.value}</span>
+                  <div key={spec.label} className="flex flex-col gap-1 border-b border-black/10 py-3.5 dark:border-white/10">
+                    <dt className="text-sm text-[#5c564c] dark:text-slate-400">{spec.label}</dt>
+                    <dd className="text-base text-navy-900 dark:text-white">{spec.value}</dd>
                   </div>
                 ))}
-              </div>
+              </dl>
             </div>
           </div>
         </div>

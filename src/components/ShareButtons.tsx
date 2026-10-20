@@ -74,7 +74,7 @@ export default function ShareButtons({ url, title }: ShareButtonsProps) {
   }
 
   const buttonClass =
-    'flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl border border-black/15 dark:border-white/20 text-sm font-semibold text-gray-900 dark:text-white hover:border-accent hover:text-accent-dark dark:hover:text-accent transition-colors'
+    'flex min-h-12 w-full items-center justify-center gap-2 border border-black/15 px-4 py-3 text-sm font-semibold text-navy-900 transition-colors hover:border-accent hover:text-accent-dark dark:border-white/20 dark:text-white dark:hover:text-accent'
 
   return (
     <div className="grid grid-cols-1 gap-2">

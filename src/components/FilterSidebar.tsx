@@ -9,12 +9,12 @@ interface Props {
   bodyTypes: string[]
   fuels: string[]
 }
-const control = 'w-full min-w-0 bg-gray-50 dark:bg-navy-700 border border-black/10 dark:border-white/15 rounded-lg px-3 py-2.5 text-base sm:text-sm text-gray-900 dark:text-white'
+const control = 'dealer-input h-auto min-h-12 py-2.5 text-base sm:text-sm'
 export default function FilterSidebar({ filters, onFilterChange, onReset, makes, bodyTypes, fuels }: Props) {
   const options = [{ key: 'make', label: 'Framleiðandi', values: makes }, { key: 'bodyType', label: 'Tegund', values: bodyTypes }, { key: 'fuel', label: 'Eldsneyti', values: fuels }] as const
   const ranges = [{ label: 'Árgerð', min: 'minYear', max: 'maxYear' }, { label: 'Verð (kr.)', min: 'minPrice', max: 'maxPrice' }] as const
-  return <aside className="bg-white dark:bg-navy-800 rounded-2xl border border-black/10 dark:border-white/10 p-5 space-y-5 lg:sticky lg:top-24">
-    <h2 className="text-lg font-bold">Sía niðurstöður</h2>
+  return <aside className="space-y-5 border border-black/10 bg-white p-5 lg:sticky lg:top-28 dark:border-white/10 dark:bg-navy-800">
+    <h2 className="text-2xl">Sía niðurstöður</h2>
     {options.map(({ key, label, values }) => <div key={key}><label htmlFor={`filter-${key}`} className="block text-sm font-medium mb-2">{label}</label>
       <select id={`filter-${key}`} value={filters[key]} onChange={(e) => onFilterChange(key, e.target.value)} className={control}><option value="">Allt</option>{values.map((value) => <option key={value} value={value}>{value}</option>)}</select>
     </div>)}

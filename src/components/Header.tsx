@@ -44,32 +44,32 @@ export default function Header() {
   if (/^\/volvo-ex60\/(diesel|hofdabilar|edalkaup)$/.test(pathname)) return null
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-40 bg-white/95 dark:bg-navy-900/95 backdrop-blur-xl border-b border-black/5 dark:border-white/5 transition-colors">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <header className="fixed inset-x-0 top-0 z-40 w-full max-w-[100vw] border-b border-accent/35 bg-[#f6f4ef]/95 backdrop-blur-xl transition-colors dark:border-white/10 dark:bg-navy-900/95">
+      <div className="dealer-container">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 sm:gap-3 group">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-gradient-to-br from-accent to-accent-dark flex items-center justify-center text-navy-900 font-bold text-xl">
+          <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group">
+            <div className="flex h-9 w-9 items-center justify-center border border-accent bg-navy-900 font-serif text-2xl leading-none text-accent sm:h-10 sm:w-10">
               E
             </div>
             <div>
-              <span className="text-base sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white group-hover:text-accent transition-colors">
+              <span className="block text-sm font-semibold tracking-[0.16em] text-navy-900 transition-colors group-hover:text-accent-dark sm:text-base sm:tracking-[0.22em] dark:text-white dark:group-hover:text-accent">
                 EÐALKAUP
               </span>
-              <span className="hidden sm:block text-[10px] uppercase tracking-[0.3em] text-gray-500 dark:text-slate-400">
+              <span className="hidden text-[10px] uppercase tracking-[0.28em] text-[#5c564c] sm:block dark:text-slate-400">
                 Bílainnflutningur
               </span>
             </div>
           </Link>
 
           {/* Desktop Nav */}
-          <nav aria-label="Aðalvalmynd" className="hidden xl:flex items-center gap-1">
+          <nav aria-label="Aðalvalmynd" className="hidden xl:flex items-center gap-0.5">
             {navItems.slice(0, 2).map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 aria-current={(item.href === '/' ? pathname === '/' : pathname.startsWith(item.href)) ? 'page' : undefined}
-                className="px-3 py-2 text-sm font-medium text-gray-600 dark:text-slate-300 hover:text-accent transition-colors rounded-lg hover:bg-black/5 dark:hover:bg-white/5"
+                className="rounded-md px-3 py-2 text-sm font-medium text-[#3f3a33] transition-colors hover:bg-black/5 hover:text-navy-900 dark:text-slate-300 dark:hover:bg-white/5 dark:hover:text-white"
               >
                 {item.label}
               </Link>
@@ -82,7 +82,7 @@ export default function Header() {
               onMouseLeave={() => setVolvoOpen(false)}
             >
               <button
-                className="px-3 py-2 text-sm font-medium text-gray-600 dark:text-slate-300 hover:text-accent transition-colors rounded-lg hover:bg-black/5 dark:hover:bg-white/5 flex items-center gap-1"
+                className="flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-[#3f3a33] transition-colors hover:bg-black/5 hover:text-navy-900 dark:text-slate-300 dark:hover:bg-white/5 dark:hover:text-white"
                 onClick={() => setVolvoOpen(!volvoOpen)}
               >
                 Volvo
@@ -113,7 +113,7 @@ export default function Header() {
                 key={item.href}
                 href={item.href}
                 aria-current={(item.href === '/' ? pathname === '/' : pathname.startsWith(item.href)) ? 'page' : undefined}
-                className="px-3 py-2 text-sm font-medium text-gray-600 dark:text-slate-300 hover:text-accent transition-colors rounded-lg hover:bg-black/5 dark:hover:bg-white/5"
+                className="rounded-md px-3 py-2 text-sm font-medium text-[#3f3a33] transition-colors hover:bg-black/5 hover:text-navy-900 dark:text-slate-300 dark:hover:bg-white/5 dark:hover:text-white"
               >
                 {item.label}
               </Link>
@@ -138,13 +138,13 @@ export default function Header() {
 
             <CallLink
               placement="header"
-              className="ml-2 inline-flex items-center px-3 py-2.5 text-sm font-semibold border border-accent/40 text-gray-900 dark:text-white rounded-lg hover:border-accent hover:text-accent transition-colors"
+              className="ml-3 inline-flex items-center border border-accent/50 px-3 py-2.5 text-sm font-semibold text-navy-900 transition-colors hover:border-accent hover:text-accent-dark dark:text-white dark:hover:text-accent"
             >
               Hringja 699 2011
             </CallLink>
             <Link
               href="/#fyrirspurn"
-              className="ml-2 px-5 py-2.5 text-sm font-semibold bg-accent text-navy-900 rounded-lg hover:bg-accent-light transition-colors"
+              className="ml-2 inline-flex items-center gap-2 bg-accent px-5 py-2.5 text-sm font-semibold text-navy-900 transition-colors hover:bg-accent-light"
             >
               Fá tilboð
             </Link>
@@ -160,7 +160,7 @@ export default function Header() {
             </CallLink>
             <button
               onClick={toggle}
-              className="hidden min-[380px]:block p-2 rounded-lg text-gray-500 dark:text-slate-300 hover:text-accent transition-colors"
+              className="hidden p-2 text-gray-500 transition-colors hover:text-accent sm:block dark:text-slate-300"
               aria-label="Skipta um þema"
             >
               {theme === 'dark' ? (
