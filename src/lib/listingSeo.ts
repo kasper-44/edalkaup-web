@@ -180,7 +180,7 @@ export function knownExteriorColour(car: Pick<ListingCar, 'exterior_colour' | 'c
   return raw
 }
 
-/** Mid-sentence Icelandic colour ("Hvítur" → "hvítur"). Paint names stay as stored. */
+/** Mid-sentence Icelandic colour ("Hvítur" to "hvítur"). Paint names stay as stored. */
 export function listingColourPhrase(car: Pick<ListingCar, 'exterior_colour' | 'colour'>): string | null {
   const raw = knownExteriorColour(car)
   if (!raw) return null

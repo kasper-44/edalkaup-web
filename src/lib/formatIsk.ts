@@ -15,7 +15,7 @@ function isFiniteNumber(value: unknown): value is number {
 /**
  * Group a number with `.` as the thousands separator.
  * Whole ISK amounts have no decimals. If `fractionDigits` is set, decimals
- * use `,` (Icelandic decimal comma): `14990.5` → `"14.990,50"`.
+ * use `,` (Icelandic decimal comma): `14990.5` becomes `"14.990,50"`.
  */
 export function formatIskNumber(value: number, fractionDigits = 0): string {
   if (!isFiniteNumber(value)) return '0'
@@ -39,7 +39,7 @@ export function formatIskNumber(value: number, fractionDigits = 0): string {
   return negative ? `-${body}` : body
 }
 
-/** Format an ISK amount for display: `14990000` → `"14.990.000 kr."` */
+/** Format an ISK amount for display: `14990000` becomes `"14.990.000 kr."` */
 export function formatIsk(value: number): string {
   return `${formatIskNumber(value)} kr.`
 }

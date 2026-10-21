@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import ArrowIcon from '@/components/ArrowIcon'
 import CallLink from '@/components/CallLink'
 import LiveDot from '@/components/LiveDot'
 
@@ -41,7 +42,7 @@ export default function HeroVideo({ carCount }: { carCount: number | null }) {
             Mán–Fös 09:00–17:00
           </p>
           <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-            <Link href="/bilar" className="dealer-button">Skoða bíla til sölu <span aria-hidden="true">↗</span></Link>
+            <Link href="/bilar" className="dealer-button">Skoða bíla til sölu <ArrowIcon /></Link>
             <Link href="/hafa-samband" className="dealer-button dealer-button-outline">Hafa samband</Link>
           </div>
           <p className="mt-6 text-sm text-gray-600 dark:text-slate-300">
@@ -75,8 +76,8 @@ export default function HeroVideo({ carCount }: { carCount: number | null }) {
                 <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.22em] text-accent">Kynntu þér bílana</p>
                 <p className="text-2xl font-black tracking-tight">GMC Sierra EV</p>
               </div>
-              <Link href="/bilar" aria-label="Skoða bíla til sölu" className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/40 text-xl hover:bg-white/10">
-                ↗
+              <Link href="/bilar" aria-label="Skoða bíla til sölu" className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/40 hover:bg-white/10">
+                <ArrowIcon className="h-5 w-5" />
               </Link>
             </div>
           </div>

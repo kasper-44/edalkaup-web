@@ -1,6 +1,7 @@
 'use client'
 
 import { Fragment, useState, useEffect, useCallback } from 'react'
+import ArrowIcon from '@/components/ArrowIcon'
 import AutoGrowTextarea from '@/components/AutoGrowTextarea'
 import {
   LISTING_FIELDS,
@@ -384,7 +385,7 @@ export default function AdminPage() {
                           title="Leita að VIN á Google til að finna upprunalegu auglýsinguna"
                           className="text-amber-400 text-xs hover:underline whitespace-nowrap"
                         >
-                          Leita að VIN ↗
+                          Leita að VIN <ArrowIcon />
                         </a>
                       )}
                     </div>

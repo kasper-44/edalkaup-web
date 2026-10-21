@@ -10,7 +10,7 @@ import Script from 'next/script'
  *   NEXT_PUBLIC_GA_ID           e.g. "G-XXXXXXX" (GA4) or "AW-XXXXXXX" (Google Ads)
  *
  * Each block only renders when its ID is present, so the site works with
- * neither, one, or both configured. Add the IDs in Vercel → Settings →
+ * neither, one, or both configured. Add the IDs in Vercel, then Settings, then
  * Environment Variables, then redeploy.
  */
 export default function Analytics() {
