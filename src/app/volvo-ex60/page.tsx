@@ -38,7 +38,7 @@ export default function VolvoEX60Page() {
   return (
     <>
       {/* ─── Hero ─── */}
-      <section className="relative pt-28 pb-16 sm:pt-36 sm:pb-24 overflow-hidden">
+      <section className="relative pt-[calc(7rem+var(--ticker-height))] pb-16 sm:pt-[calc(9rem+var(--ticker-height))] sm:pb-24 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-gray-50 to-white dark:from-navy-900 dark:to-navy-800" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,rgba(201,168,76,0.08),transparent_60%)]" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

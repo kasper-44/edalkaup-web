@@ -30,7 +30,7 @@ export default function CarGallery({ images, alt }: { images: string[]; alt: str
   }
   const arrowClass = 'absolute top-1/2 -translate-y-1/2 bg-navy-900/80 text-white rounded-full w-11 h-11 flex items-center justify-center text-2xl hover:bg-navy-900'
   return <div onKeyDown={key}>
-    <div className="relative aspect-[16/10] rounded-2xl overflow-hidden bg-gray-100 dark:bg-navy-800" onTouchStart={touchStart} onTouchEnd={touchEnd}>
+    <div className="relative aspect-[16/10] overflow-hidden rounded-[1.75rem] bg-gray-100 shadow-[0_16px_40px_rgba(10,15,28,0.12)] dark:bg-navy-800" onTouchStart={touchStart} onTouchEnd={touchEnd}>
       <button onClick={() => setOpen(true)} className="absolute inset-0 w-full h-full" aria-label={`Stækka mynd ${selected + 1} af ${images.length}: ${alt}`}>
         <Image src={images[selected]} alt={`${alt} — mynd ${selected + 1}`} fill sizes="(max-width: 1024px) 100vw, 66vw" priority className="object-contain" />
       </button>

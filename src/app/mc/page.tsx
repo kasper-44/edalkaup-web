@@ -24,7 +24,7 @@ export default function MissionControl() {
   const data = mcData as typeof import('./data.json')
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white font-sans">
+    <div className="site-offset min-h-screen bg-[#0a0a0a] text-white font-sans">
       {/* Header */}
       <header className="border-b border-zinc-800 px-6 py-4">
         <div className="max-w-6xl mx-auto flex items-center justify-between">

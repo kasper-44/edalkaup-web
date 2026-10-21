@@ -8,6 +8,7 @@ import { listingRibbonKinds } from '@/lib/listingRibbon'
 import { vatIncludedPriceSubtitle, withVatFlag } from '@/lib/priceVat'
 import { expectedArrivalLabel } from '@/lib/transit'
 import ListingRibbons, { StruckPrice } from '@/components/ListingRibbon'
+import LiveDot from '@/components/LiveDot'
 
 interface CarCardProps {
   car: Car
@@ -17,9 +18,9 @@ interface CarCardProps {
 
 export default function CarCard({ car, priority = false, actions }: CarCardProps) {
   const statusColors = {
-    available: 'bg-white text-emerald-800 border-white/80',
-    'in-transit': 'bg-amber-400 text-amber-950 border-amber-300',
-    sold: 'bg-white text-red-800 border-white/80',
+    available: 'bg-accent text-navy-900',
+    'in-transit': 'bg-amber-400 text-amber-950',
+    sold: 'bg-navy-900 text-white',
   }
 
   const statusLabels = {
@@ -42,7 +43,7 @@ export default function CarCard({ car, priority = false, actions }: CarCardProps
       : null
 
   return (
-    <article className="h-full flex flex-col rounded-xl overflow-hidden border border-black/10 dark:border-white/10 bg-white dark:bg-navy-800 hover:border-accent/50 transition-colors">
+    <article className="dealer-card h-full flex flex-col overflow-hidden transition-shadow duration-300 hover:shadow-[0_18px_44px_rgba(10,15,28,0.12)]">
     <Link href={`/bilar/${car.slug}`} className="group flex flex-col flex-1" aria-label={title}>
       <div className="flex flex-col flex-1 hover:bg-accent/5 transition-colors">
         {/* Image */}
@@ -59,7 +60,8 @@ export default function CarCard({ car, priority = false, actions }: CarCardProps
 
           {/* Status badge */}
           <ListingRibbons kinds={listingRibbonKinds(car)} />
-          <div className={`absolute top-3 right-3 px-3 py-1 text-xs font-semibold rounded-full border ${statusColors[car.status]}`}>
+          <div className={`absolute top-3 right-3 z-10 -rotate-6 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-black uppercase tracking-wide shadow-[0_8px_18px_rgba(0,0,0,0.18)] ${statusColors[car.status]}`}>
+            {car.status === 'available' && <LiveDot tone="ink" />}
             {statusLabels[car.status]}
           </div>
         </div>
@@ -68,8 +70,8 @@ export default function CarCard({ car, priority = false, actions }: CarCardProps
         <div className="p-5 flex flex-col flex-1">
           <div className="flex items-start justify-between gap-2 mb-2">
             <div>
-              <p className="text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">{car.make}</p>
-              <h3 className="text-lg font-semibold leading-snug text-gray-900 dark:text-white group-hover:text-accent transition-colors">
+              <p className="text-[11px] font-bold text-accent-dark dark:text-accent uppercase tracking-[0.16em]">{car.make}</p>
+              <h3 className="mt-1 text-xl font-black leading-[1.05] tracking-[-0.03em] text-gray-900 dark:text-white group-hover:text-accent-dark dark:group-hover:text-accent transition-colors">
                 {title}
               </h3>
               {arrival && (
@@ -96,13 +98,13 @@ export default function CarCard({ car, priority = false, actions }: CarCardProps
                 current={car.price}
                 previous={car.previousPrice}
                 reduced={car.priceReduced === true}
-                className="text-xl font-bold text-gray-900 dark:text-white whitespace-nowrap"
+                className="text-2xl font-black tracking-tight text-gray-900 dark:text-white whitespace-nowrap"
               />
               {vatSubtitle && (
                 <p className="text-sm text-gray-600 dark:text-slate-400 mt-1">{vatSubtitle}</p>
               )}
             </div>
-            <span className="self-end text-accent-dark dark:text-accent text-sm font-semibold group-hover:translate-x-1 transition-transform">
+            <span className="self-end text-accent-dark dark:text-accent text-sm font-black group-hover:translate-x-1 transition-transform">
               Skoða bíl →
             </span>
           </div>

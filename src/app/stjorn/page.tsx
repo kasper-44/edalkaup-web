@@ -248,7 +248,7 @@ export default function AdminPage() {
   // --- Login screen ---
   if (!authed) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-950 px-4">
+      <div className="site-offset min-h-screen flex items-center justify-center bg-slate-950 px-4">
         <div className="w-full max-w-sm bg-slate-900 border border-white/10 rounded-2xl p-8">
           <h1 className="text-2xl font-bold text-white mb-1">Eðalkaup — Stjórn</h1>
           <p className="text-slate-400 text-sm mb-6">Sláðu inn lykilorð til að halda áfram.</p>
@@ -274,7 +274,7 @@ export default function AdminPage() {
 
   // --- Admin dashboard ---
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
+    <div className="site-offset min-h-screen bg-slate-950 text-white">
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
