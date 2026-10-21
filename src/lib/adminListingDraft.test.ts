@@ -49,5 +49,13 @@ assert.equal(listingChanges(car, { ...draft, expected_arrival: 'x'.repeat(81) })
 assert.deepEqual(listingChanges({ ...car, in_transit: true }, { ...draft, in_transit: false }).payload, {
   in_transit: false,
 })
+assert.deepEqual(listingChanges(car, { ...draft, price_reduced: true, previous_price_isk: '3890000' }).payload, {
+  price_reduced: true,
+  previous_price_isk: 3890000,
+})
+assert.equal(listingChanges(car, { ...draft, previous_price_isk: '12.5' }).error, 'Ógilt fyrra verð')
+assert.deepEqual(listingChanges({ ...car, price_reduced: true }, { ...draft, price_reduced: false }).payload, {
+  price_reduced: false,
+})
 
 console.log('admin listing draft transit tests passed')

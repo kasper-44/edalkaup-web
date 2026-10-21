@@ -14,6 +14,10 @@ export interface Car {
   price: number // ISK
   /** Stored override. Null/undefined uses the body-type subtitle. */
   priceIncludesVat?: boolean | null
+  /** Yellow VERÐ LÆKKAÐ ribbon. */
+  priceReduced?: boolean
+  /** Struck-through price shown beside the current one when priceReduced. */
+  previousPrice?: number | null
   priceUSD?: number
   mileage: number | null // km; null means unknown
   color: string

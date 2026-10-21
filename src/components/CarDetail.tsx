@@ -6,15 +6,38 @@ import { fuelLabel } from '@/lib/inventory'
 import CarGallery from '@/components/CarGallery'
 import ContactForm from '@/components/ContactForm'
 import CallLink from '@/components/CallLink'
+import ListingRibbons, { StruckPrice } from '@/components/ListingRibbon'
 import { displayExteriorColour } from '@/lib/exteriorColour'
 import { listingCopy } from '@/lib/listingCopy'
+import { listingRibbonKinds } from '@/lib/listingRibbon'
 import { publicCarSlug } from '@/lib/carPath'
 import { vehicleTitle } from '@/lib/listingSeo'
+import { priceReduction } from '@/lib/priceReduction'
 import { vatIncludedPriceSubtitle } from '@/lib/priceVat'
-import { formatIskNumber, formatPrice } from '@/lib/formatIsk'
-import { SITE_ORIGIN } from '@/lib/site'
-import { expectedArrivalLabel } from '@/lib/transit'
+import { formatIskNumber } from '@/lib/formatIsk'
+import { DEALER_SAME_AS, SITE_ORIGIN } from '@/lib/site'
+import { expectedArrivalLabel, isInTransit } from '@/lib/transit'
+import type { CallPlacement } from '@/lib/analytics'
 import ShareButtons from '@/components/ShareButtons'
+
+function CarContactActions({ placement, className }: { placement: CallPlacement; className: string }) {
+  const button = 'inline-flex min-h-14 flex-1 items-center justify-center rounded-xl px-2 text-center text-base font-semibold leading-tight'
+  return (
+    <div className={className}>
+      <CallLink placement={placement} className={`${button} bg-accent text-navy-900 hover:bg-accent-light`}>
+        Hringja
+      </CallLink>
+      <a
+        href={DEALER_SAME_AS[0]}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`${button} border border-accent bg-navy-900 text-accent hover:bg-navy-800`}
+      >
+        Senda skilaboð
+      </a>
+    </div>
+  )
+}
 
 function formatMileage(km: number | null) {
   if (km == null) return 'Ótilgreint'
@@ -25,7 +48,9 @@ function formatMileage(km: number | null) {
 export default function CarDetail({ car }: { car: any }) {
   const { saved, toggle } = useSavedCars()
   const title = vehicleTitle(car)
-  const inTransit = car.in_transit === true
+  const inTransit = isInTransit(car)
+  const ribbons = listingRibbonKinds(car)
+  const reduction = priceReduction(car)
   const arrival = inTransit ? expectedArrivalLabel(car.expected_arrival) : null
   const listingUrl = `${SITE_ORIGIN}/bilar/${publicCarSlug(car)}`
   const vatSubtitle = car.price_isk > 0 ? vatIncludedPriceSubtitle(car) : null
@@ -52,16 +77,16 @@ export default function CarDetail({ car }: { car: any }) {
 
   return (
     <div className="pt-20 lg:pt-24 bg-gray-50 dark:bg-navy-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-10">
         {/* Breadcrumb */}
-        <nav aria-label="Slóð" className="text-sm text-gray-600 dark:text-slate-300 mb-6">
+        <nav aria-label="Slóð" className="text-sm text-gray-600 dark:text-slate-300 mb-4 lg:mb-6">
           <Link href="/bilar" className="hover:text-accent transition-colors">Bílar</Link>
           <span className="mx-2">/</span>
           <span className="text-gray-600 dark:text-slate-300">{title}</span>
         </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-10">
-          <div className="lg:col-span-2 lg:col-start-1 lg:row-start-1">
+          <div className="relative order-2 lg:order-none lg:col-span-2 lg:col-start-1 lg:row-start-1">
             {car.images && car.images.length > 0 ? (
               <CarGallery images={car.images} alt={title} />
             ) : (
@@ -69,11 +94,12 @@ export default function CarDetail({ car }: { car: any }) {
                 <p className="text-gray-400">Engar myndir</p>
               </div>
             )}
+            <ListingRibbons kinds={ribbons} size="hero" />
           </div>
 
-          {/* Right Sidebar */}
-          <div className="flex flex-col gap-6 lg:col-start-3 lg:row-span-2 lg:row-start-1">
-            <div className="order-1 rounded-2xl border border-black/10 bg-white p-6 dark:border-white/5 dark:bg-navy-800 lg:order-1">
+          {/* Right Sidebar. On mobile the price card is the first block so price and the sticky contact bar share the first screen. */}
+          <div className="contents lg:col-start-3 lg:row-span-2 lg:row-start-1 lg:flex lg:flex-col lg:gap-6">
+            <div className="order-1 rounded-2xl border border-black/10 bg-white p-6 dark:border-white/5 dark:bg-navy-800 lg:order-none">
               <div className={`inline-block px-3 py-1 text-xs font-semibold rounded-full border mb-4 ${inTransit ? 'bg-amber-100 text-amber-950 border-amber-400 dark:bg-amber-400/15 dark:text-amber-200 dark:border-amber-300' : 'bg-emerald-50 text-emerald-800 border-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-300 dark:border-emerald-700'}`}>
                 {inTransit ? 'Á leiðinni' : 'Til sölu'}
               </div>
@@ -82,11 +108,19 @@ export default function CarDetail({ car }: { car: any }) {
               )}
               <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">{title}</h1>
               <div className="mt-4 mb-6">
-                <p className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">{formatPrice(car.price_isk, 'Verð óákveðið')}</p>
+                <StruckPrice
+                  current={car.price_isk}
+                  previous={reduction.previousPrice}
+                  reduced={reduction.reduced}
+                  className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white"
+                  previousClassName="text-lg font-semibold text-gray-500 line-through decoration-2 dark:text-slate-400"
+                  emptyLabel="Verð óákveðið"
+                />
                 {vatSubtitle && (
                   <p className="text-sm text-gray-600 dark:text-slate-300 mt-1">{vatSubtitle}</p>
                 )}
               </div>
+              <CarContactActions placement="car_detail" className="mb-6 hidden gap-2 lg:flex" />
 
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3 mb-6 pb-6 border-b border-black/5 dark:border-white/5">
                 <div className="rounded-xl bg-gray-50 dark:bg-navy-700/60 p-3"><span className="block text-xs text-gray-500 dark:text-slate-400">Árgerð</span><span className="block mt-1 font-semibold">{car.year}</span></div>
@@ -122,7 +156,7 @@ export default function CarDetail({ car }: { car: any }) {
               <ShareButtons url={listingUrl} title={title} />
             </div>
 
-            <div id="fyrirspurn" className="order-2 scroll-mt-28">
+            <div id="fyrirspurn" className="order-3 scroll-mt-28 max-lg:pb-28 lg:order-none">
               <ContactForm
                 carTitle={title}
                 carUrl={listingUrl}
@@ -132,7 +166,7 @@ export default function CarDetail({ car }: { car: any }) {
             </div>
           </div>
 
-          <div className="space-y-8 lg:col-span-2 lg:col-start-1 lg:row-start-2">
+          <div className="order-4 space-y-8 lg:order-none lg:col-span-2 lg:col-start-1 lg:row-start-2">
             {description && (
               <div className="bg-white dark:bg-navy-800 rounded-2xl border border-black/5 dark:border-white/5 p-6 sm:p-8">
                 <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Lýsing</h2>
@@ -156,6 +190,10 @@ export default function CarDetail({ car }: { car: any }) {
           </div>
         </div>
       </div>
+      <CarContactActions
+        placement="sticky_bar"
+        className="fixed inset-x-0 bottom-0 z-40 flex gap-2 border-t border-accent/50 bg-navy-900/95 px-3 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-[0_-10px_30px_rgba(0,0,0,0.35)] backdrop-blur-xl lg:hidden"
+      />
     </div>
   )
 }

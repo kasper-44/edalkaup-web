@@ -7,6 +7,8 @@ export interface Car {
   trim: string
   price_isk: number
   price_includes_vat?: boolean | null
+  price_reduced?: boolean | null
+  previous_price_isk?: number | null
   price_original: number | null
   price_currency: string | null
   mileage_km: number | null
@@ -47,6 +49,8 @@ export interface ListingDraft {
   trim: string
   price_isk: string
   price_includes_vat: VatChoice
+  price_reduced: boolean
+  previous_price_isk: string
   mileage_km: string
   colour: string
   exterior_colour: string
@@ -110,6 +114,8 @@ export function draftFromCar(car: Car): ListingDraft {
     trim: text(car.trim),
     price_isk: car.price_isk ? String(car.price_isk) : '',
     price_includes_vat: vat,
+    price_reduced: car.price_reduced === true,
+    previous_price_isk: car.previous_price_isk ? String(car.previous_price_isk) : '',
     mileage_km: num(car.mileage_km),
     colour: text(car.colour),
     exterior_colour: text(car.exterior_colour),
@@ -182,6 +188,17 @@ export function listingChanges(
   if (changed('price_includes_vat')) {
     payload.price_includes_vat =
       draft.price_includes_vat === 'true' ? true : draft.price_includes_vat === 'false' ? false : null
+  }
+
+  if (draft.price_reduced !== (car.price_reduced === true)) payload.price_reduced = draft.price_reduced
+  if (changed('previous_price_isk')) {
+    const raw = draft.previous_price_isk.trim()
+    if (raw === '') payload.previous_price_isk = null
+    else {
+      const n = Number(raw)
+      if (!Number.isFinite(n) || n < 0 || !Number.isInteger(n)) return { error: 'Ógilt fyrra verð', payload: {} }
+      payload.previous_price_isk = n
+    }
   }
 
   const numbers: {

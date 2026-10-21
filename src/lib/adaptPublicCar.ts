@@ -1,8 +1,11 @@
 import { publicCarSlug } from '@/lib/carPath'
+import { priceReduction } from '@/lib/priceReduction'
 import { withVatFlag } from '@/lib/priceVat'
+import { isInTransit } from '@/lib/transit'
 
 export function adaptCar(row: any) {
   const car = withVatFlag(row)
+  const reduction = priceReduction(car)
   const vinMatch = car.description_is?.match(/VIN: (.+)/)?.[1]?.split('\n')[0] || ''
   return {
     id: car.id,
@@ -13,6 +16,8 @@ export function adaptCar(row: any) {
     year: car.year,
     trim: car.trim || '',
     price: car.price_isk,
+    priceReduced: reduction.reduced,
+    previousPrice: reduction.previousPrice,
     priceIncludesVat:
       typeof car.price_includes_vat === 'boolean'
         ? car.price_includes_vat
@@ -32,7 +37,7 @@ export function adaptCar(row: any) {
     doors: car.doors || 0,
     seats: car.seats || 0,
     vin: car.vin || vinMatch,
-    status: car.in_transit === true ? ('in-transit' as const) : ('available' as const),
+    status: isInTransit(car) ? ('in-transit' as const) : ('available' as const),
     expectedArrival: typeof car.expected_arrival === 'string' ? car.expected_arrival : '',
     featured: false,
     images: car.images || [],

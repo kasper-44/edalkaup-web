@@ -59,7 +59,7 @@ function parseOptionalNumber(
 //         description_is?, seats?, doors?, colour?, exterior_colour?, interior_colour?,
 //         year?, range_km?, mileage_km?, battery_kwh?, horsepower_hp?, towing_kg?,
 //         drivetrain?, transmission?, fuel_type?, body_type?, engine?, vin?,
-//         in_transit?, expected_arrival? }
+//         in_transit?, expected_arrival?, price_reduced?, previous_price_isk? }
 export async function PATCH(req: Request) {
   if (!isAuthorized(req)) {
     return NextResponse.json({ error: 'Óheimilt' }, { status: 401 })
@@ -96,6 +96,8 @@ export async function PATCH(req: Request) {
     vin,
     in_transit,
     expected_arrival,
+    price_reduced,
+    previous_price_isk,
   } = body
   if (!id) {
     return NextResponse.json({ error: 'Vantar id' }, { status: 400 })
@@ -163,6 +165,19 @@ export async function PATCH(req: Request) {
     // just looked at this number and confirmed it, as opposed to the flat
     // mileage-tier placeholder the sync script fills in automatically.
     update.price_verified = true
+  }
+  if (price_reduced !== undefined) {
+    if (typeof price_reduced !== 'boolean') {
+      return NextResponse.json({ error: 'Ógilt price_reduced' }, { status: 400 })
+    }
+    update.price_reduced = price_reduced
+  }
+  if (previous_price_isk !== undefined) {
+    const parsed = parseOptionalNumber(previous_price_isk)
+    if (!parsed.ok || (parsed.value !== null && (!Number.isInteger(parsed.value) || parsed.value < 0))) {
+      return NextResponse.json({ error: 'Ógilt fyrra verð' }, { status: 400 })
+    }
+    update.previous_price_isk = parsed.value
   }
   if (price_includes_vat !== undefined) {
     const parsed = parsePriceIncludesVat(price_includes_vat)

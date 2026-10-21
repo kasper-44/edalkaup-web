@@ -1,11 +1,13 @@
 import type { ReactNode } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Car, formatPrice, formatMileage } from '@/data/cars'
+import { Car, formatMileage } from '@/data/cars'
 import { fuelLabel } from '@/lib/inventory'
 import { vehicleTitle } from '@/lib/listingSeo'
+import { listingRibbonKinds } from '@/lib/listingRibbon'
 import { vatIncludedPriceSubtitle, withVatFlag } from '@/lib/priceVat'
 import { expectedArrivalLabel } from '@/lib/transit'
+import ListingRibbons, { StruckPrice } from '@/components/ListingRibbon'
 
 interface CarCardProps {
   car: Car
@@ -56,6 +58,7 @@ export default function CarCard({ car, priority = false, actions }: CarCardProps
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 dark:from-navy-900/60 to-transparent" />
 
           {/* Status badge */}
+          <ListingRibbons kinds={listingRibbonKinds(car)} />
           <div className={`absolute top-3 right-3 px-3 py-1 text-xs font-semibold rounded-full border ${statusColors[car.status]}`}>
             {statusLabels[car.status]}
           </div>
@@ -89,7 +92,12 @@ export default function CarCard({ car, priority = false, actions }: CarCardProps
           {/* Price */}
           <div className="mt-auto pt-4 border-t border-black/5 dark:border-white/5 flex flex-col items-start gap-3">
             <div>
-              <p className="text-xl font-bold text-gray-900 dark:text-white whitespace-nowrap">{formatPrice(car.price)}</p>
+              <StruckPrice
+                current={car.price}
+                previous={car.previousPrice}
+                reduced={car.priceReduced === true}
+                className="text-xl font-bold text-gray-900 dark:text-white whitespace-nowrap"
+              />
               {vatSubtitle && (
                 <p className="text-sm text-gray-600 dark:text-slate-400 mt-1">{vatSubtitle}</p>
               )}

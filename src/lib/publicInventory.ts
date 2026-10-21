@@ -4,6 +4,7 @@ import { CAR_UUID_RE, publicCarSlug, shortIdFromSlug } from '@/lib/carPath'
 import { supabase } from '@/lib/supabase'
 import { orderByNewestListing } from '@/lib/publicCarOrder'
 import { adaptCar } from '@/lib/adaptPublicCar'
+import { comparePriceReducedFirst } from '@/lib/priceReduction'
 import { withVatFlag } from '@/lib/priceVat'
 
 export function publicImages(row: { images?: unknown; images_original?: unknown }): string[] {
@@ -14,7 +15,10 @@ export function publicImages(row: { images?: unknown; images_original?: unknown 
 export const getPublicRows = cache(async (): Promise<any[]> => {
   const { data, error } = await orderByNewestListing(supabase.from('cars').select('*').eq('status', 'live'))
   if (error) throw new Error('Ekki tókst að sækja bíla til sölu.')
-  return (data || []).map((row: any) => ({ ...withVatFlag(row), images: publicImages(row) })).filter((row: any) => row.images.length > 0)
+  return (data || [])
+    .map((row: any) => ({ ...withVatFlag(row), images: publicImages(row) }))
+    .filter((row: any) => row.images.length > 0)
+    .sort(comparePriceReducedFirst)
 })
 export const getPublicCars = cache(async (): Promise<Car[]> => (await getPublicRows()).map(adaptCar))
 

@@ -8,7 +8,7 @@ const HIDE_CHROME = /^\/volvo-ex60\/(diesel|hofdabilar|edalkaup)$/
 
 export default function StickyCallBar() {
   const pathname = usePathname()
-  if (HIDE_CHROME.test(pathname) || pathname.startsWith('/stjorn')) return null
+  if (HIDE_CHROME.test(pathname) || pathname.startsWith('/stjorn') || /^\/bilar\/[^/]+$/.test(pathname)) return null
 
   return (
     <div className="fixed inset-x-0 bottom-0 z-40 border-t border-black/10 bg-white/95 backdrop-blur-xl pb-[env(safe-area-inset-bottom)] dark:border-white/10 dark:bg-navy-900/95 lg:hidden">

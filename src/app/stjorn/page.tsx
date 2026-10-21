@@ -668,6 +668,7 @@ export default function AdminPage() {
                           />
                         </label>
                         {field.key === 'price_isk' && (
+                          <>
                           <label className="block text-sm">
                             <span className="text-slate-500">Verð með VSK</span>
                             <select
@@ -689,9 +690,41 @@ export default function AdminPage() {
                               Sjálfgefið: fólksbílar sýna «m/VSK», sendibílar «+ VSK». «Nei» felur línuna.
                             </span>
                           </label>
+                          <label className="block text-sm">
+                            <span className="text-slate-500">Fyrra verð (ISK)</span>
+                            <input
+                              value={listingDraft.previous_price_isk}
+                              inputMode="numeric"
+                              onChange={(e) =>
+                                setListingDraft((current) =>
+                                  current ? { ...current, previous_price_isk: e.target.value } : current,
+                                )
+                              }
+                              className="mt-1 w-full px-3 py-2 rounded-lg bg-slate-50 text-slate-900 border border-black/10 outline-none focus:border-amber-500"
+                            />
+                          </label>
+                          </>
                         )}
                       </Fragment>
                     ))}
+                    <label className="sm:col-span-2 flex items-start gap-2 text-sm">
+                      <input
+                        type="checkbox"
+                        className="mt-1"
+                        checked={listingDraft.price_reduced}
+                        onChange={(e) =>
+                          setListingDraft((current) =>
+                            current ? { ...current, price_reduced: e.target.checked } : current,
+                          )
+                        }
+                      />
+                      <span>
+                        <span className="text-slate-700 font-medium">Verð lækkað</span>
+                        <span className="block text-xs text-slate-400">
+                          Gul borði «VERÐ LÆKKAÐ» og yfirstrikað fyrra verð.
+                        </span>
+                      </span>
+                    </label>
                     <label className="sm:col-span-2 flex items-start gap-2 text-sm">
                       <input
                         type="checkbox"
@@ -706,7 +739,7 @@ export default function AdminPage() {
                       <span>
                         <span className="text-slate-700 font-medium">Á leiðinni</span>
                         <span className="block text-xs text-slate-400">
-                          Bíllinn er á leið til Íslands. Á vefnum birtist gulmerki í stað «Til sölu».
+                          Bíllinn er á leið til Íslands. Á vefnum birtist borðinn Á LEIÐINNI.
                         </span>
                       </span>
                     </label>
