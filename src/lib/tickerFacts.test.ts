@@ -8,9 +8,9 @@ assert.deepEqual(
     'Hringdu í 699 2011',
     'Bílar í sölu · 12',
     'Mán–Fös 09:00–17:00',
-    'Laugavegur 44, 101 Reykjavík',
   ],
 )
+assert.equal(facts.some((fact) => /Laugavegur|Reykjavík/.test(fact.text)), false)
 assert.equal(facts.find((fact) => fact.id === 'stock')?.live, true)
 assert.equal(facts.find((fact) => fact.id === 'phone')?.phone, true)
 assert.equal(facts.find((fact) => fact.id === 'stock')?.href, '/bilar')

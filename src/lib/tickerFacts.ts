@@ -1,4 +1,4 @@
-import { DEALER_LOCALITY, DEALER_PHONE_DISPLAY, DEALER_PHONE_TEL, DEALER_POSTAL_CODE, DEALER_STREET } from '@/lib/site'
+import { DEALER_PHONE_DISPLAY, DEALER_PHONE_TEL } from '@/lib/site'
 
 /** Opening hours already printed in the footer and on the contact page. */
 export const DEALER_HOURS_SHORT = 'Mán–Fös 09:00–17:00'
@@ -14,9 +14,9 @@ export type TickerFact = {
 
 /**
  * Short facts for the top marquee. Every string is existing site copy:
- * the public phone line, opening hours, the street address, and
- * “Bílar í sölu” plus the count of cars already shown as til sölu.
- * No showroom or auction claims.
+ * the public phone line, opening hours, and “Bílar í sölu” plus the
+ * count of cars already shown as til sölu. The street address stays
+ * off this bar. No showroom or auction claims.
  */
 export function tickerFacts(liveCount: number | null): TickerFact[] {
   const facts: TickerFact[] = [
@@ -30,9 +30,6 @@ export function tickerFacts(liveCount: number | null): TickerFact[] {
       live: true,
     })
   }
-  facts.push(
-    { id: 'hours', text: DEALER_HOURS_SHORT },
-    { id: 'address', text: `${DEALER_STREET}, ${DEALER_POSTAL_CODE} ${DEALER_LOCALITY}` },
-  )
+  facts.push({ id: 'hours', text: DEALER_HOURS_SHORT })
   return facts
 }

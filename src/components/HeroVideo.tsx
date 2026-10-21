@@ -39,8 +39,6 @@ export default function HeroVideo({ carCount }: { carCount: number | null }) {
           </div>
           <p className="mt-6 text-sm font-bold text-accent-dark sm:text-base dark:text-accent">
             Mán–Fös 09:00–17:00
-            <span className="mx-2" aria-hidden="true">·</span>
-            Laugavegur 44, 101 Reykjavík
           </p>
           <div className="mt-7 flex flex-col gap-3 sm:flex-row">
             <Link href="/bilar" className="dealer-button">Skoða bíla til sölu <span aria-hidden="true">↗</span></Link>
