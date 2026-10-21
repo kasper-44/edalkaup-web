@@ -6,7 +6,7 @@ export const metadata = pageMetadata('Hafa samband við Eðalkaup', 'Hafðu samb
 
 export default function HafaSambandPage() {
   return (
-    <div className="pt-20 lg:pt-24 dealer-hero">
+    <div className="site-offset dealer-hero">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="text-left mb-12">
           <p className="text-accent text-sm font-semibold uppercase tracking-[0.2em] mb-3">Samband</p>
@@ -72,7 +72,7 @@ export default function HafaSambandPage() {
           </div>
 
           {/* Contact Form */}
-          <div id="fyrirspurn" className="lg:col-span-3 scroll-mt-28">
+          <div id="fyrirspurn" className="lg:col-span-3 scroll-mt-[calc(var(--site-header-offset)+0.5rem)]">
             <ContactForm source="samband" />
           </div>
         </div>

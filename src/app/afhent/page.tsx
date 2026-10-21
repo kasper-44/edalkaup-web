@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function AfhentPage() {
   return (
-    <div className="pt-20 lg:pt-24">
+    <div className="site-offset">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="text-center mb-12">
           <p className="text-accent text-sm font-semibold uppercase tracking-[0.2em] mb-3">Afrekaskrá</p>

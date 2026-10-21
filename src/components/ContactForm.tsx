@@ -95,7 +95,7 @@ export default function ContactForm({
 
   if (submitted) {
     return (
-      <div className="bg-white dark:bg-navy-800 rounded-2xl border border-accent/20 p-8 text-center">
+      <div className="dealer-card border-accent/20 p-8 text-center">
         <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-accent/10 flex items-center justify-center">
           <svg className="w-8 h-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -114,7 +114,7 @@ export default function ContactForm({
     <form
       onSubmit={handleSubmit}
       aria-busy={sending}
-      className={`bg-white dark:bg-navy-800 rounded-2xl border border-black/5 dark:border-white/5 shadow-xl shadow-black/10 ${
+      className={`dealer-card ${
         compact ? 'p-4 sm:p-5 space-y-3' : 'p-6 sm:p-8 space-y-5'
       }`}
     >

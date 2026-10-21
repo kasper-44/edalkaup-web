@@ -56,9 +56,9 @@ export default function Inventory({ cars, initialFilters = EMPTY_FILTERS, initia
     return () => window.removeEventListener('popstate', onBack)
   }, [])
 
-  return <div className="pt-20 lg:pt-24 bg-gray-50 dark:bg-navy-900">
+  return <div className="site-offset bg-gray-50 dark:bg-navy-900">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 pb-32">
-      <div className="mb-8"><p className="text-accent-dark dark:text-accent text-xs font-semibold uppercase tracking-[0.2em] mb-3">Eðalkaup · Bílar til sölu</p><h1 className="text-4xl sm:text-5xl font-semibold tracking-[-.045em]">{title}</h1><p className="text-gray-600 dark:text-slate-300 mt-3 max-w-3xl leading-relaxed">{intro}</p></div>
+      <div className="mb-8"><p className="text-accent-dark dark:text-accent text-xs font-bold uppercase tracking-[0.2em] mb-3">Eðalkaup · Bílar til sölu</p><h1 className="display-headline display-headline-lg text-gray-900 dark:text-white">{title}</h1><p className="text-gray-600 dark:text-slate-300 mt-4 max-w-3xl leading-relaxed">{intro}</p></div>
       <nav aria-label="Bílaflokkar" className="flex flex-wrap gap-2 mb-7">
         <Link href="/bilar" onClick={reset} aria-current={pathname === '/bilar' ? 'page' : undefined} className="inventory-chip aria-[current=page]:border-accent-dark aria-[current=page]:bg-accent/10">Allir bílar</Link>
         {INVENTORY_CATEGORIES.map((category) => <Link key={category.slug} href={`/bilar/flokkur/${category.slug}`} onClick={reset} aria-current={pathname === `/bilar/flokkur/${category.slug}` ? 'page' : undefined} className="inventory-chip aria-[current=page]:border-accent-dark aria-[current=page]:bg-accent/10">{category.short}</Link>)}

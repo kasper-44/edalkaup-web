@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 export default function NotFound() {
   return (
-    <div className="pt-20 min-h-screen flex items-center justify-center">
+    <div className="site-offset min-h-screen flex items-center justify-center">
       <div className="text-center px-4">
         <p className="text-8xl font-black text-accent/20 mb-4">404</p>
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Síða fannst ekki</h1>

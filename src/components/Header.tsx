@@ -6,7 +6,9 @@ import { usePathname } from 'next/navigation'
 import { useTheme } from './ThemeProvider'
 import { SHOW_NEW_VOLVO } from '@/lib/features'
 import CallLink from '@/components/CallLink'
+import TickerBar from '@/components/TickerBar'
 import { goToInquiry } from '@/lib/goToInquiry'
+import { tickerFacts } from '@/lib/tickerFacts'
 
 const navItems = [
   { href: '/', label: 'Forsíða' },
@@ -22,7 +24,7 @@ const volvoModels = [
   { href: '/volvo-ex60', label: 'EX60' },
 ]
 
-export default function Header() {
+export default function Header({ liveCarCount = null }: { liveCarCount?: number | null }) {
   const [isOpen, setIsOpen] = useState(false)
   const [volvoOpen, setVolvoOpen] = useState(false)
   const { theme, toggle } = useTheme()
@@ -44,7 +46,9 @@ export default function Header() {
   if (/^\/volvo-ex60\/(diesel|hofdabilar|edalkaup)$/.test(pathname)) return null
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-40 bg-white/95 dark:bg-navy-900/95 backdrop-blur-xl border-b border-black/5 dark:border-white/5 transition-colors">
+    <header className="fixed top-0 left-0 right-0 z-40">
+      <TickerBar facts={tickerFacts(liveCarCount)} />
+      <div className="bg-white/95 dark:bg-navy-900/95 backdrop-blur-xl border-b border-black/5 dark:border-white/5 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
@@ -53,7 +57,7 @@ export default function Header() {
               E
             </div>
             <div>
-              <span className="text-base sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white group-hover:text-accent transition-colors">
+              <span className="text-base sm:text-xl font-black tracking-[-0.04em] text-gray-900 dark:text-white group-hover:text-accent transition-colors">
                 EÐALKAUP
               </span>
               <span className="hidden sm:block text-[10px] uppercase tracking-[0.3em] text-gray-500 dark:text-slate-400">
@@ -138,7 +142,7 @@ export default function Header() {
 
             <CallLink
               placement="header"
-              className="ml-2 inline-flex items-center px-3 py-2.5 text-sm font-semibold border border-accent/40 text-gray-900 dark:text-white rounded-lg hover:border-accent hover:text-accent transition-colors"
+              className="ml-3 inline-flex items-center text-sm font-black tracking-tight text-accent-dark hover:text-accent dark:text-accent dark:hover:text-accent-light"
             >
               Hringja 699 2011
             </CallLink>
@@ -194,7 +198,7 @@ export default function Header() {
 
         {/* Mobile Nav */}
         {isOpen && (
-          <nav id="mobile-navigation" aria-label="Aðalvalmynd" className="xl:hidden max-h-[calc(100svh-8rem)] overflow-y-auto pb-4 border-t border-black/5 dark:border-white/5 pt-4 space-y-1">
+          <nav id="mobile-navigation" aria-label="Aðalvalmynd" className="xl:hidden max-h-[calc(100svh-var(--site-header-offset)-1rem)] overflow-y-auto pb-4 border-t border-black/5 dark:border-white/5 pt-4 space-y-1">
             {navItems.slice(0, 2).map((item) => (
               <Link
                 key={item.href}
@@ -262,6 +266,7 @@ export default function Header() {
             </button>
           </nav>
         )}
+      </div>
       </div>
     </header>
   )

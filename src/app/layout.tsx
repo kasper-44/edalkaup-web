@@ -12,6 +12,7 @@ import { Analytics } from '@vercel/analytics/react'
 import MarketingTags from '@/components/MarketingTags'
 import { jsonLdScript, siteDealerJsonLd } from '@/lib/listingSeo'
 import { SITE_ORIGIN } from '@/lib/site'
+import { getPublicCars } from '@/lib/publicInventory'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -43,8 +44,17 @@ const themeScript = `
 })();
 `
 
+async function liveCarCount(): Promise<number | null> {
+  try {
+    return (await getPublicCars()).length
+  } catch {
+    return null
+  }
+}
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const hideChrome = (await headers()).get('x-hide-site-chrome') === '1'
+  const carCount = hideChrome ? null : await liveCarCount()
 
   return (
     <html lang="is" suppressHydrationWarning>
@@ -58,10 +68,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         )}
       </head>
       <body className={`${inter.className} antialiased`}>
-        <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:bg-white focus:text-navy-900 focus:p-3 focus:rounded-lg">Fara í efni síðunnar</a>
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-[var(--site-header-offset)] focus:left-2 focus:z-50 focus:bg-white focus:text-navy-900 focus:p-3 focus:rounded-lg">Fara í efni síðunnar</a>
         <MarketingTags />
         <ThemeProvider>
-          {!hideChrome && <Header />}
+          {!hideChrome && <Header liveCarCount={carCount} />}
           <main id="main-content" className="min-h-screen" tabIndex={-1}>{children}</main>
           {!hideChrome && <Footer />}
           {!hideChrome && <StickyCallBar />}

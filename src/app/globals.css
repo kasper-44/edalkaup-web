@@ -35,10 +35,20 @@ body {
   color: #f1f5f9;
 }
 
+:root {
+  --ticker-height: 2.25rem;
+  --header-bar-height: 4rem;
+  --site-header-offset: calc(var(--ticker-height) + var(--header-bar-height));
+}
+
+@media (min-width: 1024px) {
+  :root { --header-bar-height: 5rem; }
+}
+
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 5.5rem;
+  scroll-padding-top: calc(var(--site-header-offset) + 0.75rem);
   scroll-padding-bottom: 5.5rem;
 }
 
@@ -142,3 +152,48 @@ input::placeholder, textarea::placeholder { color: #64748b; opacity: 1; }
 
 .dealer-import { background: linear-gradient(#f4f2ed 0 30rem, #fff 30rem); }
 .dark .dealer-import { background: linear-gradient(#111827 0 30rem, #0a0f1c 30rem); }
+
+.site-offset { padding-top: var(--site-header-offset); }
+
+.display-headline {
+  font-weight: 900;
+  letter-spacing: -0.055em;
+  line-height: 0.9;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+.display-headline-xl { font-size: clamp(3rem, 7vw, 5.35rem); }
+.display-headline-lg { font-size: clamp(1.85rem, 3.3vw, 2.75rem); }
+
+.dealer-card {
+  border-radius: 1.5rem;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 10px 30px rgba(10, 15, 28, 0.07);
+}
+.dark .dealer-card {
+  background: var(--color-navy-800);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+}
+
+@keyframes ticker-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.ticker-track { animation: ticker-marquee 42s linear infinite; }
+.ticker-viewport:hover .ticker-track,
+.ticker-viewport:focus-within .ticker-track { animation-play-state: paused; }
+
+@keyframes live-dot-ping {
+  0% { transform: scale(1); opacity: 0.7; }
+  70%, 100% { transform: scale(2.5); opacity: 0; }
+}
+.live-dot-ping { animation: live-dot-ping 1.6s cubic-bezier(0, 0, 0.2, 1) infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track { animation: none !important; transform: none !important; }
+  .ticker-copy-dup { display: none !important; }
+  .ticker-viewport { overflow-x: auto; }
+  .live-dot-ping { animation: none !important; }
+}
