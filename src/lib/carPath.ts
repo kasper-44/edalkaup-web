@@ -47,7 +47,7 @@ export function slugifyListingTitle(title: string): string {
   return slug || 'bil'
 }
 
-/** First 6 hex characters of the car id, e.g. 3fe233e6-… → 3fe233. */
+/** First 6 hex characters of the car id, e.g. 3fe233e6-… becomes 3fe233. */
 export function shortCarId(id: string): string {
   return id.slice(0, 6).toLowerCase()
 }

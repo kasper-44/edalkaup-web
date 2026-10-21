@@ -7,6 +7,7 @@ import { vehicleTitle } from '@/lib/listingSeo'
 import { listingRibbonKinds } from '@/lib/listingRibbon'
 import { vatIncludedPriceSubtitle, withVatFlag } from '@/lib/priceVat'
 import { expectedArrivalLabel } from '@/lib/transit'
+import ArrowIcon from '@/components/ArrowIcon'
 import ListingRibbons, { StruckPrice } from '@/components/ListingRibbon'
 import LiveDot from '@/components/LiveDot'
 
@@ -104,8 +105,8 @@ export default function CarCard({ car, priority = false, actions }: CarCardProps
                 <p className="text-sm text-gray-600 dark:text-slate-400 mt-1">{vatSubtitle}</p>
               )}
             </div>
-            <span className="self-end text-accent-dark dark:text-accent text-sm font-black group-hover:translate-x-1 transition-transform">
-              Skoða bíl →
+            <span className="self-end inline-flex items-center gap-1 text-accent-dark dark:text-accent text-sm font-black group-hover:translate-x-1 transition-transform">
+              Skoða bíl <ArrowIcon direction="right" />
             </span>
           </div>
         </div>

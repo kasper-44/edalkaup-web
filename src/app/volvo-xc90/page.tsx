@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import ArrowIcon from '@/components/ArrowIcon'
 import { xc90Cars, formatXC90Price, colorHex } from '@/data/xc90'
 import type { Metadata } from 'next'
 
@@ -192,9 +193,9 @@ export default function VolvoXC90Page() {
                   {car.status !== 'sold' && (
                     <Link
                       href="/hafa-samband"
-                      className="text-accent text-sm font-medium hover:text-accent-light transition-colors"
+                      className="inline-flex items-center gap-1 text-accent text-sm font-medium hover:text-accent-light transition-colors"
                     >
-                      Skoða nánar →
+                      Skoða nánar <ArrowIcon direction="right" />
                     </Link>
                   )}
                 </div>

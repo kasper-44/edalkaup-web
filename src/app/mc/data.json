@@ -28,7 +28,7 @@
     },
     {
       "id": "m3",
-      "name": "Domain: edalkaup.is → Vercel",
+      "name": "Domain: edalkaup.is – Vercel",
       "status": "blocked",
       "notes": "DNS still at Domeneshop. Need to point to Vercel while preserving MX records for email.",
       "steps": [
