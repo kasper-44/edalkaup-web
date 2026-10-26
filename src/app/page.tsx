@@ -18,7 +18,7 @@ export default async function Home() {
   const cars = await getPublicCars()
   const makes = [...new Set(cars.map((car) => car.make))].sort()
   return <>
-    <HeroVideo carCount={cars.length} heroCar={cars[0]?.images[0] ? { image: cars[0].images[0], title: `${cars[0].make} ${cars[0].model}` } : undefined} />
+    <HeroVideo carCount={cars.length} />
     <section className="dealer-container py-10 sm:py-12" aria-labelledby="search-heading">
       <div className="flex justify-between items-baseline gap-4 mb-5"><h2 id="search-heading" className="text-xl font-semibold tracking-tight">Finndu bíl sem hentar þér</h2><span className="text-sm text-gray-500 dark:text-slate-400">{cars.length} bílar til sölu</span></div>
       <form action="/bilar" method="get" className="dealer-search grid sm:grid-cols-[1fr_1fr_auto] gap-4">
