@@ -13,7 +13,7 @@ import { tickerFacts } from '@/lib/tickerFacts'
 const navItems = [
   { href: '/', label: 'Forsíða' },
   { href: '/bilar', label: 'Bílar til sölu' },
-  { href: '/bilainnflutningur', label: 'Kaup og afhending' },
+  { href: '/bilainnflutningur', label: 'Innflutningur og afhending' },
   { href: '/um-okkur', label: 'Um okkur' },
   { href: '/hafa-samband', label: 'Hafa samband' },
 ]
