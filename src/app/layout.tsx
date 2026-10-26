@@ -19,17 +19,17 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_ORIGIN),
   title: {
-    default: 'Eðalkaup — Bílar til sölu',
+    default: 'Eðalkaup — Bílainnflutningur og bílar til sölu',
     template: '%s | Eðalkaup',
   },
-  description: 'Bílar til sölu hjá Eðalkaup. Skoðaðu myndir, verð og búnað og hafðu samband um auglýsta bíla. Yfir 25 ára reynsla og persónuleg þjónusta.',
+  description: 'Eðalkaup sérhæfir sig í bílainnflutningi til Íslands. Skoðaðu auglýsta bíla, myndir, verð og búnað. Yfir 25 ára reynsla af bílainnflutningi.',
   openGraph: {
     type: 'website',
     locale: 'is_IS',
     url: SITE_ORIGIN,
     siteName: 'Eðalkaup',
-    title: 'Eðalkaup — Bílar til sölu',
-    description: 'Bílar til sölu hjá Eðalkaup. Skoðaðu myndir, verð og búnað og hafðu samband um auglýsta bíla. Yfir 25 ára reynsla og persónuleg þjónusta.',
+    title: 'Eðalkaup — Bílainnflutningur og bílar til sölu',
+    description: 'Eðalkaup sérhæfir sig í bílainnflutningi til Íslands. Skoðaðu auglýsta bíla, myndir, verð og búnað. Yfir 25 ára reynsla af bílainnflutningi.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large' } },
   icons: { icon: { url: '/logo.svg', type: 'image/svg+xml' } },
