@@ -23,7 +23,7 @@ export default function Footer() {
               <span className="text-xl font-bold text-gray-900 dark:text-white">EÐALKAUP</span>
             </div>
             <p className="text-sm text-gray-500 dark:text-slate-400 leading-relaxed">
-              Bílar til sölu og persónuleg þjónusta. Yfir 25 ára reynsla af bílainnflutningi.
+              Eðalkaup flytur inn bíla til Íslands. Skoðaðu úrvalið okkar og kynntu þér verð, búnað og afhendingu. Yfir 25 ára reynsla.
             </p>
           </div>
 
@@ -33,7 +33,7 @@ export default function Footer() {
             <ul className="space-y-3">
               {[
                 { href: '/bilar', label: 'Bílar til sölu' },
-                { href: '/bilainnflutningur', label: 'Kaup og afhending' },
+                { href: '/bilainnflutningur', label: 'Innflutningur og afhending' },
                 { href: '/um-okkur', label: 'Um okkur' },
                 { href: '/hafa-samband', label: 'Hafa samband' },
               ].map((link) => (
