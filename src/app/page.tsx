@@ -18,7 +18,7 @@ export default async function Home() {
   const cars = await getPublicCars()
   const makes = [...new Set(cars.map((car) => car.make))].sort()
   return <>
-    <HeroVideo carCount={cars.length} />
+    <HeroVideo carCount={cars.length} heroCar={cars[0]?.images[0] ? { image: cars[0].images[0], title: `${cars[0].make} ${cars[0].model}` } : undefined} />
     <section className="dealer-container py-10 sm:py-12" aria-labelledby="search-heading">
       <div className="flex justify-between items-baseline gap-4 mb-5"><h2 id="search-heading" className="text-xl font-semibold tracking-tight">Finndu bíl sem hentar þér</h2><span className="text-sm text-gray-500 dark:text-slate-400">{cars.length} bílar til sölu</span></div>
       <form action="/bilar" method="get" className="dealer-search grid sm:grid-cols-[1fr_1fr_auto] gap-4">
@@ -39,7 +39,7 @@ export default async function Home() {
       </div>
     </section>
     <section className="dealer-container py-16 sm:py-24 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-      <div className="relative aspect-[4/3] overflow-hidden rounded-xl"><Image src="/images/cars/sierra-ev-002/01.jpg" alt="GMC Sierra EV — dæmi um bílainnflutning Eðalkaupa" fill sizes="(max-width: 1023px) 100vw, 50vw" className="object-cover" /><span className="absolute bottom-5 left-5 bg-white text-navy-900 rounded-lg px-4 py-3 text-xs font-semibold">Bandaríkin · Kanada · Evrópa</span></div>
+      <div className="relative flex aspect-[4/3] flex-col justify-center overflow-hidden rounded-xl bg-navy-900 p-8 text-white sm:p-12"><p className="dealer-eyebrow mb-5">Eðalkaup</p><p className="text-3xl font-black tracking-tight sm:text-5xl">Kaup og afhending</p><p className="mt-5 text-slate-300">Bandaríkin · Kanada · Evrópa</p></div>
       <div><p className="dealer-eyebrow mb-4">Kaup hjá Eðalkaup</p><h2 className="dealer-heading">Frá fyrsta samtali.<br />Til afhendingar.</h2><p className="mt-5 text-gray-600 dark:text-slate-300 leading-relaxed">Kynntu þér bílana sem eru auglýstir hjá okkur. Við förum yfir upplýsingar um bílinn, kaup og afhendingu og hjálpum þér að taka upplýsta ákvörðun.</p><ol className="mt-7 space-y-5">{[
         ['Veldu úr úrvalinu', 'Skoðaðu myndir, verð og upplýsingar í auglýsingunum.'],
         ['Fáðu upplýsingar', 'Við förum yfir búnað, verð og framboð á þeim bíl sem þú hefur áhuga á.'],
