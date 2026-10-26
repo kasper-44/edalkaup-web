@@ -4,11 +4,11 @@ import ArrowIcon from '@/components/ArrowIcon'
 import CallLink from '@/components/CallLink'
 import { pageMetadata } from '@/lib/pageSeo'
 
-export const metadata = pageMetadata('Um Eðalkaup — reynsla af bílainnflutningi', 'Kynntu þér Eðalkaup. Yfir 25 ára reynsla af bílainnflutningi og persónuleg þjónusta við bílakaup.', '/um-okkur')
+export const metadata = pageMetadata('Um Eðalkaup — reynsla af bílainnflutningi', 'Kynntu þér Eðalkaup og yfir 25 ára reynslu af bílainnflutningi til Íslands.', '/um-okkur')
 
 export default function UmOkkurPage() {
   return <div className="site-offset">
-    <section className="dealer-hero"><div className="dealer-container py-16 sm:py-24 grid lg:grid-cols-[1.4fr_1fr] gap-12 items-center"><div><p className="dealer-eyebrow mb-5">Um Eðalkaup</p><h1 className="text-4xl sm:text-6xl font-semibold tracking-[-.05em] leading-[1.08]">Bílaáhugi.<br />Reynsla.<br /><span className="text-accent-dark dark:text-accent">Persónuleg þjónusta.</span></h1><p className="text-lg text-gray-600 dark:text-slate-300 leading-relaxed max-w-xl mt-7">Í yfir 25 ár höfum við aðstoðað við innflutning bíla til Íslands. Við leggjum metnað í skýrar upplýsingar og persónulega þjónustu við bílakaup.</p></div><div className="border-l border-black/15 dark:border-white/20 pl-8"><p className="text-8xl font-semibold tracking-tighter text-accent-dark dark:text-accent">25+</p><p className="mt-4 text-gray-600 dark:text-slate-300">ára reynsla af bílainnflutningi</p></div></div></section>
+    <section className="dealer-hero"><div className="dealer-container py-16 sm:py-24 grid lg:grid-cols-[1.4fr_1fr] gap-12 items-center"><div><p className="dealer-eyebrow mb-5">Um Eðalkaup</p><h1 className="text-4xl sm:text-6xl font-semibold tracking-[-.05em] leading-[1.08]">Bílaáhugi.<br />Reynsla.<br /><span className="text-accent-dark dark:text-accent">Bílainnflutningur.</span></h1><p className="text-lg text-gray-600 dark:text-slate-300 leading-relaxed max-w-xl mt-7">Í yfir 25 ár höfum við flutt inn bíla til Íslands. Við leggjum áherslu á vandað úrval, skýrar upplýsingar um bílana og traust ferli frá kaupum til afhendingar.</p></div><div className="border-l border-black/15 dark:border-white/20 pl-8"><p className="text-8xl font-semibold tracking-tighter text-accent-dark dark:text-accent">25+</p><p className="mt-4 text-gray-600 dark:text-slate-300">ára reynsla af bílainnflutningi</p></div></div></section>
     <section className="dealer-container py-16 sm:py-24">
       <p className="dealer-eyebrow mb-4">Fólkið á bak við bílana</p>
       <h2 className="dealer-heading">Beint samband.<br />Frá fyrsta degi.</h2>
