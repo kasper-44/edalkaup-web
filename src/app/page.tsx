@@ -12,14 +12,14 @@ import { SHOW_NEW_VOLVO } from '@/lib/features'
 import { formatIsk } from '@/lib/formatIsk'
 
 export const dynamic = 'force-dynamic'
-export const metadata = pageMetadata('Bílar til sölu', 'Skoðaðu bíla til sölu hjá Eðalkaup. Verð, myndir og upplýsingar um búnað. Yfir 25 ára reynsla og persónuleg þjónusta.', '/')
+export const metadata = pageMetadata('Bílar til sölu', 'Skoðaðu bíla til sölu hjá Eðalkaup. Verð, myndir og upplýsingar um búnað. Yfir 25 ára reynsla af bílainnflutningi.', '/')
 
 export default async function Home() {
   const cars = await getPublicCars()
   const makes = [...new Set(cars.map((car) => car.make))].sort()
   return <>
     <HeroVideo carCount={cars.length} />
-    <section className="dealer-container py-10 sm:py-12" aria-labelledby="search-heading">
+    <section className="dealer-container relative z-10 -mt-5 pb-12 sm:-mt-8 sm:pb-16" aria-labelledby="search-heading">
       <div className="flex justify-between items-baseline gap-4 mb-5"><h2 id="search-heading" className="text-xl font-semibold tracking-tight">Finndu bíl sem hentar þér</h2><span className="text-sm text-gray-500 dark:text-slate-400">{cars.length} bílar til sölu</span></div>
       <form action="/bilar" method="get" className="dealer-search grid sm:grid-cols-[1fr_1fr_auto] gap-4">
         <div><label htmlFor="home-query" className="block text-xs font-semibold mb-2">Gerð eða árgerð</label><input id="home-query" name="q" type="search" maxLength={100} placeholder="T.d. Ford Explorer" className="dealer-input" /></div>
@@ -34,12 +34,12 @@ export default async function Home() {
       { href: '/volvo-ex60', name: 'EX60 P12 Long Range', price: `Frá ${formatIsk(12390000)}`, image: '/images/ex60/crystal-white.jpg' },
     ].map((model) => <Link href={model.href} key={model.href} className="rounded-xl border border-black/10 dark:border-white/10 overflow-hidden"><div className="relative aspect-[16/10]"><Image src={model.image} alt={`Volvo ${model.name}`} fill sizes="(max-width: 767px) 100vw, 33vw" className="object-cover" /></div><div className="p-5"><h3 className="text-xl font-semibold">{model.name}</h3><p className="mt-2">{model.price}</p></div></Link>)}</div></section>}
     <section className="dealer-stock py-12 sm:py-16">
-      <div className="dealer-container"><div className="flex flex-wrap items-end justify-between gap-5 mb-8"><div><p className="dealer-eyebrow mb-3">Úrvalið okkar</p><h2 className="display-headline display-headline-lg">Bílar til sölu</h2></div><Link href="/bilar" className="inline-flex items-center gap-1 font-semibold text-sm underline underline-offset-4">Sjá alla bíla <ArrowIcon /></Link></div><FeaturedCars />
+      <div className="dealer-container"><div className="flex flex-wrap items-end justify-between gap-5 mb-8"><div><p className="dealer-eyebrow mb-3">Úrvalið okkar</p><h2 className="display-headline display-headline-lg">Skoðaðu úrvalið</h2></div><Link href="/bilar" className="inline-flex items-center gap-1 font-semibold text-sm underline underline-offset-4">Sjá alla bíla <ArrowIcon /></Link></div><FeaturedCars />
       {makes.length > 0 && <nav aria-label="Leita eftir framleiðanda" className="mt-10 pt-8 border-t border-black/10 dark:border-white/10 flex flex-wrap items-center gap-x-7 gap-y-4"><span className="text-xs uppercase tracking-widest text-gray-500 dark:text-slate-400">Framleiðendur</span>{makes.map((make) => <Link key={make} href={`/bilar/framleidandi/${normalizeSearch(make).replace(/\s+/g, '-')}`} className="font-semibold hover:text-accent-dark dark:hover:text-accent">{make}</Link>)}</nav>}
       </div>
     </section>
     <section className="dealer-container py-16 sm:py-24 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-      <div className="relative flex aspect-[4/3] flex-col justify-center overflow-hidden rounded-xl bg-navy-900 p-8 text-white sm:p-12"><p className="dealer-eyebrow mb-5">Eðalkaup</p><p className="text-3xl font-black tracking-tight sm:text-5xl">Kaup og afhending</p><p className="mt-5 text-slate-300">Bandaríkin · Kanada · Evrópa</p></div>
+      <div className="flex flex-col justify-center border-y border-black/10 py-12 dark:border-white/10 lg:pr-16"><p className="dealer-eyebrow mb-6">Eðalkaup</p><p className="text-5xl font-semibold tracking-[-0.055em] leading-[1.05] sm:text-7xl">25+ <span className="text-accent-dark dark:text-accent">ár</span></p><p className="mt-6 max-w-sm text-lg leading-relaxed text-gray-600 dark:text-slate-300">Reynsla af bílainnflutningi og skýr leið frá vali bíls til afhendingar.</p></div>
       <div><p className="dealer-eyebrow mb-4">Kaup hjá Eðalkaup</p><h2 className="dealer-heading">Frá fyrsta samtali.<br />Til afhendingar.</h2><p className="mt-5 text-gray-600 dark:text-slate-300 leading-relaxed">Kynntu þér bílana sem eru auglýstir hjá okkur. Við förum yfir upplýsingar um bílinn, kaup og afhendingu og hjálpum þér að taka upplýsta ákvörðun.</p><ol className="mt-7 space-y-5">{[
         ['Veldu úr úrvalinu', 'Skoðaðu myndir, verð og upplýsingar í auglýsingunum.'],
         ['Fáðu upplýsingar', 'Við förum yfir búnað, verð og framboð á þeim bíl sem þú hefur áhuga á.'],
