@@ -11,7 +11,7 @@ export default function HeroVideo({ carCount }: { carCount: number | null }) {
         <div className="max-w-5xl">
           <p className="dealer-eyebrow mb-7">Eðalkaup / Bílasala á Íslandi</p>
           <h1 className="display-headline text-[clamp(3.6rem,9vw,8.5rem)] leading-[0.88] tracking-[-0.065em] text-gray-900 dark:text-white">
-            Rétti bíllinn.<br /><span className="text-accent-dark dark:text-accent">Á þínum forsendum.</span>
+            Næsti bíll<br /><span className="text-accent-dark dark:text-accent">bíður þín.</span>
           </h1>
           <p className="mt-9 max-w-xl text-lg leading-relaxed text-gray-600 sm:text-xl dark:text-slate-300">
             Vandað úrval bíla til sölu. Skoðaðu myndir, búnað og verð — og hafðu beint samband um bílinn sem vekur áhuga.
