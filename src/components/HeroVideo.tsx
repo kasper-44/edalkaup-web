@@ -12,7 +12,7 @@ const HERO_FACTS = [
 ] as const
 
 /** Homepage hero. Copy is the existing headline, intro, trust lines, hours and address. */
-export default function HeroVideo({ carCount }: { carCount: number | null }) {
+export default function HeroVideo({ carCount, heroCar }: { carCount: number | null; heroCar?: { image: string; title: string } }) {
   const countLabel = carCount == null ? 'Bílar til sölu' : `${carCount} bílar til sölu`
 
   return (
@@ -61,20 +61,20 @@ export default function HeroVideo({ carCount }: { carCount: number | null }) {
             699 2011
           </CallLink>
           <div className="overflow-hidden rounded-[1.75rem] bg-navy-900 p-3 text-white shadow-[0_22px_50px_rgba(10,15,28,0.22)] sm:p-4">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-[1.25rem]">
-              <Image
-                src="/images/cars/sierra-ev-002/01.jpg"
-                alt="GMC Sierra EV — bílamynd frá Eðalkaup"
+            <div className="relative aspect-[4/3] overflow-hidden rounded-[1.25rem] bg-navy-800">
+              {heroCar ? <Image
+                src={heroCar.image}
+                alt={heroCar.title}
                 fill
                 priority
                 sizes="(max-width: 1023px) 100vw, 46vw"
                 className="object-cover"
-              />
+              /> : <div className="flex h-full items-center justify-center px-8 text-center text-3xl font-black">Skoðaðu úrvalið okkar</div>}
             </div>
             <div className="flex items-end justify-between gap-4 px-2 pt-4 pb-1">
               <div>
                 <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.22em] text-accent">Kynntu þér bílana</p>
-                <p className="text-2xl font-black tracking-tight">GMC Sierra EV</p>
+                <p className="text-2xl font-black tracking-tight">{heroCar?.title ?? "Bílar til sölu"}</p>
               </div>
               <Link href="/bilar" aria-label="Skoða bíla til sölu" className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/40 hover:bg-white/10">
                 <ArrowIcon className="h-5 w-5" />
