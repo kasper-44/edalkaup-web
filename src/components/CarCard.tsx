@@ -53,7 +53,7 @@ export default function CarCard({ car, priority = false, actions }: CarCardProps
             src={car.images[0]}
             alt={title}
             fill
-            className="object-cover group-hover:scale-105 transition-transform duration-500"
+            className="object-cover group-hover:scale-[1.035] transition-transform duration-500"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             priority={priority}
           /> : <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-navy-700 text-gray-500 dark:text-slate-300">Mynd væntanleg</div>}
@@ -61,7 +61,7 @@ export default function CarCard({ car, priority = false, actions }: CarCardProps
 
           {/* Status badge */}
           <ListingRibbons kinds={listingRibbonKinds(car)} />
-          <div className={`absolute top-3 right-3 z-10 -rotate-6 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-black uppercase tracking-wide shadow-[0_8px_18px_rgba(0,0,0,0.18)] ${statusColors[car.status]}`}>
+          <div className={`absolute top-3 right-3 z-10 -rotate-6 inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wide shadow-sm ${statusColors[car.status]}`}>
             {car.status === 'available' && <LiveDot tone="ink" />}
             {statusLabels[car.status]}
           </div>
@@ -72,7 +72,7 @@ export default function CarCard({ car, priority = false, actions }: CarCardProps
           <div className="flex items-start justify-between gap-2 mb-2">
             <div>
               <p className="text-[11px] font-bold text-accent-dark dark:text-accent uppercase tracking-[0.16em]">{car.make}</p>
-              <h3 className="mt-1 text-xl font-black leading-[1.05] tracking-[-0.03em] text-gray-900 dark:text-white group-hover:text-accent-dark dark:group-hover:text-accent transition-colors">
+              <h3 className="mt-1 text-xl font-semibold leading-[1.12] tracking-[-0.03em] text-gray-900 dark:text-white group-hover:text-accent-dark dark:group-hover:text-accent transition-colors">
                 {title}
               </h3>
               {arrival && (
@@ -99,13 +99,13 @@ export default function CarCard({ car, priority = false, actions }: CarCardProps
                 current={car.price}
                 previous={car.previousPrice}
                 reduced={car.priceReduced === true}
-                className="text-2xl font-black tracking-tight text-gray-900 dark:text-white whitespace-nowrap"
+                className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white whitespace-nowrap"
               />
               {vatSubtitle && (
                 <p className="text-sm text-gray-600 dark:text-slate-400 mt-1">{vatSubtitle}</p>
               )}
             </div>
-            <span className="self-end inline-flex items-center gap-1 text-accent-dark dark:text-accent text-sm font-black group-hover:translate-x-1 transition-transform">
+            <span className="self-end inline-flex items-center gap-1 text-accent-dark dark:text-accent text-sm font-semibold group-hover:translate-x-1 transition-transform">
               Skoða bíl <ArrowIcon direction="right" />
             </span>
           </div>
