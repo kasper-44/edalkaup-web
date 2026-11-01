@@ -55,7 +55,7 @@ function parseOptionalNumber(
 }
 
 // PATCH /api/admin/cars  -> update listing fields without recreating the row
-// body: { id, price_isk?, price_includes_vat?, specs_verified?, status?, images?, title?, make?, model?, trim?,
+// body: { id, price_isk?, price_includes_vat?, specs_verified?, status?, images?, images_original?, title?, make?, model?, trim?,
 //         description_is?, seats?, doors?, colour?, exterior_colour?, interior_colour?,
 //         year?, range_km?, mileage_km?, battery_kwh?, horsepower_hp?, towing_kg?,
 //         drivetrain?, transmission?, fuel_type?, body_type?, engine?, vin?,
@@ -72,6 +72,7 @@ export async function PATCH(req: Request) {
     specs_verified,
     status,
     images,
+    images_original,
     title,
     make,
     model,
@@ -193,6 +194,15 @@ export async function PATCH(req: Request) {
       return NextResponse.json({ error: 'Ógildar myndir' }, { status: 400 })
     }
     update.images = images
+  }
+  if (images_original !== undefined) {
+    if (
+      images_original !== null &&
+      (!Array.isArray(images_original) || !images_original.every((u) => typeof u === 'string'))
+    ) {
+      return NextResponse.json({ error: 'Ógildar upprunalegar myndir' }, { status: 400 })
+    }
+    update.images_original = images_original
   }
   if (status !== undefined) {
     if (!['draft', 'live', 'sold'].includes(status)) {
