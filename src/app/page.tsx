@@ -11,7 +11,6 @@ import CallLink from '@/components/CallLink'
 import { SHOW_NEW_VOLVO } from '@/lib/features'
 import { formatIsk } from '@/lib/formatIsk'
 
-export const dynamic = 'force-dynamic'
 export const metadata = pageMetadata('Bílainnflutningur og bílar til sölu', 'Eðalkaup flytur inn bíla til Íslands og býður þá til sölu. Skoðaðu auglýsta bíla, myndir, verð og upplýsingar um búnað. Yfir 25 ára reynsla.', '/')
 
 export default async function Home() {

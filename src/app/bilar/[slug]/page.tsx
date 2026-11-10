@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
-import { notFound } from 'next/navigation'
-import { getPublicCar, getPublicCars } from '@/lib/publicInventory'
+import { notFound, permanentRedirect } from 'next/navigation'
+import { getPublicCar, getPublicCars, getPublicRows } from '@/lib/publicInventory'
 import { adaptCar } from '@/lib/adaptPublicCar'
 import CarCard from '@/components/CarCard'
 import CarDetail from '@/components/CarDetail'
@@ -16,7 +16,19 @@ import {
   vehicleTitle,
 } from '@/lib/listingSeo'
 
-export const dynamic = 'force-dynamic'
+export async function generateStaticParams() {
+  const rows = await getPublicRows()
+  return rows.flatMap((row) => [
+    { slug: publicCarSlug(row) },
+    { slug: String(row.id) },
+  ])
+}
+
+function canonicalSlug(slug: string, car: Parameters<typeof publicCarSlug>[0]) {
+  const path = publicCarSlug(car)
+  if (slug !== path) permanentRedirect(`/bilar/${path}`)
+  return path
+}
 
 // --- Per-car SEO metadata (server-rendered) ---
 export async function generateMetadata({
@@ -29,6 +41,7 @@ export async function generateMetadata({
   if (!car) {
     notFound()
   }
+  canonicalSlug(slug, car)
   const title = listingDocumentTitle(car)
   const description = listingMetaDescription(car)
   const image = car.images?.[0]
@@ -62,7 +75,7 @@ export default async function CarPage({
   const car = await getPublicCar(slug)
 
   if (!car) notFound()
-  const path = publicCarSlug(car)
+  const path = canonicalSlug(slug, car)
   const price = Number(car.price_isk)
   const publicCar = adaptCar(car)
   const related = (await getPublicCars()).filter((candidate) => candidate.id !== car.id)

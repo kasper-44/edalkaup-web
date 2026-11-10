@@ -1,3 +1,4 @@
+import { unstable_cache } from 'next/cache'
 import { cache } from 'react'
 import type { Car } from '@/data/cars'
 import { CAR_UUID_RE, publicCarSlug, shortIdFromSlug } from '@/lib/carPath'
@@ -11,15 +12,29 @@ export function publicImages(row: { images?: unknown; images_original?: unknown 
   const images = Array.isArray(row.images) && row.images.length ? row.images : row.images_original
   return Array.isArray(images) ? images.filter((image): image is string => typeof image === 'string' && /^https?:\/\//.test(image)) : []
 }
-// React cache deduplicates reads within a request; inventory stays fresh across requests.
-export const getPublicRows = cache(async (): Promise<any[]> => {
+/**
+ * How long a prerendered public page may serve this inventory before regenerating.
+ * Keep the literal in `src/app/layout.tsx` (`export const revalidate`) the same.
+ * The admin car route also expires the `public-cars` tag on publish, sale, and delete.
+ */
+export const PUBLIC_CATALOG_REVALIDATE = 300
+
+async function loadPublicRows(): Promise<any[]> {
   const { data, error } = await orderByNewestListing(supabase.from('cars').select('*').eq('status', 'live'))
   if (error) throw new Error('Ekki tókst að sækja bíla til sölu.')
   return (data || [])
     .map((row: any) => ({ ...withVatFlag(row), images: publicImages(row) }))
     .filter((row: any) => row.images.length > 0)
     .sort(comparePriceReducedFirst)
+}
+
+const loadPublicRowsCached = unstable_cache(loadPublicRows, ['public-live-cars'], {
+  revalidate: PUBLIC_CATALOG_REVALIDATE,
+  tags: ['public-cars'],
 })
+
+// React cache deduplicates reads within a request. unstable_cache keeps them across requests.
+export const getPublicRows = cache(async (): Promise<any[]> => loadPublicRowsCached())
 export const getPublicCars = cache(async (): Promise<Car[]> => (await getPublicRows()).map(adaptCar))
 
 /**
