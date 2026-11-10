@@ -16,6 +16,8 @@ import {
   vehicleTitle,
 } from '@/lib/listingSeo'
 
+export const dynamicParams = true
+
 export async function generateStaticParams() {
   const rows = await getPublicRows()
   return rows.flatMap((row) => [
