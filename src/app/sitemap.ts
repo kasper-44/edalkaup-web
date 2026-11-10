@@ -5,7 +5,6 @@ import { INVENTORY_CATEGORIES, normalizeSearch } from '@/lib/inventory'
 import { publicCarSlug } from '@/lib/carPath'
 import { adaptCar } from '@/lib/adaptPublicCar'
 import { deliveredCars } from '@/data/cars'
-export const dynamic = 'force-dynamic'
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const rows = await getPublicRows()
   const cars = rows.map(adaptCar)

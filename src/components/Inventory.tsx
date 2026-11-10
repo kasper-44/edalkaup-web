@@ -1,5 +1,5 @@
 'use client'
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useLayoutEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import type { Car } from '@/data/cars'
@@ -43,14 +43,14 @@ export default function Inventory({ cars, initialFilters = EMPTY_FILTERS, initia
     }, 250)
     return () => window.clearTimeout(timer)
   }, [filters, sort, urlReady])
-  useEffect(() => {
+  useLayoutEffect(() => {
     const onBack = () => {
       const params = Object.fromEntries(new URLSearchParams(window.location.search))
       setFilters(parseInventoryFilters(params))
       setSort(SORTS.includes(params.sort as InventorySort) ? params.sort as InventorySort : 'newest')
     }
-    // A cached page may mount with older server props after browser Back.
-    // Restore its current URL before any filter effect can overwrite it.
+    // The prerendered grid is the unfiltered list. Apply the URL before paint,
+    // including after browser Back onto a cached page.
     onBack()
     setUrlReady(true)
     window.addEventListener('popstate', onBack)

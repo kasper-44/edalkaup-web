@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { supabaseAdmin, isAuthorized } from '@/lib/supabaseAdmin'
+import { revalidatePublicCatalog } from '@/lib/revalidateCatalog'
 
 export const dynamic = 'force-dynamic'
 
@@ -259,6 +260,7 @@ export async function PATCH(req: Request) {
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
+  revalidatePublicCatalog()
   return NextResponse.json({ car: data?.[0] })
 }
 
@@ -284,6 +286,7 @@ export async function DELETE(req: Request) {
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
+    revalidatePublicCatalog()
     return NextResponse.json({ ok: true, deleted: count ?? 0 })
   }
 
@@ -296,6 +299,7 @@ export async function DELETE(req: Request) {
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
+  revalidatePublicCatalog()
   return NextResponse.json({ ok: true })
 }
 
@@ -397,5 +401,6 @@ export async function POST(req: Request) {
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
+  revalidatePublicCatalog()
   return NextResponse.json({ car: data?.[0] }, { status: 201 })
 }

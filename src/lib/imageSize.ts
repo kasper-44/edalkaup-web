@@ -1,3 +1,4 @@
+import { unstable_cache } from 'next/cache'
 import { cache } from 'react'
 
 export type ImageSize = { width: number; height: number }
@@ -71,7 +72,7 @@ export function parseImageSize(buf: Uint8Array): ImageSize | null {
   return webpSize(buf) || jpegSize(buf)
 }
 
-export const fetchImageSize = cache(async (url: string): Promise<ImageSize | null> => {
+async function readImageSize(url: string): Promise<ImageSize | null> {
   try {
     const response = await fetch(url, {
       headers: { Range: 'bytes=0-262143' },
@@ -83,4 +84,11 @@ export const fetchImageSize = cache(async (url: string): Promise<ImageSize | nul
   } catch {
     return null
   }
+}
+
+const cachedImageSize = unstable_cache(readImageSize, ['image-size'], {
+  revalidate: 300,
+  tags: ['public-cars'],
 })
+
+export const fetchImageSize = cache(async (url: string): Promise<ImageSize | null> => cachedImageSize(url))
