@@ -1,9 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-
-const HOST_TO_DEALER: Record<string, string> = {
-  'volvo-ex60-diesel.vercel.app': 'diesel',
-  'volvo-ex60-hofdabilar.vercel.app': 'hofdabilar',
-}
+import { dealerSlugForHost } from '@/lib/dealerHosts'
 
 /** Indexed inventory URLs. A query string is a filter and stays noindex. */
 const INVENTORY_PATH = /^\/bilar(?:\/(?:flokkur|framleidandi)\/[^/]+)?\/?$/
@@ -20,7 +16,7 @@ function isAsset(pathname: string) {
 
 export function middleware(req: NextRequest) {
   const host = req.headers.get('host')?.split(':')[0]?.toLowerCase() || ''
-  const dealer = HOST_TO_DEALER[host]
+  const dealer = dealerSlugForHost(host)
   const { pathname } = req.nextUrl
 
   if (isAsset(pathname)) return NextResponse.next()

@@ -1,21 +1,12 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
-import DealerSpecPage, { type DealerSlug } from '@/components/ex60/DealerSpecPage'
+import DealerSpecPage from '@/components/ex60/DealerSpecPage'
+import { dealerPageMetadata, DEALER_SLUGS, isDealerSlug } from '@/lib/dealerSeo'
 
-const DEALERS: DealerSlug[] = ['diesel', 'hofdabilar', 'edalkaup']
-
-const DEALER_NAMES: Record<DealerSlug, string> = {
-  diesel: 'Diesel',
-  hofdabilar: 'Höfðabílar',
-  edalkaup: 'Eðalkaup',
-}
-
-function isDealer(value: string): value is DealerSlug {
-  return (DEALERS as string[]).includes(value)
-}
+export const dynamicParams = false
 
 export function generateStaticParams() {
-  return DEALERS.map((dealer) => ({ dealer }))
+  return DEALER_SLUGS.map((dealer) => ({ dealer }))
 }
 
 export async function generateMetadata({
@@ -24,12 +15,8 @@ export async function generateMetadata({
   params: Promise<{ dealer: string }>
 }): Promise<Metadata> {
   const { dealer } = await params
-  if (!isDealer(dealer)) {
-    return { title: 'Volvo EX60 Ultra — TWIN Performance' }
-  }
-  return {
-    title: { absolute: `Volvo EX60 Ultra — TWIN Performance | ${DEALER_NAMES[dealer]}` },
-  }
+  if (!isDealerSlug(dealer)) notFound()
+  return dealerPageMetadata(dealer)
 }
 
 export default async function Page({
@@ -38,6 +25,6 @@ export default async function Page({
   params: Promise<{ dealer: string }>
 }) {
   const { dealer } = await params
-  if (!isDealer(dealer)) notFound()
+  if (!isDealerSlug(dealer)) notFound()
   return <DealerSpecPage dealer={dealer} />
 }
