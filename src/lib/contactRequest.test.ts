@@ -43,6 +43,10 @@ if (compact.ok) {
   assert.equal(compact.value.sourceLabel, 'forsíða')
 }
 
+const carPageInquiry = parseContactPayload({ name: 'Anna', email: 'anna@example.com', message: 'Er bíllinn laus?', car: 'Jeep Wrangler', source: 'bilur' })
+assert.equal(carPageInquiry.ok, true)
+if (carPageInquiry.ok) assert.equal(carPageInquiry.value.sourceLabel, '')
+
 const importInquiry = parseContactPayload({ name: 'Anna', email: 'anna@example.com', message: 'Leita að bíl', source: 'innflutningur' })
 assert.equal(importInquiry.ok, true)
 if (importInquiry.ok) {

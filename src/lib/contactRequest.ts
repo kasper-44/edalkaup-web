@@ -4,7 +4,7 @@ const SOURCES: Record<string, string> = {
   forsida: 'forsíða',
   innflutningur: 'bílainnflutningur',
   gluggi: 'gluggi',
-  bilur: 'bílur',
+  bilur: '',
   samband: 'hafa samband',
 }
 
