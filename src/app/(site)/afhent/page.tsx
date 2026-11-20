@@ -30,7 +30,8 @@ export default function AfhentPage() {
                   alt={getCarTitle(car)}
                   fill
                   className="object-cover"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  sizes="(max-width: 767px) calc(100vw - 2rem), (max-width: 1023px) calc(50vw - 2.25rem), 24.5rem"
+                  quality={75}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 dark:from-navy-900/60 to-transparent" />
                 <div className="absolute top-3 right-3 px-3 py-1 text-xs font-semibold rounded-full border bg-emerald-500/20 text-emerald-400 border-emerald-500/30">

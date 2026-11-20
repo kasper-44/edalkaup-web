@@ -42,16 +42,16 @@ export default function CarGallery({ images, alt, overlay }: { images: string[];
     <div className="relative aspect-[16/10] overflow-hidden bg-gray-100 lg:aspect-auto lg:h-[min(38vh,400px)] dark:bg-navy-800" onTouchStart={touchStart} onTouchEnd={touchEnd}>
       {overlay}
       <button onClick={() => setOpen(true)} className="absolute inset-0 h-full w-full" aria-label={`Stækka mynd ${selected + 1} af ${images.length}: ${alt}`}>
-        <Image src={images[selected]} alt={`${alt} — mynd ${selected + 1}`} fill sizes="100vw" priority className="object-contain" />
+        <Image src={images[selected]} alt={`${alt} — mynd ${selected + 1}`} fill sizes="100vw" quality={75} priority className="object-contain" />
       </button>
       {images.length > 1 && <><button type="button" aria-label="Fyrri mynd" onClick={() => next(-1)} className={`${arrowClass} left-3`}><Chevron direction="left" /></button><button type="button" aria-label="Næsta mynd" onClick={() => next(1)} className={`${arrowClass} right-3`}><Chevron direction="right" /></button></>}
       <span className="pointer-events-none absolute bottom-3 right-3 rounded-full bg-navy-900/80 px-3 py-1.5 text-xs font-semibold text-white" aria-live="polite">{counter}</span>
     </div>
-    {images.length > 1 && <div className="mx-auto mt-3 hidden max-w-7xl gap-2 overflow-x-auto px-4 py-2 lg:flex lg:px-8" aria-label="Velja mynd">{images.map((image, index) => <button type="button" key={`${image}-${index}`} aria-label={`Sýna mynd ${index + 1}`} aria-pressed={index === selected} onClick={() => setSelected(index)} className={`relative h-16 w-24 shrink-0 overflow-hidden rounded-lg border-2 ${index === selected ? 'border-accent-dark dark:border-accent' : 'border-transparent'}`}><Image src={image} alt="" fill sizes="96px" className="object-cover" /></button>)}</div>}
+    {images.length > 1 && <div className="mx-auto mt-3 hidden max-w-7xl gap-2 overflow-x-auto px-4 py-2 lg:flex lg:px-8" aria-label="Velja mynd">{images.map((image, index) => <button type="button" key={`${image}-${index}`} aria-label={`Sýna mynd ${index + 1}`} aria-pressed={index === selected} onClick={() => setSelected(index)} className={`relative h-16 w-24 shrink-0 overflow-hidden rounded-lg border-2 ${index === selected ? 'border-accent-dark dark:border-accent' : 'border-transparent'}`}><Image src={image} alt="" fill sizes="96px" quality={75} className="object-cover" /></button>)}</div>}
     <dialog ref={dialog} aria-label={`Myndir af ${alt}`} onClose={() => setOpen(false)} className="m-auto h-[90svh] w-[95vw] max-w-6xl rounded-xl border-0 bg-navy-900 p-0 text-white backdrop:bg-black/85" onTouchStart={touchStart} onTouchEnd={touchEnd}>
       <div className="relative h-full w-full">
         <div className="absolute top-4 right-4 left-5 z-10 flex items-center justify-between gap-3"><p className="text-sm">Mynd {counter}</p><button type="button" autoFocus onClick={() => setOpen(false)} className="rounded-lg bg-navy-800 px-4 py-3 font-semibold">Loka</button></div>
-        <Image src={images[selected]} alt={`${alt} — mynd ${selected + 1}`} fill sizes="95vw" className="object-contain px-4 py-20 md:px-12" />
+        <Image src={images[selected]} alt={`${alt} — mynd ${selected + 1}`} fill sizes="95vw" quality={75} className="object-contain px-4 py-20 md:px-12" />
         {images.length > 1 && <><button type="button" aria-label="Fyrri mynd í stækkuðum glugga" onClick={() => next(-1)} className={`${arrowClass} left-2 !flex`}><Chevron direction="left" /></button><button type="button" aria-label="Næsta mynd í stækkuðum glugga" onClick={() => next(1)} className={`${arrowClass} right-2 !flex`}><Chevron direction="right" /></button></>}
       </div>
     </dialog>

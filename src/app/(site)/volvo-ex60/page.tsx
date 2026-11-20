@@ -76,7 +76,8 @@ export default function VolvoEX60Page() {
                 alt="Volvo EX60 P12 Long Range — Crystal White"
                 fill
                 className="object-cover object-center brightness-110 contrast-[1.04] saturate-[1.04]"
-                sizes="(max-width: 1024px) 100vw, 50vw"
+                sizes="(max-width: 1023px) calc(100vw - 2rem), 40rem"
+                quality={75}
                 priority
               />
             </div>
@@ -97,7 +98,7 @@ export default function VolvoEX60Page() {
               className={`group bg-white dark:bg-navy-800 rounded-2xl overflow-hidden border border-black/5 dark:border-white/5 hover:border-accent/20 transition-all duration-300 hover:shadow-2xl hover:shadow-accent/5 flex flex-col ${car.status === 'sold' ? 'opacity-60' : ''}`}
             >
               <div className="relative aspect-[16/10] overflow-hidden">
-                <Image src={car.image} alt={`Volvo EX60 — ${car.exteriorColor}`} fill className="object-cover group-hover:scale-105 transition-transform duration-500" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw" />
+                <Image src={car.image} alt={`Volvo EX60 — ${car.exteriorColor}`} fill className="object-cover group-hover:scale-105 transition-transform duration-500" sizes="(max-width: 639px) calc(100vw - 2rem), (max-width: 1023px) calc(50vw - 2rem), (max-width: 1279px) 24.5rem, 18rem" quality={75} />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
                 <div className="absolute top-3 right-3"><StatusBadge status={car.status} /></div>
               </div>
