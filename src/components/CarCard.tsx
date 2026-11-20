@@ -15,9 +15,13 @@ interface CarCardProps {
   car: Car
   priority?: boolean
   actions?: ReactNode
+  /** CSS width of the photo. Defaults to the homepage 1/2/3-column grid. */
+  sizes?: string
 }
 
-export default function CarCard({ car, priority = false, actions }: CarCardProps) {
+const CARD_SIZES = '(max-width: 767px) calc(100vw - 2rem), (max-width: 1023px) calc(50vw - 2.75rem), 24.5rem'
+
+export default function CarCard({ car, priority = false, actions, sizes = CARD_SIZES }: CarCardProps) {
   const statusColors = {
     available: 'bg-accent text-navy-900',
     'in-transit': 'bg-amber-400 text-amber-950',
@@ -45,7 +49,7 @@ export default function CarCard({ car, priority = false, actions }: CarCardProps
 
   return (
     <article className="dealer-card h-full flex flex-col overflow-hidden transition-shadow duration-300 hover:shadow-[0_18px_44px_rgba(10,15,28,0.12)]">
-    <Link href={`/bilar/${car.slug}`} className="group flex flex-col flex-1" aria-label={title}>
+    <Link href={`/bilar/${car.slug}`} prefetch={false} className="group flex flex-col flex-1" aria-label={title}>
       <div className="flex flex-col flex-1 hover:bg-accent/5 transition-colors">
         {/* Image */}
         <div className="relative aspect-[16/10] overflow-hidden">
@@ -54,7 +58,8 @@ export default function CarCard({ car, priority = false, actions }: CarCardProps
             alt={title}
             fill
             className="object-cover group-hover:scale-[1.035] transition-transform duration-500"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            sizes={sizes}
+            quality={75}
             priority={priority}
           /> : <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-navy-700 text-gray-500 dark:text-slate-300">Mynd væntanleg</div>}
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 dark:from-navy-900/60 to-transparent" />

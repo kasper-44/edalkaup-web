@@ -103,7 +103,7 @@ export default async function CarPage({
       <CarDetail car={car} />
       {related.length > 0 && <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 max-lg:pb-28">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Skoðaðu líka</h2>
-        <div className="grid md:grid-cols-3 gap-6">{related.map((candidate) => <CarCard key={candidate.id} car={candidate} />)}</div>
+        <div className="grid md:grid-cols-3 gap-6">{related.map((candidate) => <CarCard key={candidate.id} car={candidate} sizes="(max-width: 767px) calc(100vw - 2rem), (max-width: 1279px) 20rem, 24.5rem" />)}</div>
       </section>}
     </>
   )

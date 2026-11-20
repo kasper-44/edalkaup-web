@@ -31,8 +31,8 @@ export default function ComparisonDialog({ cars, open, onClose }: { cars: Car[];
     <div className="p-5"><p className="text-sm text-gray-600 dark:text-slate-300 mb-5">Berðu saman allt að þrjá bíla. Athugaðu hvort verð sé með eða án VSK.</p>
       <div className="overflow-x-auto"><table className="w-full text-sm border-collapse"><caption className="sr-only">Verð og helstu upplýsingar um valda bíla</caption>
         <thead><tr><th className="min-w-28 text-left p-3">Upplýsingar</th>{cars.map((car) => <th key={car.id} className="min-w-48 max-w-72 p-3 text-left align-top">
-          {car.images[0] && <div className="relative aspect-[16/10] mb-3"><Image src={car.images[0]} alt={vehicleTitle(car)} fill sizes="240px" className="rounded-lg object-cover" /></div>}
-          <Link href={`/bilar/${car.slug}`} className="underline underline-offset-4">{vehicleTitle(car)}</Link>
+          {car.images[0] && <div className="relative aspect-[16/10] mb-3"><Image src={car.images[0]} alt={vehicleTitle(car)} fill sizes="288px" quality={75} className="rounded-lg object-cover" /></div>}
+          <Link href={`/bilar/${car.slug}`} prefetch={false} className="underline underline-offset-4">{vehicleTitle(car)}</Link>
         </th>)}</tr></thead>
         <tbody>{rows.map((row) => <tr key={row.label} className="border-t border-black/10 dark:border-white/10"><th scope="row" className="p-3 text-left font-medium text-gray-600 dark:text-slate-300">{row.label}</th>{cars.map((car) => <td key={car.id} className="p-3">{row.value(car)}</td>)}</tr>)}</tbody>
       </table></div>

@@ -4,6 +4,9 @@ const nextConfig = {
     root: __dirname,
   },
   images: {
+    formats: ['image/avif', 'image/webp'],
+    minimumCacheTTL: 2592000,
+    qualities: [75],
     remotePatterns: [
       { protocol: 'https', hostname: 'auto.dev' },
       { protocol: 'https', hostname: '**.auto.dev' },

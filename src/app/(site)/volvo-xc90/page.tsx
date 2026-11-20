@@ -93,7 +93,8 @@ export default function VolvoXC90Page() {
                 alt="Volvo XC90 T8 Ultra"
                 fill
                 className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
+                sizes="(max-width: 1023px) calc(100vw - 2rem), 40rem"
+                quality={75}
                 priority
               />
             </div>
@@ -127,7 +128,8 @@ export default function VolvoXC90Page() {
                   alt={`Volvo XC90 T8 Ultra — ${car.exteriorColor}`}
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  sizes="(max-width: 639px) calc(100vw - 2rem), (max-width: 1023px) calc(50vw - 2rem), (max-width: 1279px) 24.5rem, 18rem"
+                  quality={75}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
                 <div className="absolute top-3 right-3">

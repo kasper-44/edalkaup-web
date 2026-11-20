@@ -387,7 +387,8 @@ export default function DealerSpecPage({ dealer }: { dealer: DealerSlug }) {
                 alt="EX60 Ultra, þriggja fjórðu framhorn, Onyx Black"
                 fill
                 className="object-cover"
-                sizes="(max-width: 640px) 100vw, 50vw"
+                sizes="(max-width: 639px) calc(100vw - 2rem), 36rem"
+                quality={75}
               />
             </figure>
             <figure className="relative aspect-[16/10] overflow-hidden rounded-xl">
@@ -396,7 +397,8 @@ export default function DealerSpecPage({ dealer }: { dealer: DealerSlug }) {
                 alt="EX60 Ultra hliðarmynd, Onyx Black"
                 fill
                 className="object-cover"
-                sizes="(max-width: 640px) 100vw, 50vw"
+                sizes="(max-width: 639px) calc(100vw - 2rem), 36rem"
+                quality={75}
               />
             </figure>
           </div>
@@ -426,7 +428,8 @@ export default function DealerSpecPage({ dealer }: { dealer: DealerSlug }) {
                       alt={`EX60 í ${c.name} lit`}
                       fill
                       className="object-cover"
-                      sizes="(max-width: 768px) 50vw, 25vw"
+                      sizes="(max-width: 767px) calc(50vw - 1rem), 17rem"
+                      quality={75}
                     />
                   </div>
                 ) : (
