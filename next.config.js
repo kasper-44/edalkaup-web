@@ -1,8 +1,24 @@
 /** @type {import('next').NextConfig} */
+// Host conditions are regexes. Escaped dots keep these two hosts exact.
+const DEALER_HOST_MISSING = [
+  { type: 'host', value: 'volvo-ex60-diesel\\.vercel\\.app' },
+  { type: 'host', value: 'volvo-ex60-hofdabilar\\.vercel\\.app' },
+]
+
+/** Next evaluates redirects before middleware. Skip them on dealer hosts so the 308 is one hop. */
+function exceptDealerHosts(route) {
+  return {
+    ...route,
+    missing: [...(route.missing || []), ...DEALER_HOST_MISSING],
+  }
+}
+
 const nextConfig = {
   turbopack: {
     root: __dirname,
   },
+  // The built-in slash redirect cannot exclude hosts. The same rule is first in redirects().
+  skipTrailingSlashRedirect: true,
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'auto.dev' },
@@ -23,6 +39,8 @@ const nextConfig = {
   },
   async redirects() {
     return [
+      // Same rule Next adds unless skipTrailingSlashRedirect is set.
+      { source: '/:path+/', destination: '/:path+', permanent: true },
       // Old WordPress pages (no trailing slash — Next matches both)
       { source: '/okutaeki-um', destination: '/um-okkur', permanent: true },
       { source: '/bilaleit', destination: '/bilar', permanent: true },
@@ -67,7 +85,7 @@ const nextConfig = {
       { source: '/download', destination: '/', permanent: true },
       { source: '/find-your-favorite-car-in-a-minute', destination: '/', permanent: true },
       { source: '/find-your-favorite-car-in-a-minute-1', destination: '/', permanent: true },
-    ]
+    ].map(exceptDealerHosts)
   },
 }
 
