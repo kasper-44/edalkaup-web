@@ -85,7 +85,7 @@ export default function Footer() {
             Öll viðskipti á edalkaup.is eru við Úranus ehf. kt. 5010963189. Framkvæmdastjóri Eðalkaupa er Sigurður Róbertsson.
           </p>
           <p className="text-[11px] text-gray-400 dark:text-slate-500">
-            Vefur í umsjá Klaki ·{' '}
+            Vefur í umsjá Klaki AI ·{' '}
             <a href={`mailto:${KLAKI_EMAIL}`} className="hover:text-accent transition-colors">
               {KLAKI_EMAIL}
             </a>
