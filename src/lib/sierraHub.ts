@@ -292,7 +292,7 @@ export function faqItems(offers: SierraOffer[]): SierraFaq[] {
   }
   items.push({
     question: 'Hvernig skoða ég bílinn eða fæ nánari upplýsingar?',
-    answer: `Hringdu í ${DEALER_PHONE_DISPLAY}, eða sendu fyrirspurn af auglýsingunni. Viðskipti á edalkaup.is eru við ${DEALER_LEGAL_NAME}.`,
+    answer: `Hringdu í ${DEALER_PHONE_DISPLAY}, eða sendu fyrirspurn af auglýsingunni. Viðskipti á edalkaup.is eru við ${DEALER_LEGAL_NAME}`,
   })
   return items
 }

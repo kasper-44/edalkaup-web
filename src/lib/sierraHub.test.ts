@@ -120,6 +120,11 @@ assert.equal(cars.includes('205'), false)
 assert.equal(cars.includes('478'), false)
 assert.equal(cars.includes('battery'), false)
 assert.equal(JSON.stringify(ld).includes(faq[0].answer), true)
+assert.equal(
+  faq[5].answer,
+  'Hringdu í 699 2011, eða sendu fyrirspurn af auglýsingunni. Viðskipti á edalkaup.is eru við Úranus ehf.',
+)
+assert.equal(faq[5].answer.includes('ehf..'), false)
 
 const one = sierraOffersFromRows([deepOcean])
 assert.equal(one.length, 1)
