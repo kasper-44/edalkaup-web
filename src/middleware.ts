@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { INDEXNOW_KEY } from '@/lib/indexnow'
 
 const HOST_TO_DEALER: Record<string, string> = {
   'volvo-ex60-diesel.vercel.app': 'diesel',
@@ -14,7 +15,8 @@ function isAsset(pathname: string) {
     pathname.startsWith('/images') ||
     pathname.startsWith('/favicon') ||
     pathname === '/robots.txt' ||
-    pathname === '/sitemap.xml'
+    pathname === '/sitemap.xml' ||
+    pathname === `/${INDEXNOW_KEY}.txt`
   )
 }
 
