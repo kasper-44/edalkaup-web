@@ -8,7 +8,7 @@ import { deliveredCars } from '@/data/cars'
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const rows = await getPublicRows()
   const cars = rows.map(adaptCar)
-  const staticPaths = ['/', '/bilar', '/bilainnflutningur', '/um-okkur', '/hafa-samband']
+  const staticPaths = ['/', '/bilar', '/bilainnflutningur', '/um-okkur', '/hafa-samband', '/gmc-sierra-ev']
   if (deliveredCars.length) staticPaths.push('/afhent')
   const categories = INVENTORY_CATEGORIES.filter((category) => cars.some(category.matches)).map((category) => `/bilar/flokkur/${category.slug}`)
   const brands = [...new Set(cars.map((car) => `/bilar/framleidandi/${normalizeSearch(car.make).replace(/\s+/g, '-')}`))]

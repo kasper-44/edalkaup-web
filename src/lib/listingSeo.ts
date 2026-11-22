@@ -81,7 +81,7 @@ function collapseSpace(value: string): string {
 }
 
 /** Schema fields are omitted when the row has no real value. */
-function presentText(value: unknown): string | null {
+export function presentText(value: unknown): string | null {
   if (typeof value !== 'string') return null
   const text = collapseSpace(value)
   if (!text || text === 'Ótilgreint' || text === 'Ótilgreind' || text === 'Ótilgreindur') return null
@@ -266,6 +266,8 @@ export function carJsonLd(car: ListingCar, slug: string) {
     model: car.model,
     vehicleModelDate: car.year,
   }
+  const configuration = presentText(car.trim)
+  if (configuration) jsonLd.vehicleConfiguration = configuration
 
   if (km != null && km > 0) jsonLd.itemCondition = 'https://schema.org/UsedCondition'
   if (colour) jsonLd.color = colour

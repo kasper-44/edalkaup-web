@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "node --require ./scripts/register-tests.cjs --test src/lib/*.test.ts scripts/contact-route.test.cjs"
+    "test": "node --require ./scripts/register-tests.cjs --test src/lib/*.test.ts scripts/contact-route.test.cjs",
+    "indexnow:ping": "node scripts/indexnow-ping.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.0",
