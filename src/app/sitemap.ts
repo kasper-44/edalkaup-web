@@ -5,6 +5,11 @@ import { INVENTORY_CATEGORIES, normalizeSearch } from '@/lib/inventory'
 import { publicCarSlug } from '@/lib/carPath'
 import { adaptCar } from '@/lib/adaptPublicCar'
 import { deliveredCars } from '@/data/cars'
+
+// Same 300s window as `revalidate` in src/app/layout.tsx. Sitemap routes do not
+// inherit that setting; without it Next freezes sitemap.xml at build time.
+export const revalidate = 300
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const rows = await getPublicRows()
   const cars = rows.map(adaptCar)
