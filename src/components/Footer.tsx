@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import CallLink from '@/components/CallLink'
 import { INVENTORY_CATEGORIES } from '@/lib/inventory'
-import { KLAKI_EMAIL } from '@/lib/site'
 
 export default function Footer() {
   const pathname = usePathname()
@@ -85,10 +84,7 @@ export default function Footer() {
             Öll viðskipti á edalkaup.is eru við Úranus ehf. kt. 5010963189. Framkvæmdastjóri Eðalkaupa er Sigurður Róbertsson.
           </p>
           <p className="text-[11px] text-gray-400 dark:text-slate-500">
-            Vefur í umsjá Klaki ·{' '}
-            <a href={`mailto:${KLAKI_EMAIL}`} className="hover:text-accent transition-colors">
-              {KLAKI_EMAIL}
-            </a>
+            Vefur í umsjá Klaki
           </p>
         </div>
       </div>
